@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:Elyte/terms_and_conditions.dart';
+import './terms_and_conditions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
-import 'package:Elyte/comments.dart';
-import 'package:Elyte/video_stories.dart';
+import './comments.dart';
+import './video_stories.dart';
 import 'package:flutter/material.dart';
 import './viewList.dart';
 import './styles_beauty.dart';

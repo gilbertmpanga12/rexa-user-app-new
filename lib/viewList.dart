@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:Elyte/help.dart';
-import 'package:Elyte/mainTabChat.dart';
-import 'package:Elyte/styles_beauty.dart';
+import './help.dart';
+import './mainTabChat.dart';
+import './styles_beauty.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:Elyte/swiper.dart';
+import './swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';

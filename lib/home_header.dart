@@ -1,4 +1,4 @@
-import 'package:Elyte/strings.dart';
+import './strings.dart';
 import 'package:flutter/material.dart';
 
 import 'dimen.dart';

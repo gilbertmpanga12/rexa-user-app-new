@@ -1,7 +1,7 @@
 import 'dart:async';
 // added new changes +++
-import 'package:Elyte/swiper.dart';
-import 'package:Elyte/terms_and_conditions.dart';
+import './swiper.dart';
+import './terms_and_conditions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

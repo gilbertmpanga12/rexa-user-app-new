@@ -1,5 +1,5 @@
-import 'package:Elyte/storiesComments.dart';
-import 'package:Elyte/stylesbyuser.dart';
+import './storiesComments.dart';
+import './stylesbyuser.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';

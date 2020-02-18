@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Elyte/orderpage.dart';
-import 'package:Elyte/spinner_animation.dart';
-import 'package:Elyte/swiper.dart';
+import './orderpage.dart';
+import './spinner_animation.dart';
+import './swiper.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
