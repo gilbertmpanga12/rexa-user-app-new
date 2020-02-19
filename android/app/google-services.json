@@ -1,0 +1,227 @@
+{
+  "project_info": {
+    "project_number": "503467082492",
+    "firebase_url": "https://esalonbusiness-d3f3d.firebaseio.com",
+    "project_id": "esalonbusiness-d3f3d",
+    "storage_bucket": "esalonbusiness-d3f3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503467082492:android:ac3c0eeb1b536220",
+        "android_client_info": {
+          "package_name": "com.esalonbusiness.esalonbusiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "503467082492-f49n0m2871ge6nfub2eeaj5qe0v5cutc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.esalonbusiness.esalonbusiness",
+            "certificate_hash": "a2f0503a06488b6bdd3b811e20b1c2521e2bf501"
+          }
+        },
+        {
+          "client_id": "503467082492-erojh85b031brrs47iqgph8tjdvcke9u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.esalonbusiness.esalonbusiness",
+            "certificate_hash": "42f18b15a1fa30a7cc5775e909a79fda8a35c326"
+          }
+        },
+        {
+          "client_id": "503467082492-b481i6vnu474dkolnce9vr9a11mlnmrd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.esalonbusiness.esalonbusiness",
+            "certificate_hash": "1db4513b53d4f40175682d8ccfc850550901e47c"
+          }
+        },
+        {
+          "client_id": "503467082492-9ml2637pg585j7v969ji3uah3jogcc1u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.esalonbusiness.esalonbusiness",
+            "certificate_hash": "e3bec04c56f366958c062b205f645114c9ecf211"
+          }
+        },
+        {
+          "client_id": "503467082492-lfg9pqevd2g7bjg7dscn4p61u7ime674.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6H9ix5IHjHnKFVYwfGq_JxcOIzzAofvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "503467082492-lfg9pqevd2g7bjg7dscn4p61u7ime674.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "503467082492-3nc76an99hval76vvlmrhpqjmcja5q9c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.paypanda"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503467082492:android:cf77c7d3b51e4154040d79",
+        "android_client_info": {
+          "package_name": "com.example.esalonbusiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "503467082492-29j1dike47lf6bb8g95ubqrr0u254i7h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.esalonbusiness",
+            "certificate_hash": "a2f0503a06488b6bdd3b811e20b1c2521e2bf501"
+          }
+        },
+        {
+          "client_id": "503467082492-lfg9pqevd2g7bjg7dscn4p61u7ime674.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6H9ix5IHjHnKFVYwfGq_JxcOIzzAofvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "503467082492-lfg9pqevd2g7bjg7dscn4p61u7ime674.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "503467082492-3nc76an99hval76vvlmrhpqjmcja5q9c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.paypanda"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503467082492:android:6973463a8e35bb4d040d79",
+        "android_client_info": {
+          "package_name": "com.example.rexa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "503467082492-bcnhp37m2d525h92v8eigt2j03u56vhc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rexa",
+            "certificate_hash": "a2f0503a06488b6bdd3b811e20b1c2521e2bf501"
+          }
+        },
+        {
+          "client_id": "503467082492-lfg9pqevd2g7bjg7dscn4p61u7ime674.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6H9ix5IHjHnKFVYwfGq_JxcOIzzAofvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "503467082492-lfg9pqevd2g7bjg7dscn4p61u7ime674.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "503467082492-3nc76an99hval76vvlmrhpqjmcja5q9c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.paypanda"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503467082492:android:29c416c611d3ff5f",
+        "android_client_info": {
+          "package_name": "esalonuser.esalonuser.esalonuser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "503467082492-8663v65t56uifdbaaqum65nnbdpj78tm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "esalonuser.esalonuser.esalonuser",
+            "certificate_hash": "f037c7ed73515a509e1a056f26f64021f4980d12"
+          }
+        },
+        {
+          "client_id": "503467082492-uour3hlkbk9q8v8362r9vl2tvpbnbbo1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "esalonuser.esalonuser.esalonuser",
+            "certificate_hash": "3c20ed0d39c1b47a8df7591b1e8b42ef4f48a003"
+          }
+        },
+        {
+          "client_id": "503467082492-75ceneqslnqfbdmn263s62usb6okrg9j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "esalonuser.esalonuser.esalonuser",
+            "certificate_hash": "e3bec04c56f366958c062b205f645114c9ecf211"
+          }
+        },
+        {
+          "client_id": "503467082492-lfg9pqevd2g7bjg7dscn4p61u7ime674.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6H9ix5IHjHnKFVYwfGq_JxcOIzzAofvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "503467082492-lfg9pqevd2g7bjg7dscn4p61u7ime674.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "503467082492-3nc76an99hval76vvlmrhpqjmcja5q9c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.paypanda"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
