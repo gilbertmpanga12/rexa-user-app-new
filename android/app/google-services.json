@@ -127,11 +127,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "503467082492-bcnhp37m2d525h92v8eigt2j03u56vhc.apps.googleusercontent.com",
+          "client_id": "503467082492-7t488pcbt59oc55eh4l3ebegv7m91v8a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.rexa",
-            "certificate_hash": "a2f0503a06488b6bdd3b811e20b1c2521e2bf501"
+            "certificate_hash": "481db52fb6096ca0b70ee294015991e5280e5359"
+          }
+        },
+        {
+          "client_id": "503467082492-7tseqp3e6h3k8rbpf5slrtqev4qg997l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rexa",
+            "certificate_hash": "d8f317cf942b8c2fd1a5f0563cc0ad6b4426a887"
+          }
+        },
+        {
+          "client_id": "503467082492-m1kb72rg6s8a2ula4oc7fgovjsib0f48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rexa",
+            "certificate_hash": "1e0eda4c5e1d8d795fbed1a59bc6a231cfa02b34"
           }
         },
         {
