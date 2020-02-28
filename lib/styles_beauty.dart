@@ -494,6 +494,8 @@ return  Padding(child:Padding(
                         bottom: MediaQuery.of(context).viewInsets.bottom))
 
           ],);
+        }).whenComplete((){
+     controller.clear();
         });
   }
 

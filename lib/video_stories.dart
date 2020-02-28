@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:rexa/videostoriesbyuser.dart';
+
 import './spinner_animation.dart';
 import './styles_beauty.dart';
 import './video_stories.dart';
@@ -165,7 +167,7 @@ void _settingModalBottomSheet(context) {
           SizedBox(
             width: 5.0,
           ),
-          GestureDetector(
+          InkWell(
             onTap: () {
               postImage(fileToBeUploaded);
             },
@@ -179,6 +181,10 @@ void _settingModalBottomSheet(context) {
                         bottom: MediaQuery.of(context).viewInsets.bottom))
 
           ],);
+        }).whenComplete((){
+controller.clear();
+fileToBeUploaded = null;
+
         });
   }
 
@@ -578,6 +584,8 @@ return '';
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 InkWell(child: userProfile(),onTap: (){
+                  Navigator.pushReplacement(context, 
+                  MaterialPageRoute(builder: (context) => VideoStoriesByUser(userId: widget.userId,username: widget.username,)));
                 },),
                 InkWell(child: 
                 controlStream(docID: '${widget.docID}',uid: '${widget.uid}'), onTap: (){

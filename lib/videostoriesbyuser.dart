@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:rexa/video_stories.dart';
+
 import './spinner_animation.dart';
 import './styles_beauty.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -117,7 +119,7 @@ Widget byUserHeader() {
       body: Stack(children: <Widget>[
       _videoStoriesByUser(context),byUserHeader()],)
       ),onWillPop: () async{
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  StylesBeautyWidget()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  VideoStories()));
         return Future.value(false);
       },);
   }
