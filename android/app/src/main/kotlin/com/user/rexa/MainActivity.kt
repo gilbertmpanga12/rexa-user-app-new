@@ -1,4 +1,4 @@
-package com.example.rexa
+package com.user.rexa
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
