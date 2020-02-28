@@ -298,6 +298,7 @@ ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
       if(image == null){
       return;
       } 
+      print('state of image ${controller.text}');
       setState(() {
          checkIfVideo = false;
         _beautyPhoto = image;
