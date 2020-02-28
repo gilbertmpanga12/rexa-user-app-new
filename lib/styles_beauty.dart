@@ -87,7 +87,6 @@ final TextEditingController controller = TextEditingController();
     var progress = "";
     var path = "No Data";
     var platformVersion = "Unknown";
-  String myPhoneNumber;
 
  downloadFile(String url,int index,String fullName, String docId) async {
   setState(() {
@@ -221,11 +220,9 @@ removeNots() async{
     }
     super.dispose();
   }
-
 getName() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   _actualName = prefs.getString('fullName');
-  myPhoneNumber = prefs.getString('uid');
 }
 
 sendNotificationsToAll() async {
@@ -939,7 +936,8 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                                                               .spaceBetween,
                                                       children: <Widget>[
                                                        // Terminator
-                                                        IconButton(
+                                                        _isAlreadySaved
+                                                            ? IconButton(
                                                                 icon: Icon(
                                                                   Icons
                                                                       .favorite,
@@ -947,45 +945,50 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                                                                       .red,
                                                                 ),
                                                                 onPressed: () {
-                                                                  // to be back
-                                                                 try{
-                  Firestore.instance.collection('users')
-                .document(myPhoneNumber).collection('likes_stories')
-                .document(snapshot.data.documents[index]['userId']).get().then((onValue){
-                  if(onValue.exists && onValue.data['likes'] == 1){
-                      Firestore.instance.collection('users')
-                        .document(myPhoneNumber).collection('likes_stories')
-                        .document(snapshot.data.documents[index]['userId']).setData({'likes': 0},merge: true)
-                        .then((removeCount){
-                          Firestore.instance.collection('userService')
-                .document(snapshot.data.documents[index]['doc_id']).get().then((likesDecrement){
-                  Firestore.instance.collection('userService')
-                .document(snapshot.data.documents[index]['doc_id']).setData({'likes': likesDecrement.data['likes'] - 1},merge: true).then((isDone){
-                  print('is done');
-                });
-                });
-                        });
-                  }else{
-                    // print('I am running else');
-                    Firestore.instance.collection('userService')
-                        .document(snapshot.data.documents[index]['doc_id']).get().then((likeVal){
-                          Firestore.instance.collection('userService')
-                        .document(snapshot.data.documents[index]['doc_id']).setData({'likes': likeVal.data['likes'] + 1},merge: true).then((onValue){
-                      Firestore.instance.collection('users')
-                        .document(myPhoneNumber).collection('likes_stories')
-                        .document(snapshot.data.documents[index]['userId']).setData({'likes': 1},merge: true);
-                        }).then((isDone){
-                          print('doneZZZZZ');
-                        });
-                        });
-                        
-                  }
-                });
-                  }catch(err){
-                  print('HONCHO');
-               
-                  }
+                                                                  if (_isAlreadySaved) {
+                                                                    setState(
+                                                                        () {
+                                                                      likes = 0;
+                                                                      _saved.remove(
+                                                                          index);
+                                                                    });
+                                                                    unlikePhoto(snapshot
+                                                                            .data
+                                                                            .documents[index]
+                                                                        [
+                                                                        'doc_id']);
+                                                                  }
                                                                 })
+                                                            : IconButton(
+                                                              color: Color(0xFF202020),
+                                                                icon: Icon(Icons
+                                                                    .favorite_border),
+                                                                onPressed: () {
+                                                                 likes = 1;
+                                                                    _saved.add(
+                                                                        index);
+                                                                  likePhoto(snapshot
+                                                                          .data
+                                                                          .documents[
+                                                                      index]['doc_id']);
+                                                                }),
+                                                                      
+                                                                     IconButton(
+                                                          icon: Icon(
+                                                              FontAwesomeIcons
+                                                                  .comment,color: Color(0xFF202020)),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            StoriesComments(
+                                                                              uid: snapshot.data.documents[index]['doc_id'],
+                                                                            )));
+                                                          },
+                                                        ),
+                                                        
                                                       ]),
                                                       IconButton(icon: Icon(Icons.visibility),onPressed: (){
                                                         /// navigation goes here 

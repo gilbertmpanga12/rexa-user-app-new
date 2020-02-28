@@ -1,5 +1,5 @@
 import 'dart:async';
-import './swiper.dart';
+import './swiper.dart' as tip;
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import './watchvideo.dart';
@@ -31,9 +31,12 @@ class ViewImageState extends State<ViewImage> {
   }
 
   build(BuildContext context) {
-    return WillPopScope(child: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-        appBar: AppBar(
+        appBar: AppBar(leading: BackButton(color: Colors.yellow[800],onPressed: (){
+          Navigator.of(context).pop();
+          tip.controllerPageView.jumpToPage(1);
+        },),
           title: Text(
             '${ServiceName[0].toUpperCase() + ServiceName.substring(
                   1,
@@ -51,10 +54,8 @@ class ViewImageState extends State<ViewImage> {
           child: WatchVideo(isVideo: _isVideo ,photoUrl: imageUrl ,serviceName: ServiceName,)
         ),)
           ],
-        ) : PhotoView(imageProvider: NetworkImage('$imageUrl')), ),onWillPop: (){
-          Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Swiper()));
-            return Future.value(false);
-        },) ;
+        ) : PhotoView(imageProvider: NetworkImage('$imageUrl')), ) ;
   }
 }
+
+// tip.controllerPageView.jumpToPage(1);
