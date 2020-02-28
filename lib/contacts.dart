@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:connectivity/connectivity.dart';
+
 import './swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -116,6 +119,8 @@ class ServicesContacts extends StatefulWidget {
 }
 
 class ServicesContactsState extends State<ServicesContacts> {
+  StreamSubscription<ConnectivityResult> subscription;
+  bool isActive = true;
   String _uid;
   String _requestedSaloonService;
   String _requestedDescription;
@@ -480,6 +485,23 @@ requestServiceNotifier(_fcmToken,
 
 @override
   void initState() {
+    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+       if (result.toString() == 'ConnectivityResult.mobile') {
+setState(() {
+  isActive = true;
+});
+} else if (result.toString() == 'ConnectivityResult.wifi'){
+setState(() {
+  isActive = true;
+});
+} else if(result.toString() == 'ConnectivityResult.none'){
+  setState(() {
+      isActive = false;
+});
+   
+       }
+       
+  });
     serviceProviderToken = widget.serviceProviderToken;
     _uid = widget.uid;
     _requestedSaloonService = widget.serviceOffered;
@@ -530,7 +552,7 @@ dispose(){
          
         ),
         body: Center(
-                child: ListView(
+                child: isActive ?  ListView(
                   children: <Widget>[
                     Center(
                       child: Padding(
@@ -762,8 +784,8 @@ Container(
                       ),
                     )
                   ],
-                ),
-              ),
+                )
+              : Center(child: Padding(child: Text('Check your internet connection'),padding: EdgeInsets.all(8.0),),)),
                   // I will be back 
         bottomNavigationBar:  StreamBuilder(builder:(context, request_canceler){
           if(!request_canceler.hasData){
