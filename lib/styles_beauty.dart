@@ -325,15 +325,16 @@ return  Padding(child:Padding(
         color: Colors.white,
         child: Row(
           children: <Widget>[
-            SizedBox(width: 8.0),
-            InkWell(child: Icon(FontAwesomeIcons.camera,
-                size: 20.0, color: Color(0xff203152)),onTap: (){
+            // SizedBox(width: 8.0),
+            InkWell(child: Container(child: Icon(FontAwesomeIcons.camera,
+                size: 20.0, color: Color(0xff203152)),
+                margin: EdgeInsets.only(left: 8.0,right: 8.0) ,),onTap: (){
          shouldPickImage();
                 },),
-            SizedBox(width: 8.0),
+            // SizedBox(width: 8.0),
             Expanded(
               child: TextField(
-                inputFormatters: [
+                inputFormatters:[
                   LengthLimitingTextInputFormatter(500)
                 ],
                 textCapitalization: TextCapitalization.sentences,
@@ -347,19 +348,20 @@ return  Padding(child:Padding(
                 ),
               ),
             ),
-            InkWell(child: Icon(FontAwesomeIcons.image,
-                size: 20.0, color: Color(0xff203152),),onTap: (){
+            InkWell(child: Container(child: Icon(FontAwesomeIcons.image,
+                size: 20.0, color: Color(0xff203152),),
+                margin: EdgeInsets.only(right: 8.0,left: 8.0),),onTap: (){
                   
                   shouldPickImageFull(context);
                 },),
-            SizedBox(width: 8.0),
+            // SizedBox(width: 8.0),
             // InkWell(
             //   onTap: (){
             //      shouldPickVideo();
             //   },
             //   child: Icon(FontAwesomeIcons.video,
             //     size: 20.0, color: Color(0xff203152)),),
-            SizedBox(width: 8.0),
+            // SizedBox(width: 8.0),
           ],
         ),
       ),
