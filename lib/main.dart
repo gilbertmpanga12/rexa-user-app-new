@@ -100,111 +100,92 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp>  { // with WidgetsBindingObserver
   // AppLifecycleState _lastLifecycleState;
 
-  final bool x = true;
-  String uid;
-  StreamSubscription<ConnectivityResult> subscription;
-  allowPhone() async{
-  await PermissionHandler().checkPermissionStatus(PermissionGroup.contacts);  
-  // await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
-  await PermissionHandler().checkPermissionStatus(PermissionGroup.location);
-  await PermissionHandler().requestPermissions([PermissionGroup.contacts]);
-  }
+//   final bool x = true;
+//   String uid;
+//   StreamSubscription<ConnectivityResult> subscription;
+//   allowPhone() async{
+//   await PermissionHandler().checkPermissionStatus(PermissionGroup.contacts);  
+//   // await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+//   await PermissionHandler().checkPermissionStatus(PermissionGroup.location);
+//   await PermissionHandler().requestPermissions([PermissionGroup.contacts]);
+//   }
   
-setRateCount() async{
-SharedPreferences prefs =  await SharedPreferences.getInstance();
-Firestore.instance.collection('users').document(prefs.getString('uid'))
-.setData({
-  'ratingCount' : 1
-}, merge: true).then((onValue){
-  print('Rating done');
-});
-  }
-
-  setStatusOff(String status) async {
-  SharedPreferences prefs =  await SharedPreferences.getInstance();
-  
-  await Firestore.instance.collection('users').document(prefs.getString('uid'))
-.setData({
-  'current_status' : status
-}, merge: true);
-  }
-
-  setTvCount() async {
-    SharedPreferences prefs =  await SharedPreferences.getInstance();
-Firestore.instance.collection('users').document(prefs.getString('uid'))
-.setData({
-  'tvCount' : FieldValue.increment(1)
-}, merge: true).then((onValue){
-  print('Styles done');
-});
-  }
-
-checkUserStatus() async {
-  DateTime now = DateTime.now();
-  SharedPreferences prefs =  await SharedPreferences.getInstance();
-   subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-     if(result.toString() == 'ConnectivityResult.none'){
-       setStatusOff('at ${now.hour}:${now.minute}');
-     }else if(result.toString() == 'ConnectivityResult.mobile'){
-       setStatusOff('Online');
-     }else if(result.toString() == 'ConnectivityResult.wifi'){
-       setStatusOff('Online');
-     }
-   });
-}
-@override
-  initState(){
-    
-    // WidgetsBinding.instance.addObserver(this);
-
-    allowPhone();
-    
-
-
-
-OneSignal.shared.setNotificationReceivedHandler((OSNotification result) {
-  if(result.payload.rawPayload['title'].toString().contains('Rate')){
-  // linkerService.linkerListener.add({'type':'rating', 'count': 1});
-  setRateCount();
-  } else if(result.payload.rawPayload['title'].toString().contains('shared a new style')){
-  // linkerService.linkerListener.add({'type':'tv', 'count': 1});
-   setTvCount();
-  }else if(result.payload.additionalData['type'] == 'new-videos'){
-  setTvCount();
-  }
-
-});
-checkUserStatus();
-// lastSeen();
-super.initState();
-  }
-  
-@override
-dispose(){
-  subscription.cancel();
-  //  WidgetsBinding.instance.removeObserver(this);
-  super.dispose();
-
-}
-
-// @override
-//   void didChangeAppLifecycleState(AppLifecycleState state) {
-//     setState(() {
-//       _lastLifecycleState = state;
-//     });
+// setRateCount() async{
+// SharedPreferences prefs =  await SharedPreferences.getInstance();
+// Firestore.instance.collection('users').document(prefs.getString('uid'))
+// .setData({
+//   'ratingCount' : 1
+// }, merge: true).then((onValue){
+//   print('Rating done');
+// });
 //   }
 
-  // lastSeen() async{
-  //   print('am fired wet');
-  //   if (_lastLifecycleState == null){
-  //     print('This widget has not observed any lifecycle changes.');
-  //   }else{
-  //     print('The most recent lifecycle state this widget observed was: $_lastLifecycleState.');
-  //   }
- 
-  // }
+//   setStatusOff(String status) async {
+//   SharedPreferences prefs =  await SharedPreferences.getInstance();
   
+//   await Firestore.instance.collection('users').document(prefs.getString('uid'))
+// .setData({
+//   'current_status' : status
+// }, merge: true);
+//   }
 
+//   setTvCount() async {
+//     SharedPreferences prefs =  await SharedPreferences.getInstance();
+// Firestore.instance.collection('users').document(prefs.getString('uid'))
+// .setData({
+//   'tvCount' : FieldValue.increment(1)
+// }, merge: true).then((onValue){
+//   print('Styles done');
+// });
+//   }
+
+// checkUserStatus() async {
+//   DateTime now = DateTime.now();
+//   SharedPreferences prefs =  await SharedPreferences.getInstance();
+//    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+//      if(result.toString() == 'ConnectivityResult.none'){
+//        setStatusOff('at ${now.hour}:${now.minute}');
+//      }else if(result.toString() == 'ConnectivityResult.mobile'){
+//        setStatusOff('Online');
+//      }else if(result.toString() == 'ConnectivityResult.wifi'){
+//        setStatusOff('Online');
+//      }
+//    });
+// }
+// @override
+//   initState(){
+    
+//     // WidgetsBinding.instance.addObserver(this);
+
+//     allowPhone();
+    
+
+
+
+// OneSignal.shared.setNotificationReceivedHandler((OSNotification result) {
+//   if(result.payload.rawPayload['title'].toString().contains('Rate')){
+//   // linkerService.linkerListener.add({'type':'rating', 'count': 1});
+//   setRateCount();
+//   } else if(result.payload.rawPayload['title'].toString().contains('shared a new style')){
+//   // linkerService.linkerListener.add({'type':'tv', 'count': 1});
+//    setTvCount();
+//   }else if(result.payload.additionalData['type'] == 'new-videos'){
+//   setTvCount();
+//   }
+
+// });
+// checkUserStatus();
+// // lastSeen();
+// super.initState();
+//   }
+  
+// @override
+// dispose(){
+//   subscription.cancel();
+//   //  WidgetsBinding.instance.removeObserver(this);
+//   super.dispose();
+
+// }
   
   Widget build(BuildContext context) {
     return MaterialApp(
