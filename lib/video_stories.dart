@@ -115,14 +115,7 @@ void _settingModalBottomSheet(context) {
             textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
             SizedBox(height: 78.0,),
             // ListView.builder(itemBuilder: (BuildContext),) inputBar()
-             inputBar()
-
-          ],);
-        });
-  }
-
-  Widget inputBar(){
-return  Padding(child:Padding(
+           Padding(child:Padding(
       padding: EdgeInsets.all(8.0),
       child: Row(
         children: <Widget>[
@@ -154,12 +147,12 @@ return  Padding(child:Padding(
             ),
             InkWell(child: Icon(FontAwesomeIcons.image,
                 size: 20.0, color: Color(0xff203152),),onTap: (){
-                  shouldFromCamera();
+                  shouldFromCamera(context);
                 },),
             SizedBox(width: 8.0),
             InkWell(
               onTap: (){
-                 shouldPickVideo();
+                 shouldPickVideo(context);
               },
               child: Icon(FontAwesomeIcons.video,
                 size: 20.0, color: Color(0xff203152)),),
@@ -183,36 +176,39 @@ return  Padding(child:Padding(
         ],
       ),
     ),          padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom));
+                        bottom: MediaQuery.of(context).viewInsets.bottom))
+
+          ],);
+        });
+  }
+
+  Widget inputBar(){
+return  null;
     } 
 
-   shouldPickVideo() async {
+   shouldPickVideo(BuildContext context) async {
+      FocusScope.of(context).unfocus(focusPrevious: true);
     ImagePicker.pickVideo(source: ImageSource.gallery).then((image) {
       if(image == null){
       return;
       }
-      setState(() {
-        fileToBeUploaded = image;
-      });
+     fileToBeUploaded = image;
     });
   }
 
-shouldFromCamera() async{
+shouldFromCamera(BuildContext context) async{
+   FocusScope.of(context).unfocus(focusPrevious: true);
   ImagePicker.pickVideo(source: ImageSource.camera).then((image) {
       if(image == null){
       return;
       }
-      setState(() {
-        fileToBeUploaded = image;
-      });
+     fileToBeUploaded = image;
     });
 }
 
 postImage(File image) async {
     // final url = randomAlpha(10);
-    setState(() {
-      controller.text.isEmpty ? isTextValid = true : isTextValid = false;
-    });
+     controller.text.isEmpty ? isTextValid = true : isTextValid = false;
     if(isTextValid){
       return;
     }
