@@ -589,7 +589,7 @@ return '';
                 },),
                 InkWell(child: 
                 controlStream(docID: '${widget.docID}',uid: '${widget.uid}'), onTap: (){
-                  print('I get run ass');
+                
                  try{
                   Firestore.instance.collection('users')
                 .document('${widget.uid}').collection('likes')

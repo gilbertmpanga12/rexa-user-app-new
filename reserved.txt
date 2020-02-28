@@ -939,12 +939,60 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                                                               .spaceBetween,
                                                       children: <Widget>[
                                                        // Terminator
-                                                        IconButton(
+                                                        StreamBuilder(builder: (context, snap){
+                                                          if(snap.hasError){
+                                                            return IconButton(
                                                                 icon: Icon(
                                                                   Icons
                                                                       .favorite,
                                                                   color: Colors
-                                                                      .red,
+                                                                      .white,
+                                                                ), onPressed: (){
+                                                                  try{
+                  Firestore.instance.collection('users')
+                .document(myPhoneNumber).collection('likes_stories')
+                .document(snapshot.data.documents[index]['userId']).get().then((onValue){
+                  if(onValue.exists && onValue.data['likes'] == 1){
+                      Firestore.instance.collection('users')
+                        .document(myPhoneNumber).collection('likes_stories')
+                        .document(snapshot.data.documents[index]['userId']).setData({'likes': 0},merge: true)
+                        .then((removeCount){
+                          Firestore.instance.collection('userService')
+                .document(snapshot.data.documents[index]['doc_id']).get().then((likesDecrement){
+                  Firestore.instance.collection('userService')
+                .document(snapshot.data.documents[index]['doc_id']).setData({'likes': likesDecrement.data['likes'] - 1},merge: true).then((isDone){
+                  print('is done');
+                });
+                });
+                        });
+                  }else{
+                    // print('I am running else');
+                    Firestore.instance.collection('userService')
+                        .document(snapshot.data.documents[index]['doc_id']).get().then((likeVal){
+                          Firestore.instance.collection('userService')
+                        .document(snapshot.data.documents[index]['doc_id']).setData({'likes': likeVal.data['likes'] + 1},merge: true).then((onValue){
+                      Firestore.instance.collection('users')
+                        .document(myPhoneNumber).collection('likes_stories')
+                        .document(snapshot.data.documents[index]['userId']).setData({'likes': 1},merge: true);
+                        }).then((isDone){
+                          print('doneZZZZZ');
+                        });
+                        });
+                        
+                  }
+                });
+                  }catch(err){
+                  print('HONCHO');
+               
+                  }
+                                                                });
+                                                          }else{
+                                                            return IconButton(
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .favorite,
+                                                                  color: snap.data['likes'] > 0  ? Colors
+                                                                      .red: Colors.white,
                                                                 ),
                                                                 onPressed: () {
                                                                   // to be back
@@ -985,7 +1033,14 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                   print('HONCHO');
                
                   }
-                                                                })
+                                                                });
+                                                          }
+                                                        },stream: Firestore.
+                                                        instance.collection('users')
+                                                        .document(myPhoneNumber)
+                                                        .collection('likes_stories')
+                                                        .document(snapshot.data.documents[index]
+                                                        ['userId']).snapshots())
                                                       ]),
                                                       IconButton(icon: Icon(Icons.visibility),onPressed: (){
                                                         /// navigation goes here 
