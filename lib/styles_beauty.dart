@@ -256,15 +256,17 @@ headers: {HttpHeaders.authorizationHeader: "Basic OThhY2RlNTEtZTE5YS00Y2E2LWE3NW
 }
 
   shouldPickImage() async {
+    FocusScope.of(context).unfocus(focusPrevious: true);
     ImagePicker.pickImage(source: ImageSource.camera).then((image) {
       if(image == null){
       return;
       } 
-      setState(() {
          checkIfVideo = false;
         _beautyPhoto = image;
         fileToBeUploaded = image;
-      });
+      // setState(() {
+        
+      // });
     }).catchError((err) {
       print(err);
     });
@@ -293,17 +295,16 @@ stringChopper(String word) {
 
 
 
-shouldPickImageFull() async {
+shouldPickImageFull(BuildContext context) async {
+FocusScope.of(context).unfocus(focusPrevious: true);
 ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
       if(image == null){
       return;
       } 
       print('state of image ${controller.text}');
-      setState(() {
          checkIfVideo = false;
         _beautyPhoto = image;
         fileToBeUploaded = image;
-      });
     }).catchError((err) {
       print(err);
     });
@@ -327,12 +328,11 @@ return  Padding(child:Padding(
             SizedBox(width: 8.0),
             InkWell(child: Icon(FontAwesomeIcons.camera,
                 size: 20.0, color: Color(0xff203152)),onTap: (){
-                  shouldPickImage();
+         shouldPickImage();
                 },),
             SizedBox(width: 8.0),
             Expanded(
               child: TextField(
-
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(500)
                 ],
@@ -349,7 +349,8 @@ return  Padding(child:Padding(
             ),
             InkWell(child: Icon(FontAwesomeIcons.image,
                 size: 20.0, color: Color(0xff203152),),onTap: (){
-                  shouldPickImageFull();
+                  
+                  shouldPickImageFull(context);
                 },),
             SizedBox(width: 8.0),
             // InkWell(
@@ -369,7 +370,7 @@ return  Padding(child:Padding(
           ),
           GestureDetector(
             onTap: () {
-              postImage(fileToBeUploaded, checkIfVideo);
+             postImage(fileToBeUploaded, checkIfVideo);
             },
             child: CircleAvatar(
               child: Icon(FontAwesomeIcons.paperPlane),
@@ -412,7 +413,83 @@ return  Padding(child:Padding(
             textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
             SizedBox(height: 78.0,),
             // ListView.builder(itemBuilder: (BuildContext),) inputBar()
-             inputBar()
+           //  FocusScope.of(context).unfocus(focusPrevious: true);
+            Padding(child:Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: Container(
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            SizedBox(width: 8.0),
+            InkWell(child: Icon(FontAwesomeIcons.camera,
+                size: 20.0, color: Color(0xff203152)),onTap: (){
+                  ImagePicker.pickImage(source: ImageSource.camera).then((image) {
+      if(image == null){
+      return;
+      } 
+      setState(() {
+         checkIfVideo = false;
+        _beautyPhoto = image;
+        fileToBeUploaded = image;
+      });
+    }).catchError((err) {
+      print(err);
+    });
+                },),
+            SizedBox(width: 8.0),
+            Expanded(
+              child: TextField(
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(500)
+                ],
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.multiline,
+                 maxLines: null,
+                 controller: controller,
+                decoration: InputDecoration(
+                  errorText: isTextValid ? 'Storie Can\'t Be Blank' : null,
+                  hintText: 'Type a message',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            InkWell(child: Icon(FontAwesomeIcons.image,
+                size: 20.0, color: Color(0xff203152),),onTap: (){
+                  shouldPickImageFull(context);
+                },),
+            SizedBox(width: 8.0),
+            // InkWell(
+            //   onTap: (){
+            //      shouldPickVideo();
+            //   },
+            //   child: Icon(FontAwesomeIcons.video,
+            //     size: 20.0, color: Color(0xff203152)),),
+            SizedBox(width: 8.0),
+          ],
+        ),
+      ),
+    ),
+          ),
+          SizedBox(
+            width: 5.0,
+          ),
+         InkWell(
+            onTap: () {
+             postImage(fileToBeUploaded, checkIfVideo);
+            },
+            child: CircleAvatar(
+              child: Icon(FontAwesomeIcons.paperPlane),
+            ),
+          ),
+        ],
+      ),
+    ),          padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom))
 
           ],);
         });
@@ -450,9 +527,14 @@ return  Padding(child:Padding(
 
   postImage(File image, bool isVideo) async {
     // final url = randomAlpha(10);
-    setState(() {
-      controller.text.isEmpty ? isTextValid = true : isTextValid = false;
-    });
+    // setState(() {
+     
+    // });
+     controller.text.isEmpty ? isTextValid = true : isTextValid = false;
+     print('check if checked ${controller.text.isEmpty} ${isTextValid}');
+     print(isTextValid);
+     print(controller.text);
+
     if(isTextValid){
       return;
     }
@@ -878,11 +960,9 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                                                                 icon: Icon(Icons
                                                                     .favorite_border),
                                                                 onPressed: () {
-                                                                  setState(() {
-                                                                    likes = 1;
+                                                                 likes = 1;
                                                                     _saved.add(
                                                                         index);
-                                                                  });
                                                                   likePhoto(snapshot
                                                                           .data
                                                                           .documents[
