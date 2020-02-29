@@ -805,48 +805,50 @@ Future<ui.Image> _getImage(String imageUrl) {
       Icon(FontAwesomeIcons.globeAfrica,
       color: Colors.grey[500],size: 13.0,)
                                         ]),),
-                                   _istoggled ? InkWell(
-                                     onTap: (){
-                                        setState(() {
-                                          _toggleText.remove(index);
-                                        });
-                                     },
-                                     child: Padding(child: Text(
-                                          '${snapshot.data.documents[index]['storyTitle']}',
-                                          style: TextStyle(
-                                            color: Color(0xFF404040),
-                                            letterSpacing: .2,
-                                            fontWeight: FontWeight.w100,
-                                              fontSize: 15.0,
-                                              fontFamily: 'Rukie'),
-                                        ),padding: EdgeInsets.only(top:1.0,left: 7.0),),): InkWell(
-                                          onTap: (){
-                                            // am coming back
-                                            setState(() {
-                                              _toggleText.add(index);
-                                            });
-                                          },
-                                          child: Padding(child: snapshot.data.documents[index]['storyTitle'].toString().length > 200 ?  RichText(
-  text: TextSpan(
-    text: '${snapshot.data.documents[index]['storyTitle'].toString().length > 200 ? snapshot.data.documents[index]['storyTitle'].toString().substring(0,200): snapshot.data.documents[index]['storyTitle']}',
-    style: TextStyle(color: Color(0xFF484848),
-                                            letterSpacing: .2,
-                                            fontWeight: FontWeight.w100,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Rukie',height: 1.2),
-    children: <TextSpan>[
-      TextSpan(text: ' Read more...', style: TextStyle(fontWeight: FontWeight.w100,color: Color(0xFF484848)))
-    ],
-  ),
-) : Text(
-                                          '${snapshot.data.documents[index]['storyTitle']}',
-                                          style: TextStyle(
-                                           color: Color(0xFF484848),
-                                            letterSpacing: .2,
-                                            fontWeight: FontWeight.w100,
-                                              fontSize: 15.0,
-                                              fontFamily: 'Rukie'),
-                                        ),padding: EdgeInsets.only(top:1.0,left: 7.0),),)
+                                   // TO BE BACK
+//                                    _istoggled ? InkWell(
+//                                      onTap: (){
+//                                         setState(() {
+//                                           _toggleText.remove(index);
+//                                         });
+//                                      },
+//                                      child: Padding(child: Text(
+//                                           '${snapshot.data.documents[index]['storyTitle']}',
+//                                           style: TextStyle(
+//                                             color: Color(0xFF404040),
+//                                             letterSpacing: .2,
+//                                             fontWeight: FontWeight.w100,
+//                                               fontSize: 15.0,
+//                                               fontFamily: 'Rukie'),
+//                                         ),padding: EdgeInsets.only(top:1.0,left: 7.0),),): InkWell(
+//                                           onTap: (){
+//                                             setState(() {
+//                                               _toggleText.add(index);
+//                                             });
+//                                           },
+//                                           child: Padding(child: snapshot.data.documents[index]['storyTitle'].toString().length > 200 ?  RichText(
+//   text: TextSpan(
+//     text: '${snapshot.data.documents[index]['storyTitle'].toString().length > 200 ? snapshot.data.documents[index]['storyTitle'].toString().substring(0,200): snapshot.data.documents[index]['storyTitle']}',
+//     style: TextStyle(color: Color(0xFF484848),
+//                                             letterSpacing: .2,
+//                                             fontWeight: FontWeight.w100,
+//                                               fontSize: 14.0,
+//                                               fontFamily: 'Rukie',height: 1.2),
+//     children: <TextSpan>[
+//       TextSpan(text: ' Read more...', style: TextStyle(fontWeight: FontWeight.w100,color: Color(0xFF484848)))
+//     ],
+//   ),
+// ) : Text(
+//                                           '${snapshot.data.documents[index]['storyTitle']}',
+//                                           style: TextStyle(
+//                                            color: Color(0xFF484848),
+//                                             letterSpacing: .2,
+//                                             fontWeight: FontWeight.w100,
+//                                               fontSize: 15.0,
+//                                               fontFamily: 'Rukie'),
+//                                         ),padding: EdgeInsets.only(top:1.0,left: 7.0),),)
+
+DescriptionTextWidget(text: '${snapshot.data.documents[index]['storyTitle']}',)
                                       ],
                                     ),
 
@@ -1117,5 +1119,108 @@ Text('${snapshot.data.documents[index]['commenter_name']}',style: TextStyle(font
             Navigator.popAndPushNamed(context, '/home'); // riskingi
             return Future.value(false);
           },);
+  }
+}
+
+
+class ExpandableText extends StatefulWidget {
+  ExpandableText(this.text);
+
+  final String text;
+  bool isExpanded = false;
+
+  @override
+  _ExpandableTextState createState() => new _ExpandableTextState();
+}
+
+class _ExpandableTextState extends State<ExpandableText>
+    with TickerProviderStateMixin<ExpandableText> {
+
+      @override
+      void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return new Column(children: <Widget>[
+      new AnimatedSize(
+          vsync: this,
+          duration: const Duration(milliseconds: 500),
+          child: new ConstrainedBox(
+              constraints: widget.isExpanded
+                  ? new BoxConstraints()
+                  : new BoxConstraints(maxHeight: 50.0),
+              child: new Text(
+                widget.text,
+                softWrap: true,
+                overflow: TextOverflow.fade,
+              ))),
+      widget.isExpanded
+          ? new ConstrainedBox(constraints: new BoxConstraints())
+          : new FlatButton(
+          child: const Text('...'),
+          onPressed: () => setState(() => widget.isExpanded = true))
+    ]);
+  }
+}
+
+
+class DescriptionTextWidget extends StatefulWidget {
+  final String text;
+
+  DescriptionTextWidget({@required this.text});
+
+  @override
+  _DescriptionTextWidgetState createState() => new _DescriptionTextWidgetState();
+}
+
+class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
+  String firstHalf;
+  String secondHalf;
+
+  bool flag = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.text.length > 50) {
+      firstHalf = widget.text.substring(0, 50);
+      secondHalf = widget.text.substring(50, widget.text.length);
+    } else {
+      firstHalf = widget.text;
+      secondHalf = "";
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      padding: new EdgeInsets.symmetric(horizontal: 3.0, vertical: 3.0),
+      child: secondHalf.isEmpty
+          ? new Text(firstHalf)
+          : new Column(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(flag ? (firstHalf + "...") : (firstHalf + secondHalf)),
+                new InkWell(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new Text(
+                        flag ? "Read more" : "show less",
+                        style: new TextStyle(color: Colors.blue),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    setState(() {
+                      flag = !flag;
+                    });
+                  },
+                ),
+              ],
+            ),
+    );
   }
 }
