@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import './swiper.dart';
+// import './swiper.dart' as swiper;
 class CommentsWid extends StatefulWidget {
   final String uid;
   final String docId;
@@ -263,8 +264,8 @@ controller: myController,
           ],) ,
           key: _formKey,
         )),onWillPop: () async{
-        Navigator.push(context, MaterialPageRoute(builder: (context) => StylesBeautyWidget()));
-      // controller.animateToPage(2, curve: null,duration: Duration(milliseconds: 2));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  VideoStories()));
+        // swiper.controllerPageView.jumpToPage(2);
       return Future.value(false);
         },);
   }

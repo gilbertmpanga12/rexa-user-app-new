@@ -15,6 +15,7 @@ import 'audiospinner.dart';
 import 'comments.dart';
 import 'dimen.dart';
 import 'notice_bar.dart';
+import './swiper.dart' as swiper;
 
 class VideoStoriesByUser extends StatefulWidget {
   final String userId;
@@ -120,6 +121,7 @@ Widget byUserHeader() {
       _videoStoriesByUser(context),byUserHeader()],)
       ),onWillPop: () async{
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  VideoStories()));
+        // swiper.controllerPageView.jumpToPage(2);
         return Future.value(false);
       },);
   }

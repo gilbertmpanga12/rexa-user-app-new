@@ -327,6 +327,10 @@ controller.clear();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(child: new Scaffold(
+      // appBar: AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? BackButton(color: Colors.white,onPressed: () async{
+      //   Navigator.of(context).pop();
+      //   swiper.controllerPageView.jumpToPage(0);
+      // },): SizedBox.shrink(),backgroundColor: Colors.transparent,),
       backgroundColor: Colors.black,
       body: Stack(children: <Widget>[
       _videoStories(context),homeHeader()],),
