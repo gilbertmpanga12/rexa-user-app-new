@@ -356,15 +356,11 @@ if (response.statusCode == 200 || response.statusCode == 201) {
                 hintText: 'Mobile Number',
                 // border: OutlineInputBorder()
                 )
-        ),padding: EdgeInsets.only(left: 18.0,right:18.0),)
-
-                ],
-              ),
-            )
-          ],
-        )
-        ],) : isBooked == false ? Center(child: Text('Please request for a service and rate after'),) : Center(child: CircularProgressIndicator(),),
-        bottomNavigationBar: isBooked ? FlatButton(
+        ),padding: EdgeInsets.only(left: 18.0,right:18.0),),
+      Container(
+        margin: EdgeInsets.only(top: 10.0),
+        child: FlatButton(
+        
           onPressed: () {
             makeServiceRequest(_rateCommentCtrl.text);
           },
@@ -382,7 +378,15 @@ if (response.statusCode == 200 || response.statusCode == 201) {
             padding: EdgeInsets.only(top: 11.0, bottom: 11.0),
           ),
           color: Colors.blueAccent,
-        ): Container(child: Text(''),),
+        ),width: 300,)
+
+                ],
+              ),
+            )
+          ],
+        )
+        ],) : isBooked == false ? Center(child: Text('Please request for a service and rate after'),) : Center(child: CircularProgressIndicator(),),
+        // bottomNavigationBar: isBooked ? ,
         backgroundColor: Colors.white),onWillPop: (){
             Navigator.push(
             context, MaterialPageRoute(builder: (context) => Swiper()));
