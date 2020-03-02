@@ -848,7 +848,9 @@ Future<ui.Image> _getImage(String imageUrl) {
 //                                               fontFamily: 'Rukie'),
 //                                         ),padding: EdgeInsets.only(top:1.0,left: 7.0),),)
 
-DescriptionTextWidget(text: '${snapshot.data.documents[index]['storyTitle']}',)
+DescriptionTextWidget(text: '${snapshot.data.documents[index]['storyTitle']}',index: index,)
+
+
                                       ],
                                     ),
 
@@ -1168,8 +1170,8 @@ class _ExpandableTextState extends State<ExpandableText>
 
 class DescriptionTextWidget extends StatefulWidget {
   final String text;
-
-  DescriptionTextWidget({@required this.text});
+  final int index;
+  DescriptionTextWidget({@required this.text, @required this.index});
 
   @override
   _DescriptionTextWidgetState createState() => new _DescriptionTextWidgetState();
@@ -1178,12 +1180,18 @@ class DescriptionTextWidget extends StatefulWidget {
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
   String firstHalf;
   String secondHalf;
-
+  Set _toggleText = Set();
+  // Set _saved = Set();
+  // bool _isAlreadySaved;
+  // bool _istoggled;
   bool flag = true;
 
   @override
   void initState() {
+    
     super.initState();
+  // _isAlreadySaved = _saved.contains(widget.index);
+  // _istoggled =  _toggleText.contains(widget.index);
 
     if (widget.text.length > 50) {
       firstHalf = widget.text.substring(0, 50);
@@ -1196,31 +1204,47 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      padding: new EdgeInsets.symmetric(horizontal: 3.0, vertical: 3.0),
-      child: secondHalf.isEmpty
-          ? new Text(firstHalf)
-          : new Column(mainAxisAlignment: MainAxisAlignment.start,crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text(flag ? (firstHalf + "...") : (firstHalf + secondHalf)),
-                new InkWell(
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      new Text(
-                        flag ? "Read more" : "show less",
-                        style: new TextStyle(color: Colors.blue),
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    setState(() {
-                      flag = !flag;
-                    });
-                  },
-                ),
-              ],
-            ),
-    );
+                         return       _toggleText.contains(widget.index) ? InkWell(
+                                     onTap: (){
+                                        setState(() {
+                                          _toggleText.remove(widget.index);
+                                        });
+                                     },
+                                     child: Padding(child: Text(
+                                          '${widget.text}',
+                                          style: TextStyle(
+                                            color: Color(0xFF404040),
+                                            letterSpacing: .2,
+                                            fontWeight: FontWeight.w100,
+                                              fontSize: 15.0,
+                                              fontFamily: 'Rukie'),
+                                        ),padding: EdgeInsets.only(top:1.0,left: 7.0),),): InkWell(
+                                          onTap: (){
+                                             
+                                            setState(() {
+                                              _toggleText.add(widget.index);
+                                            });
+                                          },
+                                          child: Padding(child: widget.text.toString().length > 200 ?  RichText(
+  text: TextSpan(
+    text: '${widget.text.toString().toString().length > 200 ? widget.text.toString().toString().substring(0,200): widget.text}',
+    style: TextStyle(color: Color(0xFF484848),
+                                            letterSpacing: .2,
+                                            fontWeight: FontWeight.w100,
+                                              fontSize: 14.0,
+                                              fontFamily: 'Rukie',height: 1.2),
+    children: <TextSpan>[
+      TextSpan(text: ' Read more...', style: TextStyle(fontWeight: FontWeight.w100,color: Color(0xFF484848)))
+    ],
+  ),
+) : Text(
+                                          '${widget.text}',
+                                          style: TextStyle(
+                                           color: Color(0xFF484848),
+                                            letterSpacing: .2,
+                                            fontWeight: FontWeight.w100,
+                                              fontSize: 15.0,
+                                              fontFamily: 'Rukie'),
+                                        ),padding: EdgeInsets.only(top:1.0,left: 7.0),),);
   }
 }
