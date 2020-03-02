@@ -3,6 +3,7 @@ import 'dart:io';
 import './orderpage.dart';
 import './spinner_animation.dart';
 import './swiper.dart';
+import './swiper.dart' as swiper;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,9 +38,11 @@ bool isTextValid = false;
 File fileToBeUploaded;
 String uid;
 String countryCode = 'UG';
+
 @override
 initState(){
   super.initState();
+  
   _getPhoneNumber();
 }
 
@@ -99,6 +102,10 @@ _getPhoneNumber() async{
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(child: Scaffold(
+      appBar: AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? BackButton(color: Colors.white,onPressed: () async{
+        Navigator.of(context).pop();
+        swiper.controllerPageView.jumpToPage(0);
+      },): SizedBox.shrink(),backgroundColor: Colors.transparent,),
       backgroundColor: Colors.black,
       body: Stack(children: <Widget>[
       VideoPageWidget(context)],),
