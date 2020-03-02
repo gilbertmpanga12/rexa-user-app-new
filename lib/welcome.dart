@@ -329,34 +329,34 @@ keyboardType: TextInputType.datetime,
                  
                
                   _buildLocationField(),
+                   Container(
+        margin: EdgeInsets.only(top: 30.0,bottom: 10),
+        child: FlatButton(
+        
+          onPressed: () {
+        _submitForm();
+          },
+          child: Padding(
+            child: Text(
+              'Finish',
+              style: TextStyle(
+                 fontFamily: 'NunitoSans',
+                  color: Colors.white,
+                  letterSpacing: .5,
+                  fontSize: 27.0,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
+            padding: EdgeInsets.only(top: 11.0, bottom: 11.0),
+          ),
+          color: Colors.blueAccent,
+        ),width: 300,)
                 ],);
               },
             ),
           ),
         ),
-        bottomNavigationBar: FlatButton(
-            onPressed: () {
-              _submitForm();
-            },
-            child: Padding(
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    DemoLocalizations.of(context).finish,
-                    style: TextStyle(
-                      letterSpacing: .5,
-                      fontFamily: 'NunitoSans',
-                        color: Colors.white,
-                        fontSize: 27.0,
-                        fontWeight: FontWeight.w600),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-                mainAxisAlignment: MainAxisAlignment.center,
-              ),
-              padding: EdgeInsets.only(top: 11.0, bottom: 11.0),
-            ),
-            color: Colors.blue[600]),
+     
       ),
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());

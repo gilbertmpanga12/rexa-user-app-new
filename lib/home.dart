@@ -85,13 +85,13 @@ Navigator.push(context, MaterialPageRoute(builder: (context) {
             return snapshot.data.documents.length >= 0 ? ListView.separated(
               itemBuilder: (context, index){
                 return  Padding(
-                    padding: EdgeInsets.only(top: 11.0,bottom: 11.0),
+                    padding: EdgeInsets.only(top: 6.0,bottom: 6.0),
                     child: ListTile(onTap: (){
           _newTaskModalBottomSheet(context,'${snapshot.data.documents[index]['categoryName']}');
           },
                   trailing: Icon(Icons.keyboard_arrow_right),
                   title: new Text('${snapshot.data.documents[index]['categoryName']}',style:TextStyle(
-                                fontSize: 23.0,
+                                fontSize: 20.0,
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w500,fontFamily: 'NunitoSans'),textAlign: TextAlign.left,) 
                   // subtitle: new Text(document['author']),

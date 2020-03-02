@@ -68,26 +68,33 @@ These Services do not address anyone under the age of 13. we do not knowingly co
             children: <Widget>[
               Padding(child: Text('Terms and Conditiions',style: TextStyle(fontSize: 19.5),),padding: EdgeInsets.all(26.0),),
 //            SizedBox(height: 60.0,),
-              Padding(child: Text('$terms'),padding: EdgeInsets.all(20.0),)
+              Padding(child: Text('$terms'),padding: EdgeInsets.only(left: 20.0,right: 20.0,top: 20.0,bottom: 8),),
+               Container(
+        margin: EdgeInsets.only(top: 3.0,bottom: 10),
+        child: FlatButton(
+        
+          onPressed: () {
+         Navigator.pushReplacementNamed(context, '/welcome');
+          },
+          child: Padding(
+            child: Text(
+              'I Accept',
+              style: TextStyle(
+                 fontFamily: 'NunitoSans',
+                  color: Colors.white,
+                  letterSpacing: .5,
+                  fontSize: 27.0,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
+            padding: EdgeInsets.only(top: 11.0, bottom: 11.0),
+          ),
+          color: Colors.blueAccent,
+        ),width: 300,)
             ],
           )
         ],),
-        bottomNavigationBar: FlatButton(onPressed: (){
-          Navigator.pushReplacementNamed(context, '/welcome');
-        }, child: Padding(child: Row(
-          children: <Widget>[
-            Text('I Accept',
-              style: TextStyle(letterSpacing: .5,
-                      fontFamily: 'Roboto',
-                        color: Colors.white,
-                        fontSize: 27.0,
-                        fontWeight: FontWeight.w600),textAlign: TextAlign.center),
- 
-          ],
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
-          padding: EdgeInsets.only(top:11.0,bottom: 11.0),),color: Colors.blue[600]
-        )
+       
     ),onWillPop: (){
       SystemNavigator.pop();
     },);
