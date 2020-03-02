@@ -7,7 +7,7 @@ import 'dimen.dart';
 
 Widget homeHeader(BuildContext context) {
   return Container(
-    margin: EdgeInsets.only(top: 40),
+    margin: EdgeInsets.only(top: 50),
     height: Dimen.headerHeight,
     child: Stack(children: <Widget>[
       Theme.of(context).platform == TargetPlatform.iOS ? Positioned(child: BackButton(color: Colors.white,onPressed: () async{

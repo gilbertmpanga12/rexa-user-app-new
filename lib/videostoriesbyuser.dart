@@ -82,13 +82,18 @@ _getPhoneNumber() async{
 
 Widget byUserHeader() {
   return Container(
-    margin: EdgeInsets.only(top: 40),
+    margin: EdgeInsets.only(top: 50),
     height: Dimen.headerHeight,
-    child: Row(
+    child: Stack(children: <Widget>[
+      Theme.of(context).platform == TargetPlatform.iOS ? Positioned(child: BackButton(color: Colors.white,onPressed: () async{
+       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  StylesBeautyWidget()));
+      },),left: 10.0,top: -14.0): SizedBox.shrink(),
+      Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        
         Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Text(
@@ -109,7 +114,8 @@ Widget byUserHeader() {
                   fontWeight: FontWeight.w500)),
         )
       ],
-    ),
+    )
+    ],),
   );
 }
   
