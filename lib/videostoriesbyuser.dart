@@ -82,11 +82,11 @@ _getPhoneNumber() async{
 
 Widget byUserHeader() {
   return Container(
-    margin: EdgeInsets.only(top: 50),
+    margin: EdgeInsets.only(top: 55),
     height: Dimen.headerHeight,
     child: Stack(children: <Widget>[
       Theme.of(context).platform == TargetPlatform.iOS ? Positioned(child: BackButton(color: Colors.white,onPressed: () async{
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  StylesBeautyWidget()));
+       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  VideoStories()));
       },),left: 10.0,top: -14.0): SizedBox.shrink(),
       Row(
       mainAxisAlignment: MainAxisAlignment.center,

@@ -1,13 +1,11 @@
 import 'package:rexa/styles_beauty.dart';
-
 import './strings.dart';
 import 'package:flutter/material.dart';
-
 import 'dimen.dart';
 
 Widget homeHeader(BuildContext context) {
   return Container(
-    margin: EdgeInsets.only(top: 50),
+    margin: EdgeInsets.only(top: 55),
     height: Dimen.headerHeight,
     child: Stack(children: <Widget>[
       Theme.of(context).platform == TargetPlatform.iOS ? Positioned(child: BackButton(color: Colors.white,onPressed: () async{
