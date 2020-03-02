@@ -103,7 +103,7 @@ class PlaceholderWidState extends State<PlaceholderWid> {
         appBar: AppBar(
           title: Text(
             DemoLocalizations.of(context).history,
-     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 17),
+     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 20),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),

@@ -935,7 +935,7 @@ Toast.show('Oops shipping address  not available', context,backgroundColor: Colo
                     'Cancel Request',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 25.0,
+                        fontSize: 27.0,
                         fontWeight: FontWeight.w600,fontFamily: 'NunitoSans'),
                     textAlign: TextAlign.center,
                   ),

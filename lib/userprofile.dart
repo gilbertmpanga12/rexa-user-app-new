@@ -174,7 +174,7 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
             DemoLocalizations.of(context).profile,
             style: TextStyle(
               fontSize: 20.0,letterSpacing: .4,
-              color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w600),
+              color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w900),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
