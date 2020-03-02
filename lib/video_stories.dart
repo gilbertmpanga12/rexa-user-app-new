@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:rexa/strings.dart';
 import 'package:rexa/videostoriesbyuser.dart';
 
 import './spinner_animation.dart';
@@ -24,6 +25,7 @@ import 'comments.dart';
 import 'dimen.dart';
 import './home_header.dart';
 import 'notice_bar.dart';
+import './swiper.dart' as swipe;
 
 class VideoStories extends StatefulWidget {
   final String userId;
@@ -327,13 +329,10 @@ controller.clear();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(child: new Scaffold(
-      // appBar: AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? BackButton(color: Colors.white,onPressed: () async{
-      //   Navigator.of(context).pop();
-      //   swiper.controllerPageView.jumpToPage(0);
-      // },): SizedBox.shrink(),backgroundColor: Colors.transparent,),
+    
       backgroundColor: Colors.black,
       body: Stack(children: <Widget>[
-      _videoStories(context),homeHeader()],),
+      _videoStories(context), homeHeader(context)],),// ,homeHeader()
       floatingActionButton: FloatingActionButton(mini: true,
             onPressed: () {
                _settingModalBottomSheet(context);

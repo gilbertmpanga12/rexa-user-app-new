@@ -1,17 +1,24 @@
+import 'package:rexa/styles_beauty.dart';
+
 import './strings.dart';
 import 'package:flutter/material.dart';
 
 import 'dimen.dart';
 
-Widget homeHeader() {
+Widget homeHeader(BuildContext context) {
   return Container(
     margin: EdgeInsets.only(top: 40),
     height: Dimen.headerHeight,
-    child: Row(
+    child: Stack(children: <Widget>[
+      Theme.of(context).platform == TargetPlatform.iOS ? Positioned(child: BackButton(color: Colors.white,onPressed: () async{
+       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  StylesBeautyWidget()));
+      },),left: 10.0,top: -14.0): SizedBox.shrink(),
+      Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        
         Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Text(
@@ -32,6 +39,7 @@ Widget homeHeader() {
                   fontWeight: FontWeight.w500)),
         )
       ],
-    ),
+    )
+    ],),
   );
 }
