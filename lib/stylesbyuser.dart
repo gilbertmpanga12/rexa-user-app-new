@@ -552,8 +552,8 @@ print('failed to transcord image');
               'Stories by $_targetFullName',
               style: TextStyle(
                   color: Colors.black,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Merienda', fontSize: 17.0),
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'NunitoSans', fontSize: 20.0),
               textAlign: TextAlign.center,
             ),
             backgroundColor: Colors.white,
