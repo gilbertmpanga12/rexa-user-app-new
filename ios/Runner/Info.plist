@@ -43,6 +43,17 @@
 	<false/>
 	<key>UIStatusBarHidden</key>
 	<true/>
-
+<key>NSCameraUsageDescription</key>
+	<string>Access to Camera required</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This app requires contacts access to function properly.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is required for improved experience</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is required for improved experience</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Access to Micro phone required</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow access to Gallery</string>
 </dict>
 </plist>
