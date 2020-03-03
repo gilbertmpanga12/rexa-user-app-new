@@ -52,7 +52,7 @@ dependencies:
   flutter_webview_plugin: ^0.3.10+1
   google_sign_in: 
   connectivity: ^0.4.5+2
-  onesignal_flutter: ^2.2.0
+  onesignal_flutter: ^2.3.4
   path_provider: ^1.5.1
   dio: ^3.0.8
   file_utils: ^0.1.4
