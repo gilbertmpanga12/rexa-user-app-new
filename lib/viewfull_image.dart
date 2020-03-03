@@ -54,7 +54,7 @@ class ViewImageState extends State<ViewImage> {
           child: WatchVideo(isVideo: _isVideo ,photoUrl: imageUrl ,serviceName: ServiceName,)
         ),)
           ],
-        ) : PhotoView(imageProvider: NetworkImage('$imageUrl')), ) ;
+        ) : PhotoView(imageProvider: NetworkImage('$imageUrl'),), ) ;
   }
 }
 
