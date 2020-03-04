@@ -28,6 +28,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:file_utils/file_utils.dart';
 import 'dart:ui' as ui;
+import './swiper.dart' as swiper;
 
 class StylesBeauty {
   final String fullName;
@@ -674,6 +675,9 @@ Future<ui.Image> _getImage(String imageUrl) {
     // double deviceHeight = MediaQuery.of(context).size.height;
     return WillPopScope(child: SafeArea(child: Scaffold(
           appBar: AppBar(
+            leading: AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? BackButton(color: Colors.white,onPressed: () async{
+        Navigator.popAndPushNamed(context, '/home'); 
+      },): SizedBox.shrink(),backgroundColor: Colors.transparent,),
             title: Text(
               'Stories',
               style: TextStyle(
