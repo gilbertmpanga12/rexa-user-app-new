@@ -397,7 +397,7 @@ return  Padding(child:Padding(
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // /rate-style/:uid/:rating
     final response = await http.get(
-        'https://viking-250012.appspot.com/api/rate-style/${uid}/${likes}/${prefs.getString('uid')}');
+        'https://young-tor-95342.herokuapp.com/api/rate-style/${uid}/${likes}/${prefs.getString('uid')}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
 //      getStylesByUser();
@@ -410,7 +410,7 @@ return  Padding(child:Padding(
   unlikePhoto(uid) async {
     // /rate-style/:uid/:rating
     final response = await http.get(
-        'https://viking-250012.appspot.com/api/unrate-style/${uid}/${likes}');
+        'https://young-tor-95342.herokuapp.com/api/unrate-style/${uid}/${likes}');
     if (response.statusCode == 200 || response.statusCode == 201) {
 //      getStylesByUser();
       return resultsFetched;
@@ -492,7 +492,7 @@ return  Padding(child:Padding(
           'path': 'N/A'
         };
 
-        http.post('https://viking-250012.appspot.com/api/upload-feed',
+        http.post('https://young-tor-95342.herokuapp.com/api/upload-feed',
             body: json.encode(service),
             headers: {
               "accept": "application/json",

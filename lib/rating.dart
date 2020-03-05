@@ -100,7 +100,7 @@ class RatingState extends State<RatingWidget> {
    'ratingCount': 0
  },merge: true).then((onValue){
 http.post(
-        'https://viking-250012.appspot.com/api/rate-salon-provider',
+        'https://young-tor-95342.herokuapp.com/api/rate-salon-provider',
         body: _payload,
         headers: {
           "accept": "application/json",

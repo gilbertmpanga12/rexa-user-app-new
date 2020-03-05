@@ -358,7 +358,7 @@ refreshContacts() async {
   
     var _payload = json.encode({'contacts': allContacts, 'uid': uid});
     final response = await http.post(
-        'https://viking-250012.appspot.com/register-phone-contacts',
+        'https://young-tor-95342.herokuapp.com/register-phone-contacts',
         body: _payload,
         headers: {
           "accept": "application/json",

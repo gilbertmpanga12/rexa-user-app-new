@@ -79,7 +79,7 @@ class ItemViewerState extends State<ItemViewer> {
       _userId = prefs.getString('uid');
     });
     final response = await http.get(
-        'https://viking-250012.appspot.com/api/all-feeds/$_categoryType');
+        'https://young-tor-95342.herokuapp.com/api/all-feeds/$_categoryType');
     if (response.statusCode == 200 || response.statusCode == 201) {
       print(response.body);
       setState(() {

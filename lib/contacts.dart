@@ -348,9 +348,7 @@ print(err);
   fetchCategories() async {
     try {
       final response = await http.get(
-          'https://viking-250012.appspot.com/api/get-service-provider/$_uid');
-          print('My body***** ${response.statusCode}' );
-          print(response.body);
+          'https://young-tor-95342.herokuapp.com/api/get-service-provider/$_uid');
           
       if (response.statusCode == 200 || response.statusCode == 201) {
         fetchResults = ServiceProvider.fromJson(json.decode(response.body));
@@ -445,7 +443,7 @@ await OneSignal.shared.postNotificationWithJson({
     
    
     final response = await http.post(
-        'https://viking-250012.appspot.com/api/make-request',
+        'https://young-tor-95342.herokuapp.com/api/make-request',
         body: _payload,
         headers: {
           "accept": "application/json",

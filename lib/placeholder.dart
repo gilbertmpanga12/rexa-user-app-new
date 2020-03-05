@@ -35,10 +35,9 @@ class PlaceholderWidState extends State<PlaceholderWid> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try{
       final response = await http.get(
-          'https://viking-250012.appspot.com/api/get-user-history/${prefs.getString('uid')}');
+          'https://young-tor-95342.herokuapp.com/api/get-user-history/${prefs.getString('uid')}');
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('https://viking-250012.appspot.com/api/get-user-history/${prefs.getString('uid')}');
-        print(response.body);
+       
         setState(() {
           resultsFetched = (json.decode(response.body) as List)
               .map((data) => new History.fromJson(data))

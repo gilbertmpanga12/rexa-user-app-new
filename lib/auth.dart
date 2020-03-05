@@ -247,7 +247,7 @@ GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       }else{
 
     http.get(
-    'https://viking-250012.appspot.com/verify-user/${_phoneNumberController.text}/$_defaultCode').then((res){
+    'https://young-tor-95342.herokuapp.com/verify-user/${_phoneNumberController.text}/$_defaultCode').then((res){
      
       if(res.statusCode == 200 || res.statusCode == 201){
          if(mounted){
@@ -311,7 +311,7 @@ if(autoVerifier != null){
   }
    try{
      http.get(
-    'https://viking-250012.appspot.com/confirm-user/${_phoneNumberController.text}/$_defaultCode/${_smsController.text}/$fcm_token').then((res){
+    'https://young-tor-95342.herokuapp.com/confirm-user/${_phoneNumberController.text}/$_defaultCode/${_smsController.text}/$fcm_token').then((res){
       if(res.statusCode == 200 || res.statusCode == 201){
      if(mounted){
    setState(() {
