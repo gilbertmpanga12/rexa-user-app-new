@@ -65,6 +65,9 @@ Navigator.push(context, MaterialPageRoute(builder: (context) {
   Widget build(BuildContext context){
     return Scaffold(
         appBar: AppBar(
+          leading:  AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? BackButton(color: Colors.white,onPressed: () async{
+        Navigator.popAndPushNamed(context, '/home'); 
+      },): SizedBox.shrink(),backgroundColor: Colors.transparent,),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 1.0,
