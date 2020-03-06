@@ -61,8 +61,8 @@ print('');
         appBar: AppBar(
           title: Text(
             'Comments',
-            style: TextStyle(fontSize: 25.0,letterSpacing: .4,
-              color: Colors.black,fontFamily: 'Rukie',fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 20.0,
+              color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w600),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
@@ -71,7 +71,7 @@ print('');
         ),
         body: Form(
           child: Column(children: <Widget>[
-
+SizedBox(height: 10.5,),
             new Expanded(
               child: StreamBuilder(builder: (context,snapshot){
                 if(!snapshot.hasData){
@@ -83,13 +83,13 @@ print('');
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
 
-                      Row(
+                     Container(child:  Row(
                         children: <Widget>[
                            Padding(
                                           child: Container(
-                                            width: 44.5,
-                                            height: 44.5,
-                                            margin: EdgeInsets.only(top:1.8),
+                                            width: 30.5,
+                                            height: 30.5,
+                                            margin: EdgeInsets.only(top:0.8),
                                             decoration: new BoxDecoration(
                                               gradient: new LinearGradient(
                                                   colors: [
@@ -108,8 +108,9 @@ print('');
 
                                             ),
                                             child: Container(
-                                              width: 44.2,
-                                              height: 44.2,
+                                              width: 30.2,
+                                              height: 30.2,
+
                                               decoration: new BoxDecoration(
                                                 color: Colors.white,
                                                 image: new DecorationImage(
@@ -133,27 +134,27 @@ print('');
                                               right: 5.0,
                                               bottom: 1.0),
                                         ),
-                          Padding(child: Text('${snapshot.data.documents[index]['commenter_name']}',
-                            style: TextStyle(fontWeight: FontWeight.w900),),
-                            padding: EdgeInsets.all(2.0),
-                          )
+                          Text('${snapshot.data.documents[index]['commenter_name']}',
+                            style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Rukie'),)
                         ],
-                      ),
+                      ),height:30),
 
                        Padding(
                         child:    Container(
+                          
+                          margin: EdgeInsets.all(0),
                   child: Text(
                    '${snapshot.data.documents[index]['comment']}',
                     style: TextStyle(color: Color(0xff203152)),
                   ),
-                  padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                  padding: EdgeInsets.fromLTRB(10.0, 10.0, 15.0, 10.0),
                   width: 200.0,
                   decoration: BoxDecoration(color: Color(0xffE8E8E8), borderRadius: BorderRadius.circular(8.0)),
                 ),
-                        padding: EdgeInsets.only(left: 43.0,top: 5.0,bottom: 0),
+                        padding: EdgeInsets.only(left: 40.0,top: 5.0,bottom: 0),
 ),
                     
-                      SizedBox(height: 10.0,)
+                      SizedBox(height: 5.0,)
                     ],
                   );
                 }, itemCount: snapshot.data.documents.length,);
