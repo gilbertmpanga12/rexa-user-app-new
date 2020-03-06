@@ -493,31 +493,167 @@ Container(child: RaisedButton(color: Colors.blueAccent,
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
   // print('full width ${MediaQuery.of(context).size.width} and height is ${MediaQuery.of(context).size.height}');
-    return SafeArea(child: Scaffold(
-      // resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.white,
-      body: ListView.builder(itemCount: 1,
-      padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
-      itemBuilder: (BuildContext context, int index){
-        return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          
-           _verificationId  ?   buildSmsTitle() : buildDefaultTitle() ,
-
-          _verificationId  ? SizedBox.shrink() : buildDefaltSubTitle(),
-
-          SizedBox(height:  120.0,),
-       _verificationId  ?  buildConfirmForm() : buildVerifyForm()
-
-          
-        ],
-      );
-      }
-      ),
-    ),);
+    return WelcomePage(title: 'Rexa',);
     
   }
 
+}
+
+
+
+class WelcomePage extends StatefulWidget {
+  WelcomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _WelcomePageState createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  Widget _submitButton() {
+    return InkWell(
+      onTap: () {
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => LoginPage()));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 13),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Color(0xffffffff).withAlpha(100),
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: Colors.blueAccent),
+        child: Text(
+          'Sign Up',
+          style: TextStyle(fontSize: 21, color: Colors.white,fontWeight: FontWeight.w700,fontFamily: 'NunitoSans'),
+        ),
+      ),
+    );
+  }
+
+  Widget _signUpButton() {
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 7),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          border: Border.all(color: Colors.white, width: 2),
+        ),
+        child: Text(
+          'Get Started With Rexa',
+          style: TextStyle(fontSize: 20, color: Colors.black87, fontFamily: 'NunitoSans',fontWeight: FontWeight.w400),
+        ),
+      );
+  }
+
+  // Widget _label() {
+  //   return Container(
+  //       margin: EdgeInsets.only(top: 40, bottom: 20),
+  //       child: Column(
+  //         children: <Widget>[
+  //           Text(
+  //             'Quick login with Touch ID',
+  //             style: TextStyle(color: Colors.white, fontSize: 17),
+  //           ),
+  //           SizedBox(
+  //             height: 20,
+  //           ),
+  //           Icon(Icons.fingerprint, size: 90, color: Colors.white),
+  //           SizedBox(
+  //             height: 20,
+  //           ),
+            
+           
+  //           Text(
+  //             '©2019 elyfez Technologies. All rights reserved "Katumba',
+  //             style: TextStyle(
+  //               color: Colors.black,
+  //               fontSize: 15,
+  //               decoration: TextDecoration.none,
+  //             ),
+  //           )
+  //         ],
+  //       ));
+  // }
+
+  Widget _title() {
+    return Text('Rexa',style: TextStyle(
+            // textStyle: Theme.of(context).textTheme.display1,
+            fontSize: 40,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+            fontFamily: 'Merienda'
+          ),);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body:SingleChildScrollView(
+        child:Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.grey.shade200,
+                      offset: Offset(2, 4),
+                      blurRadius: 5,
+                      spreadRadius: 2)
+                ],
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xffffffff), Color(0xffffffff)])),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _title(),
+                SizedBox(
+                  height:5,
+                ),
+                
+                _signUpButton(),
+                SizedBox(
+                  height: 250,
+                ),
+                
+                _submitButton(),
+                SizedBox(
+                  height: 20,
+                ),
+                RichText(
+                  textAlign: TextAlign.center,
+  text: TextSpan(
+    text: '©2019 elyfez Technologies. All rights reserved',
+    // style: DefaultTextStyle.of(context).style,
+    style: TextStyle(
+                color: Colors.black,
+                fontSize: 10,height: 3,
+                decoration: TextDecoration.none,
+                fontFamily: 'NunitoSans',
+              ),
+    children: <TextSpan>[
+      TextSpan(text: ' Katumba', style: TextStyle(fontWeight: FontWeight.bold)),
+
+    ],
+  ),
+)
+              ],
+            ),
+          ),
+      ),
+    );
+  }
 }
