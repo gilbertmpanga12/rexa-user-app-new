@@ -220,9 +220,7 @@ GoogleSignInAccount googleUser = await _googleSignIn.signIn();
      accessToken: googleAuth.accessToken,
      idToken: googleAuth.idToken,
    );
-//    _auth.currentUser().then((onValue){
-// onValue.
-//    });
+
     _auth.signInWithCredential(userCreadentialize).then((AuthResult user){
     prefs.setString('token', '${googleAuth.idToken}');
     prefs.setString('customNumber', phoneNumber);
@@ -257,8 +255,6 @@ GoogleSignInAccount googleUser = await _googleSignIn.signIn();
   });
   }
   setClocks();
-  // prefs.setBool('isNewUser', true);
-  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TermsWid()));
       }else{
         errorDialog('Oops something went wrong! Try again');
       }
@@ -360,14 +356,24 @@ errorDialog('Check your internet connection and try again');
   }
 
 Widget buildSmsTitle(){
-  return Container(
+  return  Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+   Theme.of(context).platform == TargetPlatform.iOS ?  BackButton(onPressed: (){
+            setState(() {
+              _verificationId = null;
+            });
+            },): SizedBox.shrink(),
+    Container(
     alignment: Alignment.topLeft,
                     child: Text(
                       'Confirm code sent via SMS',
                       style: TextStyle(fontSize: 30.0, fontFamily: 'NunitoSans',fontWeight: FontWeight.w300),
                     ),
                     padding: EdgeInsets.only(left: 15.0,right: 39.0,top:76.0),
-                  );
+                  )
+  ],);
 }
 
   Widget buildDefaultTitle(){
@@ -438,10 +444,7 @@ InkWell(
                   spreadRadius: 2)
             ],
             color: Colors.blueAccent),
-        child: Text(
-          'Sign Up',
-          style: TextStyle(fontSize: 21, color: Colors.white,fontWeight: FontWeight.w700,fontFamily: 'NunitoSans'),
-        ),
+        child: defaultButtonText(),
       ),
     ),
                       // semiChecker()

@@ -39,7 +39,7 @@ class NavigationMapsState extends State<NavigationMaps>{
      appBar: AppBar(
        elevation: 1.3,
        title: Text(DemoLocalizations.of(context).Location,
-       style: TextStyle(color: Colors.black,fontFamily: 'Comfortaa',fontWeight: FontWeight.w900),),
+       style: TextStyle(color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w900),),
        backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),
        centerTitle: true,
      ),
