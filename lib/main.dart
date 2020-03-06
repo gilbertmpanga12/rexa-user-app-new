@@ -192,6 +192,7 @@ class MyAppState extends State<MyApp>  { // with WidgetsBindingObserver
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        brightness: Brightness.light,
     primarySwatch: Colors.blue,
     primaryColor: Color(0xFF2C1CEA),
     scaffoldBackgroundColor: Colors.white,// Color.fromRGBO(240, 240, 240, 1.0)

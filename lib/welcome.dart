@@ -303,9 +303,10 @@ keyboardType: TextInputType.datetime,
                     height: 66.0,
                   ),
                   Container(
+                    alignment: Alignment.topLeft,
                     child: Text(
                       DemoLocalizations.of(context).welcome,
-                      style: TextStyle(fontSize: 26.7,fontFamily: 'NunitoSans'),
+                      style: TextStyle(fontSize: 26.7,fontFamily: 'NunitoSans',wordSpacing: -1),
                     ),
                     margin: EdgeInsets.only(bottom: 10.0, top: 2.0),
                   ),
@@ -329,28 +330,28 @@ keyboardType: TextInputType.datetime,
                  
                
                   _buildLocationField(),
-                   Container(
-        margin: EdgeInsets.only(top: 30.0,bottom: 10),
-        child: FlatButton(
-        
-          onPressed: () {
-        _submitForm();
-          },
-          child: Padding(
-            child: Text(
-              'Finish',
-              style: TextStyle(
-                 fontFamily: 'NunitoSans',
-                  color: Colors.white,
-                  letterSpacing: .5,
-                  fontSize: 27.0,
-                  fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
-            ),
-            padding: EdgeInsets.only(top: 11.0, bottom: 11.0),
-          ),
-          color: Colors.blueAccent,
-        ),width: 300,)
+                   InkWell(child: Container(
+                     margin: EdgeInsets.only(top:30),
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 13),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Color(0xffffffff).withAlpha(100),
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: Colors.blueAccent),
+        child: Text(
+          'Finish',
+          style: TextStyle(fontSize: 21, color: Colors.white,fontWeight: FontWeight.w700,fontFamily: 'NunitoSans'),
+        ),
+      ),onTap: (){
+             _submitForm();
+      },)
                 ],);
               },
             ),

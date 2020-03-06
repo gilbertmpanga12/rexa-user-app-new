@@ -675,9 +675,11 @@ Future<ui.Image> _getImage(String imageUrl) {
     // double deviceHeight = MediaQuery.of(context).size.height;
     return WillPopScope(child: SafeArea(child: Scaffold(
           appBar: AppBar(
-            leading: AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? BackButton(color: Colors.white,onPressed: () async{
-        Navigator.popAndPushNamed(context, '/home'); 
-      },): SizedBox.shrink(),backgroundColor: Colors.transparent,),
+            leading: AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? 
+            BackButton(onPressed: (){
+               Navigator.popAndPushNamed(context, '/home'); 
+            },): SizedBox.shrink(),backgroundColor: Colors.white,elevation: 0,),
+        
             title: Text(
               'Stories',
               style: TextStyle(
