@@ -76,7 +76,7 @@ class _SignInPageState extends State<SignIn> {
 Widget defaultButtonText() {
     return showSpinner ? SizedBox(child: 
     CircularProgressIndicator(backgroundColor: Colors.white,),
-    height: 18.5,width: 18.5,) : Row(
+    height: 17.5,width: 17.5,) : Row(
                     children: <Widget>[
                  Text('$_textCtaUser',
                           style: TextStyle(color: Colors.white,
@@ -93,7 +93,7 @@ Widget defaultButtonText() {
   Widget defaultButtonTextSms(){
     return isSms ? SizedBox(child: 
     CircularProgressIndicator(backgroundColor: Colors.white,),
-    height: 18.5,width: 18.5,) : Text('$smsTxt',style: TextStyle(
+    height: 17.5,width: 17.5,) : Text('$smsTxt',style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: Colors.white,fontSize:18.0, fontFamily: 'NunitoSans'),textAlign: TextAlign.center,);
   }
@@ -361,6 +361,7 @@ errorDialog('Check your internet connection and try again');
 
 Widget buildSmsTitle(){
   return Container(
+    alignment: Alignment.topLeft,
                     child: Text(
                       'Confirm code sent via SMS',
                       style: TextStyle(fontSize: 30.0, fontFamily: 'NunitoSans',fontWeight: FontWeight.w300),
@@ -376,15 +377,14 @@ Widget buildSmsTitle(){
                         fontSize: 37.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w600,fontFamily: 'Merienda')),
-                padding: EdgeInsets.only(top:40.0),
               );
     }
   
   Widget buildDefaltSubTitle(){
-    return Container(
+    return Container(alignment: Alignment.center,
                   child: Padding(
                       padding: EdgeInsets.only(left:44.5,right:46.5,top: 10.0,),
-                      child: Text('Get started with your Rexa account',
+                      child: Text('Get Started With Your Rexa Account',
                         style: TextStyle(
 
                           fontSize: 17.0,
@@ -405,6 +405,7 @@ Widget buildSmsTitle(){
 ListTile(
  
   title: TextFormField(
+
           keyboardType: TextInputType.phone,
           controller: _phoneNumberController,
           decoration:
@@ -418,23 +419,49 @@ ListTile(
             return null;
           },
         ),),
-Container(child: RaisedButton(color: Colors.blueAccent,
-        padding: EdgeInsets.all(16.0),
-                  shape: RoundedRectangleBorder( // be back
-                      borderRadius: new BorderRadius.circular(25.0)),
-                      child: defaultButtonText(), onPressed: (){
-                      // main verify button
-  verifyPhoneNumber('${_defaultCode + _phoneNumberController.text.substring(1,)}');
-
-                      },),width: 140.0,margin: EdgeInsets.only(top: 40.9,bottom: 16)),
+InkWell(
+      onTap: () {
+        verifyPhoneNumber('${_defaultCode + _phoneNumberController.text.substring(1,)}');
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 20),
+        width: MediaQuery.of(context).size.width -51,
+        padding: EdgeInsets.symmetric(vertical: 13),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Color(0xffffffff).withAlpha(100),
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: Colors.blueAccent),
+        child: Text(
+          'Sign Up',
+          style: TextStyle(fontSize: 21, color: Colors.white,fontWeight: FontWeight.w700,fontFamily: 'NunitoSans'),
+        ),
+      ),
+    ),
                       // semiChecker()
-        Align(child: Padding(child: Text('©2019 elyfez Technologies  All rights reserved "Katumba"',
-                      style: TextStyle(
-                        fontSize: 11.6,
-                        fontFamily: '',
-                        color:Colors.black87,
-                      fontWeight: FontWeight.w400),textAlign: TextAlign.center,
-                      ),padding: EdgeInsets.only(top: 30.0,left: 55.0,right: 55.0),),alignment: Alignment.bottomCenter,)
+        Align(child: Padding(child: RichText(
+                  textAlign: TextAlign.center,
+  text: TextSpan(
+    text: '©2019 elyfez Technologies. All rights reserved',
+    // style: DefaultTextStyle.of(context).style,
+    style: TextStyle(
+                color: Colors.black,
+                fontSize: 10,height: 1,
+                decoration: TextDecoration.none,
+                fontFamily: 'NunitoSans',
+              ),
+    children: <TextSpan>[
+      TextSpan(text: ' Katumba', style: TextStyle(fontWeight: FontWeight.bold)),
+
+    ],
+  ),
+),padding: EdgeInsets.only(top: 30.0,left: 3.0,right: 3.0),),alignment: Alignment.bottomCenter,)
 
               
 
@@ -463,15 +490,27 @@ Container(child: RaisedButton(color: Colors.blueAccent,
             return null;
           },
         ),),
-Container(child: RaisedButton(color: Colors.blueAccent,
-                  padding: EdgeInsets.all(15.8),
-                  shape: RoundedRectangleBorder( // be back
-                      borderRadius: new BorderRadius.circular(30.0)),
-                      child: defaultButtonTextSms() ,onPressed: (){
-                   // should confirm token here
-                   _signInWithPhoneNumber();
-
-                      },),width: 140.0,margin: EdgeInsets.only(top: 60.9,bottom: 33)),
+Container(child:InkWell(
+      onTap: () {
+      _signInWithPhoneNumber();
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 13),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Color(0xffffffff).withAlpha(100),
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: Colors.blueAccent),
+        child: defaultButtonTextSms(),
+      ),
+    ),width: MediaQuery.of(context).size.width - 50,margin: EdgeInsets.only(top: 60.9,bottom: 33)),
         Align(child: Padding(child: Text('©2019 elyfez Technologies  All rights reserved "Katumba"',
                       style: TextStyle(
                         fontSize: 13.6,
@@ -493,114 +532,10 @@ Container(child: RaisedButton(color: Colors.blueAccent,
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
   // print('full width ${MediaQuery.of(context).size.width} and height is ${MediaQuery.of(context).size.height}');
-    return WelcomePage(title: 'Rexa',);
-    
-  }
-
-}
-
-
-
-class WelcomePage extends StatefulWidget {
-  WelcomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _WelcomePageState createState() => _WelcomePageState();
-}
-
-class _WelcomePageState extends State<WelcomePage> {
-  Widget _submitButton() {
-    return InkWell(
-      onTap: () {
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => LoginPage()));
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 13),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Color(0xffffffff).withAlpha(100),
-                  offset: Offset(2, 4),
-                  blurRadius: 8,
-                  spreadRadius: 2)
-            ],
-            color: Colors.blueAccent),
-        child: Text(
-          'Sign Up',
-          style: TextStyle(fontSize: 21, color: Colors.white,fontWeight: FontWeight.w700,fontFamily: 'NunitoSans'),
-        ),
-      ),
-    );
-  }
-
-  Widget _signUpButton() {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 7),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          border: Border.all(color: Colors.white, width: 2),
-        ),
-        child: Text(
-          'Get Started With Rexa',
-          style: TextStyle(fontSize: 20, color: Colors.black87, fontFamily: 'NunitoSans',fontWeight: FontWeight.w400),
-        ),
-      );
-  }
-
-  // Widget _label() {
-  //   return Container(
-  //       margin: EdgeInsets.only(top: 40, bottom: 20),
-  //       child: Column(
-  //         children: <Widget>[
-  //           Text(
-  //             'Quick login with Touch ID',
-  //             style: TextStyle(color: Colors.white, fontSize: 17),
-  //           ),
-  //           SizedBox(
-  //             height: 20,
-  //           ),
-  //           Icon(Icons.fingerprint, size: 90, color: Colors.white),
-  //           SizedBox(
-  //             height: 20,
-  //           ),
-            
-           
-  //           Text(
-  //             '©2019 elyfez Technologies. All rights reserved "Katumba',
-  //             style: TextStyle(
-  //               color: Colors.black,
-  //               fontSize: 15,
-  //               decoration: TextDecoration.none,
-  //             ),
-  //           )
-  //         ],
-  //       ));
-  // }
-
-  Widget _title() {
-    return Text('Rexa',style: TextStyle(
-            // textStyle: Theme.of(context).textTheme.display1,
-            fontSize: 40,
-            fontWeight: FontWeight.w700,
-            color: Colors.black,
-            fontFamily: 'Merienda'
-          ),);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body:SingleChildScrollView(
         child:Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 8),
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -614,46 +549,25 @@ class _WelcomePageState extends State<WelcomePage> {
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Color(0xffffffff), Color(0xffffffff)])),
+                    colors: [Colors.white, Colors.white])),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _title(),
-                SizedBox(
-                  height:5,
-                ),
-                
-                _signUpButton(),
-                SizedBox(
-                  height: 250,
-                ),
-                
-                _submitButton(),
-                SizedBox(
-                  height: 20,
-                ),
-                RichText(
-                  textAlign: TextAlign.center,
-  text: TextSpan(
-    text: '©2019 elyfez Technologies. All rights reserved',
-    // style: DefaultTextStyle.of(context).style,
-    style: TextStyle(
-                color: Colors.black,
-                fontSize: 10,height: 3,
-                decoration: TextDecoration.none,
-                fontFamily: 'NunitoSans',
-              ),
-    children: <TextSpan>[
-      TextSpan(text: ' Katumba', style: TextStyle(fontWeight: FontWeight.bold)),
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          
+           _verificationId  ?   buildSmsTitle() : buildDefaultTitle() ,
 
-    ],
-  ),
-)
-              ],
-            ),
-          ),
-      ),
-    );
+          _verificationId  ? SizedBox.shrink() : buildDefaltSubTitle(),
+
+          SizedBox(height:  120.0,),
+       _verificationId  ?  buildConfirmForm() : buildVerifyForm()
+
+          
+        ],
+      )
+            
+            )));
+    
   }
+
 }
