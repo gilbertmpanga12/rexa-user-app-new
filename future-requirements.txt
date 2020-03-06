@@ -1,0 +1,10 @@
+* fetch custom token via http and manually plugin in firebase? ->
+* refactor authentication ui/ux:: responsive
+
+
+# Errors;-
+Use of unresolved identifier 'GeneratedPluginRegistrant'
+
+com.googleusercontent.apps.503467082492-t525ivs0jb8s5ol7d504kkji8ol3nsko
+
+com.googleusercontent.apps.503467082492-bf3tm1t899gh1308kmot82u3uh6eauli

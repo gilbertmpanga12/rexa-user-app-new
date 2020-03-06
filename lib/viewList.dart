@@ -189,8 +189,8 @@ flushbar.dismiss();
   });
 
 OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult notification){
-  
-   if(notification.notification.payload.rawPayload['title'].toString().contains('Rate')){
+try{
+ if(notification.notification.payload.rawPayload['title'].toString().contains('Rate')){
     Navigator.push(
       context,
       new MaterialPageRoute(builder: (context) => RatingWidget()));
@@ -213,6 +213,9 @@ Navigator.push(
                                                 '${notification.notification.payload.additionalData['phoneNumber']}',
   )));
  }
+}catch(err){
+print('Nothing to open');
+}
 
 });
 // getStylesCount(); 
