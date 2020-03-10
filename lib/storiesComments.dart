@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+import './swiper.dart' as swiper;
 
 class StoriesComments extends StatefulWidget {
   final String uid;
@@ -66,7 +67,7 @@ print('');
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-          elevation: 1.0,
+          elevation: 3.0,
 
         ),
         body: Form(
@@ -249,7 +250,8 @@ controller: myController,
           ],) ,
           key: _formKey,
         )),onWillPop: () async{
-          Navigator.push(context, MaterialPageRoute(builder: (context) => StylesBeautyWidget()));
+          Navigator.of(context).pop();
+          swiper.controllerPageView.jumpToPage(1);
           return Future.value(false);
         },);
   }
