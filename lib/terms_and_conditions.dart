@@ -62,40 +62,59 @@ Children\'s Policy
 These Services do not address anyone under the age of 13. we do not knowingly collect personally identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.  
   ''';
   build(BuildContext context){
-    return WillPopScope(child: Scaffold(
+    return WillPopScope(
+      
+      child: Scaffold(
         body: ListView(children: <Widget>[
           Column(
             children: <Widget>[
               Padding(child: Text('Terms and Conditiions',style: TextStyle(fontSize: 19.5),),padding: EdgeInsets.all(26.0),),
 //            SizedBox(height: 60.0,),
               Padding(child: Text('$terms'),padding: EdgeInsets.only(left: 20.0,right: 20.0,top: 20.0,bottom: 8),),
-               Container(
-        margin: EdgeInsets.only(top: 3.0,bottom: 10),
-        child: FlatButton(
-        
-          onPressed: () {
-         Navigator.pushReplacementNamed(context, '/welcome');
-          },
-          child: Padding(
-            child: Text(
-              'I Accept',
-              style: TextStyle(
-                 fontFamily: 'NunitoSans',
-                  color: Colors.white,
-                  letterSpacing: .5,
-                  fontSize: 27.0,
-                  fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
-            ),
-            padding: EdgeInsets.only(top: 11.0, bottom: 11.0),
-          ),
-          color: Colors.blueAccent,
-        ),width: 300,)
+//                InkWell(child: Container(
+//         width: MediaQuery.of(context).size.width - 10,
+//         padding: EdgeInsets.symmetric(vertical: 13),
+//         alignment: Alignment.center,
+//         decoration: BoxDecoration(
+//             borderRadius: BorderRadius.all(Radius.circular(5)),
+//             boxShadow: <BoxShadow>[
+//               BoxShadow(
+//                   color: Color(0xffffffff).withAlpha(100),
+//                   offset: Offset(2, 4),
+//                   blurRadius: 8,
+//                   spreadRadius: 2)
+//             ],
+//             color: Colors.blueAccent),
+//         child: Text(
+//           'I Accept',
+//           style: TextStyle(fontSize: 21, color: Colors.white,fontWeight: FontWeight.w700,fontFamily: 'NunitoSans'),
+//         ),
+//       ),onTap: (){
+// Navigator.pushReplacementNamed(context, '/welcome');
+//       },)
+
             ],
           )
         ],),
+        bottomNavigationBar: FlatButton(onPressed: (){
+        
+          Navigator.pushNamed(context, '/welcome');
+
+         
+        }, child: Padding(child: Row(
+          children: <Widget>[
+            Text('I Accept',
+              style: TextStyle(color:Colors.white,fontSize: 27.0,fontWeight: FontWeight.w600),textAlign: TextAlign.center,),
+
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+          padding: EdgeInsets.only(top:11.0,bottom: 11.0),),color: Colors.blue[600]
+        ),
        
-    ),onWillPop: (){
+    ),
+    
+    onWillPop: (){
       SystemNavigator.pop();
     },);
   }

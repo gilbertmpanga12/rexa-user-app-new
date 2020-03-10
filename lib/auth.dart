@@ -76,7 +76,7 @@ class _SignInPageState extends State<SignIn> {
 Widget defaultButtonText() {
     return showSpinner ? SizedBox(child: 
     CircularProgressIndicator(backgroundColor: Colors.white,),
-    height: 18.5,width: 18.5,) : Row(
+    height: 17.5,width: 17.5,) : Row(
                     children: <Widget>[
                  Text('$_textCtaUser',
                           style: TextStyle(color: Colors.white,
@@ -93,7 +93,7 @@ Widget defaultButtonText() {
   Widget defaultButtonTextSms(){
     return isSms ? SizedBox(child: 
     CircularProgressIndicator(backgroundColor: Colors.white,),
-    height: 18.5,width: 18.5,) : Text('$smsTxt',style: TextStyle(
+    height: 17.5,width: 17.5,) : Text('$smsTxt',style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: Colors.white,fontSize:18.0, fontFamily: 'NunitoSans'),textAlign: TextAlign.center,);
   }
@@ -220,9 +220,7 @@ GoogleSignInAccount googleUser = await _googleSignIn.signIn();
      accessToken: googleAuth.accessToken,
      idToken: googleAuth.idToken,
    );
-//    _auth.currentUser().then((onValue){
-// onValue.
-//    });
+
     _auth.signInWithCredential(userCreadentialize).then((AuthResult user){
     prefs.setString('token', '${googleAuth.idToken}');
     prefs.setString('customNumber', phoneNumber);
@@ -257,8 +255,6 @@ GoogleSignInAccount googleUser = await _googleSignIn.signIn();
   });
   }
   setClocks();
-  // prefs.setBool('isNewUser', true);
-  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TermsWid()));
       }else{
         errorDialog('Oops something went wrong! Try again');
       }
@@ -360,13 +356,24 @@ errorDialog('Check your internet connection and try again');
   }
 
 Widget buildSmsTitle(){
-  return Container(
+  return  Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+   Theme.of(context).platform == TargetPlatform.iOS ?  BackButton(onPressed: (){
+            setState(() {
+              _verificationId = null;
+            });
+            },): SizedBox.shrink(),
+    Container(
+    alignment: Alignment.topLeft,
                     child: Text(
                       'Confirm code sent via SMS',
                       style: TextStyle(fontSize: 30.0, fontFamily: 'NunitoSans',fontWeight: FontWeight.w300),
                     ),
                     padding: EdgeInsets.only(left: 15.0,right: 39.0,top:76.0),
-                  );
+                  )
+  ],);
 }
 
   Widget buildDefaultTitle(){
@@ -376,15 +383,14 @@ Widget buildSmsTitle(){
                         fontSize: 37.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w600,fontFamily: 'Merienda')),
-                padding: EdgeInsets.only(top:40.0),
               );
     }
   
   Widget buildDefaltSubTitle(){
-    return Container(
+    return Container(alignment: Alignment.center,
                   child: Padding(
                       padding: EdgeInsets.only(left:44.5,right:46.5,top: 10.0,),
-                      child: Text('Get started with your Rexa account',
+                      child: Text('Get Started With Your Rexa Account',
                         style: TextStyle(
 
                           fontSize: 17.0,
@@ -405,6 +411,7 @@ Widget buildSmsTitle(){
 ListTile(
  
   title: TextFormField(
+
           keyboardType: TextInputType.phone,
           controller: _phoneNumberController,
           decoration:
@@ -418,23 +425,46 @@ ListTile(
             return null;
           },
         ),),
-Container(child: RaisedButton(color: Colors.blueAccent,
-        padding: EdgeInsets.all(16.0),
-                  shape: RoundedRectangleBorder( // be back
-                      borderRadius: new BorderRadius.circular(25.0)),
-                      child: defaultButtonText(), onPressed: (){
-                      // main verify button
-  verifyPhoneNumber('${_defaultCode + _phoneNumberController.text.substring(1,)}');
-
-                      },),width: 140.0,margin: EdgeInsets.only(top: 40.9,bottom: 16)),
+InkWell(
+      onTap: () {
+        verifyPhoneNumber('${_defaultCode + _phoneNumberController.text.substring(1,)}');
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 20),
+        width: MediaQuery.of(context).size.width -51,
+        padding: EdgeInsets.symmetric(vertical: 13),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Color(0xffffffff).withAlpha(100),
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: Colors.blueAccent),
+        child: defaultButtonText(),
+      ),
+    ),
                       // semiChecker()
-        Align(child: Padding(child: Text('©2019 elyfez Technologies  All rights reserved "Katumba"',
-                      style: TextStyle(
-                        fontSize: 11.6,
-                        fontFamily: '',
-                        color:Colors.black87,
-                      fontWeight: FontWeight.w400),textAlign: TextAlign.center,
-                      ),padding: EdgeInsets.only(top: 30.0,left: 55.0,right: 55.0),),alignment: Alignment.bottomCenter,)
+        Align(child: Padding(child: RichText(
+                  textAlign: TextAlign.center,
+  text: TextSpan(
+    text: '©2019 elyfez Technologies. All rights reserved',
+    // style: DefaultTextStyle.of(context).style,
+    style: TextStyle(
+                color: Colors.black,
+                fontSize: 10,height: 1,
+                decoration: TextDecoration.none,
+                fontFamily: 'NunitoSans',
+              ),
+    children: <TextSpan>[
+      TextSpan(text: ' Katumba', style: TextStyle(fontWeight: FontWeight.bold)),
+
+    ],
+  ),
+),padding: EdgeInsets.only(top: 30.0,left: 3.0,right: 3.0),),alignment: Alignment.bottomCenter,)
 
               
 
@@ -463,15 +493,27 @@ Container(child: RaisedButton(color: Colors.blueAccent,
             return null;
           },
         ),),
-Container(child: RaisedButton(color: Colors.blueAccent,
-                  padding: EdgeInsets.all(15.8),
-                  shape: RoundedRectangleBorder( // be back
-                      borderRadius: new BorderRadius.circular(30.0)),
-                      child: defaultButtonTextSms() ,onPressed: (){
-                   // should confirm token here
-                   _signInWithPhoneNumber();
-
-                      },),width: 140.0,margin: EdgeInsets.only(top: 60.9,bottom: 33)),
+Container(child:InkWell(
+      onTap: () {
+      _signInWithPhoneNumber();
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 13),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Color(0xffffffff).withAlpha(100),
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: Colors.blueAccent),
+        child: defaultButtonTextSms(),
+      ),
+    ),width: MediaQuery.of(context).size.width - 50,margin: EdgeInsets.only(top: 60.9,bottom: 33)),
         Align(child: Padding(child: Text('©2019 elyfez Technologies  All rights reserved "Katumba"',
                       style: TextStyle(
                         fontSize: 13.6,
@@ -493,13 +535,25 @@ Container(child: RaisedButton(color: Colors.blueAccent,
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
   // print('full width ${MediaQuery.of(context).size.width} and height is ${MediaQuery.of(context).size.height}');
-    return SafeArea(child: Scaffold(
-      // resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.white,
-      body: ListView.builder(itemCount: 1,
-      padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
-      itemBuilder: (BuildContext context, int index){
-        return Column(
+    return Scaffold(
+      body:SingleChildScrollView(
+        child:Container(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.grey.shade200,
+                      offset: Offset(2, 4),
+                      blurRadius: 5,
+                      spreadRadius: 2)
+                ],
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.white, Colors.white])),
+            child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -513,10 +567,9 @@ Container(child: RaisedButton(color: Colors.blueAccent,
 
           
         ],
-      );
-      }
-      ),
-    ),);
+      )
+            
+            )));
     
   }
 
