@@ -107,7 +107,7 @@ Widget showCountries(){
          initialSelection: 'IT',
          favorite: ['+256','UG'],
          // optional. Shows only country name and flag
-         showCountryOnly: false,
+         showCountryOnly: true,
          // optional. aligns the flag and the Text left
          alignLeft: false
        ),margin: EdgeInsets.only(top:8.0),);

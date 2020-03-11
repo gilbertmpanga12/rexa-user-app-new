@@ -68,8 +68,8 @@ print('');
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-          elevation: 3.0,
-
+          centerTitle: true,
+  elevation: 0,
         ),
         body: Form(
           child: Column(children: <Widget>[
@@ -85,7 +85,9 @@ SizedBox(height: 10.5,),
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
 
-                     Container(child:  Row(
+                     Container(
+                       margin: EdgeInsets.only(left: 6.0),
+                       child:  Row(
                         children: <Widget>[
                            Padding(
                                           child: Container(
@@ -137,7 +139,7 @@ SizedBox(height: 10.5,),
                                               bottom: 1.0),
                                         ),
                           Text('${snapshot.data.documents[index]['commenter_name']}',
-                            style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Rukie'),)
+                            style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Rukie',letterSpacing: .4),)
                         ],
                       ),height:30),
 

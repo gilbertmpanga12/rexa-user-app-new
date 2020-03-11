@@ -78,7 +78,7 @@ print('done');
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-          elevation: 3.0,
+          elevation: 0.0,centerTitle: true,
 
         ),
         body: Form(
@@ -147,9 +147,9 @@ SizedBox(height: 10.5,),
                                               bottom: 1.0),
                                         ),
                           Text('${snapshot.data.documents[index]['commenter_name']}',
-                            style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Rukie'),)
+                            style: TextStyle(fontWeight: FontWeight.bold,letterSpacing: .4,fontFamily: 'Rukie'),)
                         ],
-                      ),height:30),
+                      ),height:30,margin: EdgeInsets.only(left: 5.0),),
 
                        Padding(
                         child:    Container(
