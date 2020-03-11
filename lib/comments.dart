@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+
 import './styles_beauty.dart';
 import './swiper.dart';
 import './video_stories.dart';
@@ -71,9 +73,8 @@ print('done');
                     onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => VideoStories())),
                   )),
           title: Text(
-            'Comments',
-            style: TextStyle(fontSize: 20.0,
-              color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w700),
+            "Comments",
+     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 20),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
@@ -178,18 +179,14 @@ SizedBox(height: 10.5,),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      new Container(
-                        height: 40.0,
-                        width: 40.0,
-                        
-                        decoration: new BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: new DecorationImage(
-                              fit: BoxFit.fill,
-                              image: new NetworkImage(
-                                  "${_photoUrl}")),
-                        ),
-                      ),
+                     ClipRRect(
+              borderRadius: new BorderRadius.circular(30.0),
+              child: CachedNetworkImage(
+        imageUrl: "$_photoUrl",height: 40,width: 40,fit: BoxFit.cover,
+        placeholder: (context, url) => Image.asset('assets/images/blah.png',height: 45,width: 45,),
+        errorWidget: (context, url, error) => Image.asset('assets/images/blah.png',height: 45,width: 45,),
+     )),
+
                       new SizedBox(
                         width: 10.0,
                       ),
@@ -205,14 +202,14 @@ controller: myController,
 
                               suffixIcon: IconButton(
                                 icon: Icon(FontAwesomeIcons.paperPlane,
-                                  color: Colors.black,), onPressed: () {
+                                  color: Colors.black,size: 23,), onPressed: () {
                                 if (!_formKey.currentState.validate()) {
                                   return null;
                                 }
                               
                                 _formKey.currentState.save();
                                   
-                                Firestore.instance.collection('userServiceVideos').document(widget.docId).collection('comments').add({
+                                Firestore.instance.collection('comments').add({
                                   'userId': _userId,
                                   'commenter_name': _commenter_name,
                                   'photoUrl': _photoUrl,
@@ -220,14 +217,18 @@ controller: myController,
                                   'uid': _uid
 
                                 }).then((val){
-                                   mutateCount('${widget.docId}',_comment);
+                                  mutateCount(_uid,_comment);
                                   Toast.show('Posted!',context,duration: 5,gravity: 1,backgroundColor: Colors.green);
                                   _formKey.currentState.reset();
                                   myController.clear();
+//                                   setState(() {
+// _comment = '';
+//  });
+                                
                                 });
                               },),
                               border: InputBorder.none,
-                              hintText: "Add a comment...",
+                              hintText: "Leave a comment",hintStyle: TextStyle(fontSize: 20,fontFamily: 'Rukie',fontWeight: FontWeight.w500)
 
                             ),
                             onSaved: (String val){
