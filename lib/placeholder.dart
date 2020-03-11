@@ -126,7 +126,7 @@ Container(
   child: ListTile(
   title:  Text(
    '${resultsFetched[i].requestedSaloonService}',
-  
+  style: TextStyle(fontFamily: 'Comfortaa',fontWeight: FontWeight.w600),
     ),
     subtitle: new Container(
                             padding: const EdgeInsets.only(top: 5.0),
