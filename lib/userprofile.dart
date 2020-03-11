@@ -17,7 +17,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import './changeName.dart';
 import './changeAbout.dart';
 import 'dart:async';
-import './widgets/bottomsheet.dart' as sheet;
 class UserProfile extends StatefulWidget{
   @override
   UserProfileState createState() => UserProfileState();
@@ -182,6 +181,7 @@ GlobalKey<ScaffoldState> _key = GlobalKey();
         Navigator.pop(context);
             });
 }
+
 void _submitAbout() async {
  Firestore.instance.collection('users').document('${_firebaseUID}').updateData({
               'about':  controller.value.text
