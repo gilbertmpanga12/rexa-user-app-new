@@ -1059,7 +1059,7 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                      SizedBox(height: 4.4,),
 Row(children: <Widget>[
   
-Container(
+InkWell(child: Container(
                                         
                                         margin: EdgeInsets.only(right: 5.0),      width: 21,
                                               height: 21,
@@ -1078,7 +1078,16 @@ Container(
                                                   width: 0.0,
                                                 ),
                                               ),
-                                            ),
+                                            ) ,onTap: (){
+Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            StoriesComments(
+                                                                              uid: snapshot.data.documents[index]['doc_id'],
+                                                                            )));
+},),
 Text('${snapshot.data.documents[index]['commenter_name']}',style: TextStyle(fontSize: 12.0,fontWeight: FontWeight.bold),)
 ],),
                    Container(
