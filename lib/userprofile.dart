@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import './changeName.dart';
 import './changeAbout.dart';
 import 'dart:async';
-
+import './widgets/bottomsheet.dart' as sheet;
 class UserProfile extends StatefulWidget{
   @override
   UserProfileState createState() => UserProfileState();
@@ -30,7 +32,8 @@ String about;
 Flushbar flashbar;
 Flushbar flashbar2;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+final TextEditingController controller = TextEditingController();
+bool _isTextValid = false;
 
   @override
   initState() {
@@ -61,6 +64,9 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     }
     super.dispose();
   }
+
+
+
 
 
 
@@ -166,6 +172,101 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   }
 
 
+  void _submit() async{
+print('submittint');
+}
+
+  void _settingModalBottomSheet(context, String actionPlaceholder, String fullName) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0),topRight: Radius.circular(20.0))
+),
+      elevation: 3.0,backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+            Padding(child: 
+            Text('$actionPlaceholder',style: 
+            TextStyle(color: Colors.white,
+            fontWeight: FontWeight.w600,fontSize: 20.6,
+            letterSpacing: .9,
+            fontFamily:'NunitoSans'),
+            textAlign: TextAlign.left),padding: EdgeInsets.only(top:18.0,bottom: 1.0,left: 18.0,right: 18.0),),
+            // Padding(child: 
+            // Text('Share with the world',style: 
+            // TextStyle(
+            //   wordSpacing: -0.800,
+            //   color: Colors.white,
+            // fontWeight: FontWeight.w400,fontSize: 17.3,
+            // letterSpacing: .9,
+            // fontFamily:'NunitoSans'),
+            // textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
+            SizedBox(height: 15.0,),
+            // ListView.builder(itemBuilder: (BuildContext),) inputBar()
+           Padding(child:Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: Container(
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+           SizedBox(width: 13.0),
+          
+            Expanded(
+              child: TextField(
+
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(500)
+                ],
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.multiline,
+                 maxLines: null,
+                 controller: controller,
+                decoration: InputDecoration(
+                  errorText: _isTextValid ? 'Field Can\'t Be Blank' : null,
+                  hintText: '$fullName',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            SizedBox(width: 8.0),
+          ],
+        ),
+      ),
+    ),
+          ),
+          SizedBox(
+            width: 5.0,
+          ),
+          InkWell(
+            onTap: () {
+              _submit();
+            },
+            child: CircleAvatar(
+              child: Icon(FontAwesomeIcons.paperPlane),
+            ),
+          ),
+        ],
+      ),
+    ),          padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom))
+
+          ],);
+        }).whenComplete((){
+controller.clear();
+
+        });
+  }
+  
+
+
 
   Widget build(BuildContext context){
     return WillPopScope(child: SafeArea(child: Scaffold(
@@ -219,7 +320,7 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
                 
                 ListTile(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeName()));
+                  _settingModalBottomSheet(context,'Enter your username','${snapshot.data['fullName']}');
                   },
                   trailing: Icon(Icons.edit),
                   leading: Icon(
@@ -234,7 +335,8 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
                 ListTile(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeAbout()));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeAbout()));
+                    _settingModalBottomSheet(context,'Add About','${snapshot.data['about'] == null ? 'Not Available': snapshot.data['about']}');
                   },
                   trailing: Icon(Icons.edit),
                   leading: Icon(Icons.info, color: Colors.yellow[800]),
