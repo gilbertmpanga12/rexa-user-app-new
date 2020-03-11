@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,6 +35,7 @@ Flushbar flashbar2;
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 final TextEditingController controller = TextEditingController();
 bool _isTextValid = false;
+GlobalKey<ScaffoldState> _key = GlobalKey();
 
   @override
   initState() {
@@ -172,8 +174,21 @@ bool _isTextValid = false;
   }
 
 
-  void _submit() async{
-print('submittint');
+  void _submitUsername() async {
+    Firestore.instance.collection('users').document('${_firebaseUID}').updateData({
+              'fullName': controller.value.text
+            }).then((resp){
+         controller.clear();     
+Navigator.pop(context);
+            });
+}
+void _submitAbout() async {
+ Firestore.instance.collection('users').document('${_firebaseUID}').updateData({
+              'about':  controller.value.text
+            }).then((resp){
+               controller.clear();  
+Navigator.pop(context);
+            });
 }
 
   void _settingModalBottomSheet(context, String actionPlaceholder, String fullName) {
@@ -188,23 +203,23 @@ print('submittint');
           return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-            Padding(child: 
-            Text('$actionPlaceholder',style: 
-            TextStyle(color: Colors.white,
-            fontWeight: FontWeight.w600,fontSize: 20.6,
-            letterSpacing: .9,
-            fontFamily:'NunitoSans'),
-            textAlign: TextAlign.left),padding: EdgeInsets.only(top:18.0,bottom: 1.0,left: 18.0,right: 18.0),),
             // Padding(child: 
-            // Text('Share with the world',style: 
-            // TextStyle(
-            //   wordSpacing: -0.800,
-            //   color: Colors.white,
-            // fontWeight: FontWeight.w400,fontSize: 17.3,
+            // Text('$actionPlaceholder',style: 
+            // TextStyle(color: Colors.white,
+            // fontWeight: FontWeight.w600,fontSize: 20.6,
             // letterSpacing: .9,
             // fontFamily:'NunitoSans'),
-            // textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
-            SizedBox(height: 15.0,),
+            // textAlign: TextAlign.left),padding: EdgeInsets.only(top:18.0,bottom: 1.0,left: 18.0,right: 18.0),),
+            // // Padding(child: 
+            // // Text('Share with the world',style: 
+            // // TextStyle(
+            // //   wordSpacing: -0.800,
+            // //   color: Colors.white,
+            // // fontWeight: FontWeight.w400,fontSize: 17.3,
+            // // letterSpacing: .9,
+            // // fontFamily:'NunitoSans'),
+            // // textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
+            SizedBox(height: 25.0,),
             // ListView.builder(itemBuilder: (BuildContext),) inputBar()
            Padding(child:Padding(
       padding: EdgeInsets.all(8.0),
@@ -247,7 +262,10 @@ print('submittint');
           ),
           InkWell(
             onTap: () {
-              _submit();
+              if(actionPlaceholder == 'Add About'){
+                _submitAbout();
+              }
+              _submitUsername();
             },
             child: CircleAvatar(
               child: Icon(FontAwesomeIcons.paperPlane),
@@ -287,8 +305,6 @@ controller.clear();
                       stream: Firestore.instance.collection('users')
                       .document('${_firebaseUID}').snapshots(),
                       builder: (context, snapshot) {
-                        print('$_firebaseUID');
-                        print('${snapshot.data}');
                         if(!snapshot.hasData){
                           return Center(child: CircularProgressIndicator());
                         }
