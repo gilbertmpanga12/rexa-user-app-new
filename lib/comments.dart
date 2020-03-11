@@ -52,6 +52,8 @@ print('done');
 
   initState(){
     _uid = widget.uid;
+    print('I have to move on.....');
+    print(widget.docId);
     getProfile();
     super.initState();
   }
@@ -209,7 +211,8 @@ controller: myController,
                               
                                 _formKey.currentState.save();
                                   
-                                Firestore.instance.collection('comments').add({
+                                Firestore.instance.collection('userServiceVideos').document(widget.docId)
+                                .collection('comments').add({
                                   'userId': _userId,
                                   'commenter_name': _commenter_name,
                                   'photoUrl': _photoUrl,

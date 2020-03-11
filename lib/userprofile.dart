@@ -246,7 +246,7 @@ void _submitAbout() async {
                  controller: controller,
                 decoration: InputDecoration(
                   errorText: _isTextValid ? 'Field Can\'t Be Blank' : null,
-                  hintText: '$fullName',
+                  hintText: '$fullName',hintStyle:  TextStyle(fontFamily: 'Rukie',fontSize: 20, fontWeight: FontWeight.w500),
                   border: InputBorder.none,
                 ),
               ),

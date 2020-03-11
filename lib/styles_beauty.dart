@@ -398,23 +398,23 @@ return  Padding(child:Padding(
           return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-            Center(child: Padding(child: 
-            Text('What\'s new ?',style: 
-            TextStyle(color: Colors.white,
-            fontWeight: FontWeight.w600,fontSize: 28.6,
-            letterSpacing: .9,
-            fontFamily:'Merienda'),
-            textAlign: TextAlign.center),padding: EdgeInsets.only(top:18.0,bottom: 1.0,left: 18.0,right: 18.0),)),
-            Padding(child: 
-            Text('Share with the world',style: 
-            TextStyle(
-              wordSpacing: -0.800,
-              color: Colors.white,
-            fontWeight: FontWeight.w400,fontSize: 17.3,
-            letterSpacing: .9,
-            fontFamily:'NunitoSans'),
-            textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
-            SizedBox(height: 78.0,),
+            // Center(child: Padding(child: 
+            // Text('What\'s new ?',style: 
+            // TextStyle(color: Colors.white,
+            // fontWeight: FontWeight.w600,fontSize: 28.6,
+            // letterSpacing: .9,
+            // fontFamily:'Merienda'),
+            // textAlign: TextAlign.center),padding: EdgeInsets.only(top:18.0,bottom: 1.0,left: 18.0,right: 18.0),)),
+            // Padding(child: 
+            // Text('Share with the world',style: 
+            // TextStyle(
+            //   wordSpacing: -0.800,
+            //   color: Colors.white,
+            // fontWeight: FontWeight.w400,fontSize: 17.3,
+            // letterSpacing: .9,
+            // fontFamily:'NunitoSans'),
+            // textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
+            SizedBox(height: 20.0,),
             // ListView.builder(itemBuilder: (BuildContext),) inputBar()
            //  FocusScope.of(context).unfocus(focusPrevious: true);
             Padding(child:Padding(
@@ -456,7 +456,8 @@ return  Padding(child:Padding(
                  controller: controller,
                 decoration: InputDecoration(
                   errorText: isTextValid ? 'Storie Can\'t Be Blank' : null,
-                  hintText: 'Type a message',
+                  hintText: 'Share a story',
+                  hintStyle: TextStyle(fontFamily: 'Rukie',fontSize: 20, fontWeight: FontWeight.w500),
                   border: InputBorder.none,
                 ),
               ),
@@ -531,15 +532,9 @@ return  Padding(child:Padding(
 
 
   postImage(File image, bool isVideo) async {
-    // final url = randomAlpha(10);
-    // setState(() {
-     
-    // });
+     var storyTitle = controller.text; // store storyTitle
      controller.text.isEmpty ? isTextValid = true : isTextValid = false;
-     print('check if checked ${controller.text.isEmpty} ${isTextValid}');
-     print(isTextValid);
-     print(controller.text);
-
+   
     if(isTextValid){
       return;
     }
@@ -590,14 +585,14 @@ return  Padding(child:Padding(
           'fullName': prefs.getString('fullName'),
           'profilePicture': prefs.getString('profilePicture'),
           'isVideo': isVideo,
-          'storyTitle': controller.text,
+          'storyTitle': storyTitle,
           'hours': DateTime.now().hour,
           'doc_id': url,
           'videoDefault': defaultVideo,
           'path': 'N/A',
           'isChat': false
         };
-
+       
         final Map<String, dynamic> transcoderPayload = {
           'uid': url,
           'imageUrl': result.toString(),
@@ -626,20 +621,7 @@ return  Padding(child:Padding(
         fontSize: 15.0
     );
     sendNotificationsToAll();
-        if(isVideo){
-          print('I got firead in videos clause');
-   http.post('http://35.246.43.91/crucken-transcord',
-            body: json.encode(transcoderPayload),
-            headers: {
-              "accept": "application/json",
-              "content-type": "application/json"
-   }).then((onValue){
-print('transcoded image');
-            }).catchError((onError){
-print('failed to transcord image');
-            });
-
-        }
+        
                 controller.clear();
           } else {
              Navigator.of(context,rootNavigator: true).pop();
