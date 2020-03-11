@@ -179,7 +179,7 @@ GlobalKey<ScaffoldState> _key = GlobalKey();
               'fullName': controller.value.text
             }).then((resp){
          controller.clear();     
-Navigator.pop(context);
+        Navigator.pop(context);
             });
 }
 void _submitAbout() async {
@@ -187,7 +187,7 @@ void _submitAbout() async {
               'about':  controller.value.text
             }).then((resp){
                controller.clear();  
-Navigator.pop(context);
+              Navigator.pop(context);
             });
 }
 
@@ -262,10 +262,12 @@ Navigator.pop(context);
           ),
           InkWell(
             onTap: () {
-              if(actionPlaceholder == 'Add About'){
+              if(actionPlaceholder == 'Enter your username'){
+                 _submitUsername();
+              }else{
                 _submitAbout();
               }
-              _submitUsername();
+              
             },
             child: CircleAvatar(
               child: Icon(FontAwesomeIcons.paperPlane),
