@@ -494,7 +494,7 @@ fontWeight: FontWeight.w300),wrapWords: true,softWrap: true,
         Row(
           children: <Widget>[
            comment.isNotEmpty ? Icon(
-              Icons.music_note,
+              Icons.whatshot,
               size: 19,
               color: Colors.white,
             ): SizedBox.shrink(),
