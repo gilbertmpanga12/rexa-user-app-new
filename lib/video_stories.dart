@@ -441,7 +441,7 @@ class onScreenControls extends StatefulWidget {
 
 class _onScreenControlsState extends State<onScreenControls> {
 
-  Widget videoControlAction({IconData icon, String label, double size = 25,int index=0}) {
+  Widget videoControlAction({IconData icon, String label, double size = 26,int index=0}) {
   return Padding(
     padding: EdgeInsets.only(top: 10, bottom: 10),
     child: Column(
