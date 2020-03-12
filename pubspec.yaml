@@ -59,6 +59,8 @@ dependencies:
   flutter_spinkit: "^4.1.1"
   auto_size_text: ^2.1.0
   share: ^0.6.3+5
+  apple_sign_in: ^0.1.0
+
   # firebase_messaging: ^6.0.9
   flutter_localizations:
     sdk: flutter
@@ -67,18 +69,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-#   flutter_launcher_icons: ^0.7.0
+  flutter_launcher_icons: ^0.7.0
 #   flutter_native_splash: ^0.1.9
 
 # flutter_native_splash:
 #   image: assets/splash.png
 #   color: "ffffff"
 
-# flutter_icons:
-#   android: true
-#   ios: true
-#   image_path_android: "assets/icon/conda_launcher.png"
-#   image_path: "assets/icon/conda_launcher.png"
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/icon/conda_launcher.png"
+  image_path: "assets/icon/conda_launcher.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -131,5 +133,13 @@ flutter:
     - family: TikTokIcons
       fonts:
         - asset: fonts/TikTokIcons.ttf 
+    - family: Comfortaa
+      fonts:
+        - asset: fonts/Comfortaa-Bold.ttf
+          weight: 600
+        - asset: fonts/Comfortaa-Light.ttf
+          weight: 400
+        - asset: fonts/Comfortaa-Regular.ttf
+          weight: 500
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

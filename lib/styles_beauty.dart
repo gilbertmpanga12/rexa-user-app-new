@@ -355,14 +355,7 @@ return  Padding(child:Padding(
                   
                   shouldPickImageFull(context);
                 },),
-            // SizedBox(width: 8.0),
-            // InkWell(
-            //   onTap: (){
-            //      shouldPickVideo();
-            //   },
-            //   child: Icon(FontAwesomeIcons.video,
-            //     size: 20.0, color: Color(0xff203152)),),
-            // SizedBox(width: 8.0),
+          
           ],
         ),
       ),
@@ -398,25 +391,8 @@ return  Padding(child:Padding(
           return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-            Center(child: Padding(child: 
-            Text('What\'s new ?',style: 
-            TextStyle(color: Colors.white,
-            fontWeight: FontWeight.w600,fontSize: 28.6,
-            letterSpacing: .9,
-            fontFamily:'Merienda'),
-            textAlign: TextAlign.center),padding: EdgeInsets.only(top:18.0,bottom: 1.0,left: 18.0,right: 18.0),)),
-            Padding(child: 
-            Text('Share with the world',style: 
-            TextStyle(
-              wordSpacing: -0.800,
-              color: Colors.white,
-            fontWeight: FontWeight.w400,fontSize: 17.3,
-            letterSpacing: .9,
-            fontFamily:'NunitoSans'),
-            textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
-            SizedBox(height: 78.0,),
-            // ListView.builder(itemBuilder: (BuildContext),) inputBar()
-           //  FocusScope.of(context).unfocus(focusPrevious: true);
+            
+            SizedBox(height: 20.0,),
             Padding(child:Padding(
       padding: EdgeInsets.all(8.0),
       child: Row(
@@ -456,7 +432,8 @@ return  Padding(child:Padding(
                  controller: controller,
                 decoration: InputDecoration(
                   errorText: isTextValid ? 'Storie Can\'t Be Blank' : null,
-                  hintText: 'Type a message',
+                  hintText: 'Share a story',
+                  hintStyle: TextStyle(fontFamily: 'Rukie',fontSize: 20, fontWeight: FontWeight.w500),
                   border: InputBorder.none,
                 ),
               ),
@@ -531,15 +508,9 @@ return  Padding(child:Padding(
 
 
   postImage(File image, bool isVideo) async {
-    // final url = randomAlpha(10);
-    // setState(() {
-     
-    // });
+     var storyTitle = controller.text; // store storyTitle
      controller.text.isEmpty ? isTextValid = true : isTextValid = false;
-     print('check if checked ${controller.text.isEmpty} ${isTextValid}');
-     print(isTextValid);
-     print(controller.text);
-
+   
     if(isTextValid){
       return;
     }
@@ -590,14 +561,14 @@ return  Padding(child:Padding(
           'fullName': prefs.getString('fullName'),
           'profilePicture': prefs.getString('profilePicture'),
           'isVideo': isVideo,
-          'storyTitle': controller.text,
+          'storyTitle': storyTitle,
           'hours': DateTime.now().hour,
           'doc_id': url,
           'videoDefault': defaultVideo,
           'path': 'N/A',
           'isChat': false
         };
-
+       
         final Map<String, dynamic> transcoderPayload = {
           'uid': url,
           'imageUrl': result.toString(),
@@ -626,20 +597,7 @@ return  Padding(child:Padding(
         fontSize: 15.0
     );
     sendNotificationsToAll();
-        if(isVideo){
-          print('I got firead in videos clause');
-   http.post('http://35.246.43.91/crucken-transcord',
-            body: json.encode(transcoderPayload),
-            headers: {
-              "accept": "application/json",
-              "content-type": "application/json"
-   }).then((onValue){
-print('transcoded image');
-            }).catchError((onError){
-print('failed to transcord image');
-            });
-
-        }
+        
                 controller.clear();
           } else {
              Navigator.of(context,rootNavigator: true).pop();
@@ -665,20 +623,18 @@ Future<ui.Image> _getImage(String imageUrl) {
     new NetworkImage('$imageUrl')
       .resolve(new ImageConfiguration())
       .addListener(ImageStreamListener((ImageInfo image, bool synchronousCall) {
-        // var myImage = image.image;
-        // Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
         completer.complete(image.image);
       }));
     return completer.future;
   }
   Widget build(BuildContext context) {
     // double deviceHeight = MediaQuery.of(context).size.height;
-    return WillPopScope(child: SafeArea(child: Scaffold(
+    return WillPopScope(child: Scaffold(
           appBar: AppBar(
-            leading: AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? 
-            BackButton(onPressed: (){
+            // automaticallyImplyLeading: true,
+            leading: AppBar(leading: BackButton(onPressed: (){
                Navigator.popAndPushNamed(context, '/home'); 
-            },): SizedBox.shrink(),backgroundColor: Colors.white,elevation: 0,),
+            },color: Colors.black,),backgroundColor: Colors.white,elevation: 0,),
         
             title: Text(
               'Stories',
@@ -1059,7 +1015,7 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                      SizedBox(height: 4.4,),
 Row(children: <Widget>[
   
-Container(
+InkWell(child: Container(
                                         
                                         margin: EdgeInsets.only(right: 5.0),      width: 21,
                                               height: 21,
@@ -1078,7 +1034,16 @@ Container(
                                                   width: 0.0,
                                                 ),
                                               ),
-                                            ),
+                                            ) ,onTap: (){
+Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            StoriesComments(
+                                                                              uid: snapshot.data.documents[index]['doc_id'],
+                                                                            )));
+},),
 Text('${snapshot.data.documents[index]['commenter_name']}',style: TextStyle(fontSize: 12.0,fontWeight: FontWeight.bold),)
 ],),
                    Container(
@@ -1123,7 +1088,7 @@ Text('${snapshot.data.documents[index]['commenter_name']}',style: TextStyle(font
               color: Colors.blue[600]
             ),
             backgroundColor: Colors.white,focusElevation: 4.0,
-          ),),),onWillPop: (){
+          ),),onWillPop: (){
             Navigator.popAndPushNamed(context, '/home'); // riskingi
             return Future.value(false);
           },);

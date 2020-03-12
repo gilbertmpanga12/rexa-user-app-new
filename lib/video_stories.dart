@@ -42,9 +42,13 @@ File fileToBeUploaded;
 String uid;
 @override
 initState(){
+
   super.initState();
   _getPhoneNumber();
+ 
 }
+
+
 
 _getPhoneNumber() async{
    SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -101,23 +105,23 @@ void _settingModalBottomSheet(context) {
           return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-            Center(child: Padding(child: 
-            Text('What\'s new ?',style: 
-            TextStyle(color: Colors.white,
-            fontWeight: FontWeight.w600,fontSize: 28.6,
-            letterSpacing: .9,
-            fontFamily:'Merienda'),
-            textAlign: TextAlign.center),padding: EdgeInsets.only(top:18.0,bottom: 1.0,left: 18.0,right: 18.0),)),
-            Padding(child: 
-            Text('Share with the world',style: 
-            TextStyle(
-              wordSpacing: -0.800,
-              color: Colors.white,
-            fontWeight: FontWeight.w400,fontSize: 17.3,
-            letterSpacing: .9,
-            fontFamily:'NunitoSans'),
-            textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
-            SizedBox(height: 78.0,),
+            // Center(child: Padding(child: 
+            // Text('What\'s new ?',style: 
+            // TextStyle(color: Colors.white,
+            // fontWeight: FontWeight.w600,fontSize: 28.6,
+            // letterSpacing: .9,
+            // fontFamily:'Merienda'),
+            // textAlign: TextAlign.center),padding: EdgeInsets.only(top:18.0,bottom: 1.0,left: 18.0,right: 18.0),)),
+            // Padding(child: 
+            // Text('Share with the world',style: 
+            // TextStyle(
+            //   wordSpacing: -0.800,
+            //   color: Colors.white,
+            // fontWeight: FontWeight.w400,fontSize: 17.3,
+            // letterSpacing: .9,
+            // fontFamily:'NunitoSans'),
+            // textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
+            SizedBox(height: 20.0,),
             // ListView.builder(itemBuilder: (BuildContext),) inputBar()
            Padding(child:Padding(
       padding: EdgeInsets.all(8.0),
@@ -131,10 +135,12 @@ void _settingModalBottomSheet(context) {
         child: Row(
           children: <Widget>[
            SizedBox(width: 13.0),
-          
+           InkWell(child: Icon(FontAwesomeIcons.image,
+                size: 20.0, color: Color(0xff203152),),onTap: (){
+                  shouldFromCamera(context);
+                },),SizedBox(width: 5.0),
             Expanded(
               child: TextField(
-
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(500)
                 ],
@@ -144,15 +150,14 @@ void _settingModalBottomSheet(context) {
                  controller: controller,
                 decoration: InputDecoration(
                   errorText: isTextValid ? 'Storie Can\'t Be Blank' : null,
-                  hintText: 'Leave a comment',
+                  hintText: 'Share a video story',hintStyle:  TextStyle(
+                    fontFamily: 'Rukie',fontSize: 20, 
+                    fontWeight: FontWeight.w500),
                   border: InputBorder.none,
                 ),
               ),
             ),
-            InkWell(child: Icon(FontAwesomeIcons.image,
-                size: 20.0, color: Color(0xff203152),),onTap: (){
-                  shouldFromCamera(context);
-                },),
+           
             SizedBox(width: 8.0),
             InkWell(
               onTap: (){
@@ -216,6 +221,7 @@ shouldFromCamera(BuildContext context) async{
 
 postImage(File image) async {
     // final url = randomAlpha(10);
+    var storyTitle = controller.text; 
      controller.text.isEmpty ? isTextValid = true : isTextValid = false;
     if(isTextValid){
       return;
@@ -261,19 +267,19 @@ postImage(File image) async {
 
     task.onComplete.then((image) {
       firebaseStorageRef.getDownloadURL().then((result) {
-        final Map<String, dynamic> service = {
-          'servicePhoto': result.toString(),
-          'userId': prefs.getString('uid'),
-          'fullName': prefs.getString('fullName'),
-          'profilePicture': prefs.getString('profilePicture'),
-          'isVideo': true,
-          'storyTitle': controller.text,
-          'hours': DateTime.now().hour,
-          'doc_id': url,
-          'videoDefault': defaultVideo,
-          'path': 'N/A',
-          'isChat': false
-        };
+        // final Map<String, dynamic> service = {
+        //   'servicePhoto': result.toString(),
+        //   'userId': prefs.getString('uid'),
+        //   'fullName': prefs.getString('fullName'),
+        //   'profilePicture': prefs.getString('profilePicture'),
+        //   'isVideo': true,
+        //   'storyTitle': storyTitle ,
+        //   'hours': DateTime.now().hour,
+        //   'doc_id': url,
+        //   'videoDefault': defaultVideo,
+        //   'path': 'N/A',
+        //   'isChat': false
+        // };
 Firestore.instance.collection('userServiceVideos').document(url).setData({
 'userId': prefs.getString('uid'),
 'servicePhoto': result.toString(),
@@ -286,7 +292,7 @@ Firestore.instance.collection('userServiceVideos').document(url).setData({
 'isVideo': true,
 'comment_sample': '',
 'count': '0',
-'storyTitle': controller.text,
+'storyTitle': storyTitle ,
 'full_date':  DateTime.now(),
 'videoDefault': defaultVideo,
 'path': 'N/A','commentNumbers':0,'likes':0,'commenterPhotoUrl':'N/A'
@@ -364,9 +370,13 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
   @override
   void initState() {
     // print(widget.url);
+  //     SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.landscapeRight,
+  //     DeviceOrientation.landscapeLeft,
+  // ]);
     super.initState();
     _controller = VideoPlayerController.network(
-        '${widget.url}')
+        '${widget.url}',)
       ..initialize().then((_) {
         _controller.play();
         setState(() {});
@@ -379,7 +389,7 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
       child: _controller.value.initialized
           ? InkWell(child: AspectRatio(
               aspectRatio: _controller.value.aspectRatio,
-              child: VideoPlayer(_controller),
+              child: VideoPlayer(_controller,),
             ),onTap: (){
               setState(() {
       if (_controller.value.isPlaying) {
@@ -399,6 +409,10 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
 
   @override
   void dispose() {
+  //     SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.landscapeRight,
+  //     DeviceOrientation.landscapeLeft,
+  // ]);
     super.dispose();
      _controller.pause();
     _controller.dispose();
@@ -427,7 +441,7 @@ class onScreenControls extends StatefulWidget {
 
 class _onScreenControlsState extends State<onScreenControls> {
 
-  Widget videoControlAction({IconData icon, String label, double size = 35,int index=0}) {
+  Widget videoControlAction({IconData icon, String label, double size = 26,int index=0}) {
   return Padding(
     padding: EdgeInsets.only(top: 10, bottom: 10),
     child: Column(
@@ -494,7 +508,7 @@ fontWeight: FontWeight.w300),wrapWords: true,softWrap: true,
         Row(
           children: <Widget>[
            comment.isNotEmpty ? Icon(
-              Icons.music_note,
+              Icons.whatshot,
               size: 19,
               color: Colors.white,
             ): SizedBox.shrink(),
