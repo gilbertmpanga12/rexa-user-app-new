@@ -355,14 +355,7 @@ return  Padding(child:Padding(
                   
                   shouldPickImageFull(context);
                 },),
-            // SizedBox(width: 8.0),
-            // InkWell(
-            //   onTap: (){
-            //      shouldPickVideo();
-            //   },
-            //   child: Icon(FontAwesomeIcons.video,
-            //     size: 20.0, color: Color(0xff203152)),),
-            // SizedBox(width: 8.0),
+          
           ],
         ),
       ),
@@ -398,25 +391,8 @@ return  Padding(child:Padding(
           return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-            // Center(child: Padding(child: 
-            // Text('What\'s new ?',style: 
-            // TextStyle(color: Colors.white,
-            // fontWeight: FontWeight.w600,fontSize: 28.6,
-            // letterSpacing: .9,
-            // fontFamily:'Merienda'),
-            // textAlign: TextAlign.center),padding: EdgeInsets.only(top:18.0,bottom: 1.0,left: 18.0,right: 18.0),)),
-            // Padding(child: 
-            // Text('Share with the world',style: 
-            // TextStyle(
-            //   wordSpacing: -0.800,
-            //   color: Colors.white,
-            // fontWeight: FontWeight.w400,fontSize: 17.3,
-            // letterSpacing: .9,
-            // fontFamily:'NunitoSans'),
-            // textAlign: TextAlign.center),padding: EdgeInsets.all(1.0),),
+            
             SizedBox(height: 20.0,),
-            // ListView.builder(itemBuilder: (BuildContext),) inputBar()
-           //  FocusScope.of(context).unfocus(focusPrevious: true);
             Padding(child:Padding(
       padding: EdgeInsets.all(8.0),
       child: Row(
@@ -647,20 +623,18 @@ Future<ui.Image> _getImage(String imageUrl) {
     new NetworkImage('$imageUrl')
       .resolve(new ImageConfiguration())
       .addListener(ImageStreamListener((ImageInfo image, bool synchronousCall) {
-        // var myImage = image.image;
-        // Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
         completer.complete(image.image);
       }));
     return completer.future;
   }
   Widget build(BuildContext context) {
     // double deviceHeight = MediaQuery.of(context).size.height;
-    return WillPopScope(child: SafeArea(child: Scaffold(
+    return WillPopScope(child: Scaffold(
           appBar: AppBar(
-            leading: AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? 
-            BackButton(onPressed: (){
+            // automaticallyImplyLeading: true,
+            leading: AppBar(leading: BackButton(onPressed: (){
                Navigator.popAndPushNamed(context, '/home'); 
-            },): SizedBox.shrink(),backgroundColor: Colors.white,elevation: 0,),
+            },color: Colors.black,),backgroundColor: Colors.white,elevation: 0,),
         
             title: Text(
               'Stories',
@@ -1114,7 +1088,7 @@ Text('${snapshot.data.documents[index]['commenter_name']}',style: TextStyle(font
               color: Colors.blue[600]
             ),
             backgroundColor: Colors.white,focusElevation: 4.0,
-          ),),),onWillPop: (){
+          ),),onWillPop: (){
             Navigator.popAndPushNamed(context, '/home'); // riskingi
             return Future.value(false);
           },);
