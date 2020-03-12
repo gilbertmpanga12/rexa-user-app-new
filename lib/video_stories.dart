@@ -135,10 +135,12 @@ void _settingModalBottomSheet(context) {
         child: Row(
           children: <Widget>[
            SizedBox(width: 13.0),
-          
+           InkWell(child: Icon(FontAwesomeIcons.image,
+                size: 20.0, color: Color(0xff203152),),onTap: (){
+                  shouldFromCamera(context);
+                },),SizedBox(width: 5.0),
             Expanded(
               child: TextField(
-
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(500)
                 ],
@@ -148,15 +150,14 @@ void _settingModalBottomSheet(context) {
                  controller: controller,
                 decoration: InputDecoration(
                   errorText: isTextValid ? 'Storie Can\'t Be Blank' : null,
-                  hintText: 'Share a Story',hintStyle:  TextStyle(fontFamily: 'Rukie',fontSize: 20, fontWeight: FontWeight.w500),
+                  hintText: 'Share a video story',hintStyle:  TextStyle(
+                    fontFamily: 'Rukie',fontSize: 20, 
+                    fontWeight: FontWeight.w500),
                   border: InputBorder.none,
                 ),
               ),
             ),
-            InkWell(child: Icon(FontAwesomeIcons.image,
-                size: 20.0, color: Color(0xff203152),),onTap: (){
-                  shouldFromCamera(context);
-                },),
+           
             SizedBox(width: 8.0),
             InkWell(
               onTap: (){
