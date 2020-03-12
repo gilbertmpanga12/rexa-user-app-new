@@ -515,7 +515,7 @@ SizedBox(height: 3,),
     Theme.of(context).platform == TargetPlatform.iOS ? Container(child: AppleSignInButton( 
   style: ButtonStyle.black,
   type: ButtonType.signIn,
-  onPressed: () => _signInWithApple(context),
+  onPressed: () => _signInWithApple(context, '${_defaultCode + _phoneNumberController.text.substring(1,)}'),
 ),width: 250.0,): SizedBox.shrink(),
                       // semiChecker()
         Align(child: Padding(child: RichText(
