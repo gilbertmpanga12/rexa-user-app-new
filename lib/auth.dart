@@ -1,5 +1,8 @@
 import 'dart:async';
 // added new changes +++
+import 'package:apple_sign_in/apple_sign_in_button.dart';
+import 'package:apple_sign_in/scope.dart';
+
 import './swiper.dart';
 import './terms_and_conditions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,6 +16,8 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+
+import 'app_services/auth_service.dart';
 
 
 class UserNew {
@@ -399,6 +404,62 @@ Widget buildSmsTitle(){
               );
   }
 
+   Future<void> _signInWithApple(BuildContext context, String phoneNumber) async {
+   if(mounted){
+   setState(() {
+  showSpinner = true;
+  });
+  }
+    
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+   try {
+    final user = await authService.signInWithApple(
+        scopes: [Scope.email, Scope.fullName]);
+   prefs.setString('token', '${user.getIdToken()}');
+    prefs.setString('customNumber', phoneNumber);
+    prefs.setString('email', '${user.email}');
+    prefs.setString('uid', phoneNumber);
+    prefs.setString('phoneNumber', phoneNumber);// causes chat bug if missing
+    prefs.setString('profilePicture', '${user.photoUrl}');
+    prefs.setString('fullName', '${user.displayName}');
+    // prefs.setString('fcm_token', newuser.data['fcm_token']);
+    Firestore.instance.collection('users').document(phoneNumber).get().then((newuser){
+      if(newuser.exists){
+        prefs.setBool('isNewUser', false);
+        prefs.setBool('isSignedIn', true);
+        prefs.setString('iso_code', newuser.data['iso_code']);
+        prefs.setString('fullName', newuser.data['fullName']); 
+        prefs.setString('countryCode', newuser.data['country_code']);
+        prefs.setString('profilePicture', newuser.data['profilePicture']);
+        prefs.setDouble('long', newuser.data['longitude']);
+        prefs.setDouble('lat', newuser.data['latitude']); // fcm_token
+        prefs.setString('fcm_token', newuser.data['fcm_token']);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Swiper()));
+      }else{
+
+    http.get(
+    'https://young-tor-95342.herokuapp.com/verify-user/${_phoneNumberController.text}/$_defaultCode').then((res){
+     
+      if(res.statusCode == 200 || res.statusCode == 201){
+         if(mounted){
+   setState(() {
+  showSpinner = false;
+  _verificationId = true;
+  });
+  }
+  setClocks();
+      }else{
+        errorDialog('Oops something went wrong! Try again');
+      }
+    });
+      }
+    });
+  
+  } catch (e) {
+    errorDialog(e.toString());
+  }
+}
+
 
 
   Widget buildVerifyForm(){
@@ -448,30 +509,14 @@ InkWell(
       ),
     ),
     SizedBox(height: 2,),
-//     _divider(),
-
-// InkWell(
-//       onTap: () {
-//         verifyPhoneNumber('${_defaultCode + _phoneNumberController.text.substring(1,)}');
-//       },
-//       child: Container(
-//         margin: EdgeInsets.only(top: 20),
-//         width: MediaQuery.of(context).size.width -51,
-//         padding: EdgeInsets.symmetric(vertical: 13),
-//         alignment: Alignment.center,
-//         decoration: BoxDecoration(
-//             borderRadius: BorderRadius.all(Radius.circular(5)),
-//             boxShadow: <BoxShadow>[
-//               BoxShadow(
-//                   color: Color(0xffffffff).withAlpha(100),
-//                   offset: Offset(2, 4),
-//                   blurRadius: 8,
-//                   spreadRadius: 2)
-//             ],
-//             color: Colors.black),
-//         child: Text('Sign In with Apple',style: TextStyle(color: Colors.white,)),
-//       ),
-//     ),
+SizedBox(height: 3,),
+Theme.of(context).platform == TargetPlatform.iOS ?_divider(): SizedBox.shrink(),
+SizedBox(height: 3,),
+    Theme.of(context).platform == TargetPlatform.iOS ? Container(child: AppleSignInButton( 
+  style: ButtonStyle.black,
+  type: ButtonType.signIn,
+  onPressed: () => _signInWithApple(context),
+),width: 250.0,): SizedBox.shrink(),
                       // semiChecker()
         Align(child: Padding(child: RichText(
                   textAlign: TextAlign.center,
