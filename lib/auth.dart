@@ -447,6 +447,31 @@ InkWell(
         child: defaultButtonText(),
       ),
     ),
+    SizedBox(height: 2,),
+//     _divider(),
+
+// InkWell(
+//       onTap: () {
+//         verifyPhoneNumber('${_defaultCode + _phoneNumberController.text.substring(1,)}');
+//       },
+//       child: Container(
+//         margin: EdgeInsets.only(top: 20),
+//         width: MediaQuery.of(context).size.width -51,
+//         padding: EdgeInsets.symmetric(vertical: 13),
+//         alignment: Alignment.center,
+//         decoration: BoxDecoration(
+//             borderRadius: BorderRadius.all(Radius.circular(5)),
+//             boxShadow: <BoxShadow>[
+//               BoxShadow(
+//                   color: Color(0xffffffff).withAlpha(100),
+//                   offset: Offset(2, 4),
+//                   blurRadius: 8,
+//                   spreadRadius: 2)
+//             ],
+//             color: Colors.black),
+//         child: Text('Sign In with Apple',style: TextStyle(color: Colors.white,)),
+//       ),
+//     ),
                       // semiChecker()
         Align(child: Padding(child: RichText(
                   textAlign: TextAlign.center,
@@ -528,6 +553,39 @@ Container(child:InkWell(
           );
   }
 
+
+  Widget _divider() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: <Widget>[
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(
+                thickness: 1,
+              ),
+            ),
+          ),
+          Text('or'),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(
+                thickness: 1,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+        ],
+      ),
+    );
+  }
 
 
   Widget build(BuildContext context) {

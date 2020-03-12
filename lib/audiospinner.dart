@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 Widget audioSpinner(String commenterPhotoUrl) {
   return Container(
-      width: 50.0,
-      height: 50.0,
+      width: 30.0,
+      height: 30.0,
       decoration: BoxDecoration(
           gradient: audioDiscGradient,
           shape: BoxShape.circle,

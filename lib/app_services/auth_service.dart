@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
-
 class UserDetails {
   final String phoneNumber;
   final String fullName;
