@@ -1,7 +1,4 @@
-import 'dart:async';
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
-
 import './swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -119,8 +116,6 @@ class ServicesContacts extends StatefulWidget {
 }
 
 class ServicesContactsState extends State<ServicesContacts> {
-  StreamSubscription<ConnectivityResult> subscription;
-  bool isActive = true;
   String _uid;
   String _requestedSaloonService;
   String _requestedDescription;
@@ -348,7 +343,9 @@ print(err);
   fetchCategories() async {
     try {
       final response = await http.get(
-          'https://young-tor-95342.herokuapp.com/api/get-service-provider/$_uid');
+          'https://viking-250012.appspot.com/api/get-service-provider/$_uid');
+          print('My body***** ${response.statusCode}' );
+          print(response.body);
           
       if (response.statusCode == 200 || response.statusCode == 201) {
         fetchResults = ServiceProvider.fromJson(json.decode(response.body));
@@ -443,7 +440,7 @@ await OneSignal.shared.postNotificationWithJson({
     
    
     final response = await http.post(
-        'https://young-tor-95342.herokuapp.com/api/make-request',
+        'https://viking-250012.appspot.com/api/make-request',
         body: _payload,
         headers: {
           "accept": "application/json",
@@ -483,23 +480,6 @@ requestServiceNotifier(_fcmToken,
 
 @override
   void initState() {
-    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-       if (result.toString() == 'ConnectivityResult.mobile') {
-setState(() {
-  isActive = true;
-});
-} else if (result.toString() == 'ConnectivityResult.wifi'){
-setState(() {
-  isActive = true;
-});
-} else if(result.toString() == 'ConnectivityResult.none'){
-  setState(() {
-      isActive = false;
-});
-   
-       }
-       
-  });
     serviceProviderToken = widget.serviceProviderToken;
     _uid = widget.uid;
     _requestedSaloonService = widget.serviceOffered;
@@ -550,7 +530,7 @@ dispose(){
          
         ),
         body: Center(
-                child: isActive ?  ListView(
+                child: ListView(
                   children: <Widget>[
                     Center(
                       child: Padding(
@@ -782,8 +762,8 @@ Container(
                       ),
                     )
                   ],
-                )
-              : Center(child: Padding(child: Text('Check your internet connection'),padding: EdgeInsets.all(8.0),),)),
+                ),
+              ),
                   // I will be back 
         bottomNavigationBar:  StreamBuilder(builder:(context, request_canceler){
           if(!request_canceler.hasData){
@@ -933,7 +913,7 @@ Toast.show('Oops shipping address  not available', context,backgroundColor: Colo
                     'Cancel Request',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 27.0,
+                        fontSize: 25.0,
                         fontWeight: FontWeight.w600,fontFamily: 'NunitoSans'),
                     textAlign: TextAlign.center,
                   ),
