@@ -44,14 +44,22 @@ initState(){
   super.initState();
   
   _getPhoneNumber();
+  _deactivateCount();
 }
 
-_getPhoneNumber() async{
+_getPhoneNumber() async {
    SharedPreferences prefs = await SharedPreferences.getInstance();
    setState(() {
      uid = prefs.getString('uid');
      countryCode = prefs.getString('countryCode') ?? 'UG';
    });
+}
+
+_deactivateCount() async {
+await Firestore.instance.collection('users')
+    .document('_firebaseUID').setData({
+      'hasNewVideo': false
+    }, merge: true);
 }
 
   Widget VideoPageWidget(BuildContext context){
