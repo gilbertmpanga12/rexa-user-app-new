@@ -234,7 +234,9 @@ keyboardType: TextInputType.datetime,
         'birthday': _date,
         'current_status': 'Online',
         'created_at': DateTime.now(),
-        'last_signin': 0
+        'last_signin': 0,
+        'hasRated': false,
+        'hasNewVideo': false
       }).then((onValue){
         Navigator.of(context, rootNavigator: true).pop('dialog');
           prefs.setBool('isSignedIn', true); // set to true finally for new users

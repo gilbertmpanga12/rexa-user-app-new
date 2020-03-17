@@ -385,7 +385,7 @@ StreamBuilder(stream: Firestore.instance.collection('users')
                   Navigator.pushNamed(context, '/rating');
                 });
         default:
-          return snapshots.data['ratingCount'] > 0 ? actionIcon('1', Icons.star_border, '/rating'): IconButton(icon: Icon(Icons.star_border,color: Colors.black87,size: 25.0), onPressed: () {
+          return snapshots.data['hasRated'] ? actionIcon('1', Icons.star_border, '/rating'): IconButton(icon: Icon(Icons.star_border,color: Colors.black87,size: 25.0), onPressed: () {
                   Navigator.pushNamed(context, '/rating');
                 });
       }
@@ -399,7 +399,7 @@ StreamBuilder(stream: Firestore.instance.collection('users')
           Navigator.pushNamed(context, '/tv');
         });
         default:
-          return snapshots.data['tvCount'] > 0 ? actionIcon('1', Icons.live_tv, '/tv'): IconButton(icon: Icon(Icons.live_tv,color: Colors.black87,size: 25.0), onPressed: () {
+          return snapshots.data['hasNewVideo']  ? actionIcon('1', Icons.live_tv, '/tv'): IconButton(icon: Icon(Icons.live_tv,color: Colors.black87,size: 25.0), onPressed: () {
                   Navigator.pushNamed(context, '/tv');
        });
       }
