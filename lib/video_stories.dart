@@ -221,7 +221,7 @@ shouldFromCamera(BuildContext context) async{
 
 postImage(File image) async {
     // final url = randomAlpha(10);
-    var storyTitle = controller.text; 
+    var storyTitle = controller.text.replaceAll("\n", " "); 
      controller.text.isEmpty ? isTextValid = true : isTextValid = false;
     if(isTextValid){
       return;
