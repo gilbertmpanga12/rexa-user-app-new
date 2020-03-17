@@ -46,12 +46,12 @@ class ReceivedNotification {
 
 
 Future<void>main() async {
-   // for IOS -> 043cf2de-40cc-4010-b431-4e02a950f75f - Business
-   // for Android -> 0a2fc101-4f5a-44c2-97b9-c8eb8f420e08 -> User
+   // for IOS -> 043cf2de-40cc-4010-b431-4e02a950f75f- Business
+   // for Android -> 01d9552f-a5c7-49a1-bf05-6886d9ccc944 -> User
    
   WidgetsFlutterBinding.ensureInitialized();
    OneSignal.shared.init(
-  "043cf2de-40cc-4010-b431-4e02a950f75f",
+  "01d9552f-a5c7-49a1-bf05-6886d9ccc944",
   iOSSettings: {
     OSiOSSettings.autoPrompt: false,
     OSiOSSettings.inAppLaunchUrl: true
