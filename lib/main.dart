@@ -29,6 +29,7 @@ import './swiper.dart';
 import './changeCountry.dart';
 import 'app_services/auth_service.dart';
 import 'default_shell.dart';
+import 'globals/config.dart';
 
 
 class ReceivedNotification {
@@ -51,7 +52,7 @@ Future<void>main() async {
    // for New Android  -> 306a55a3-92f5-4aac-9cb5-21fff19320e5
   WidgetsFlutterBinding.ensureInitialized();
    OneSignal.shared.init(
-  "306a55a3-92f5-4aac-9cb5-21fff19320e5",
+  Configs.appIdUserAndroidOneSignal,
   iOSSettings: {
     OSiOSSettings.autoPrompt: true,
     OSiOSSettings.inAppLaunchUrl: true
