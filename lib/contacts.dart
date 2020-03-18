@@ -12,6 +12,7 @@ import 'package:toast/toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:url_launcher/url_launcher.dart';
 import './webview.dart';
+import 'globals/config.dart';
 
 class ServiceProvider {
   final String fullName;
@@ -373,10 +374,10 @@ print(err);
 
 
 
-requestServiceNotifier(String playerId, String contents, String headings) async{
+requestServiceNotifier(String playerId, String contents, String headings) async {
 String url = 'https://onesignal.com/api/v1/notifications';
 Map<dynamic, dynamic> body = {
-'app_id': '043cf2de-40cc-4010-b431-4e02a950f75f',
+'app_id': Configs.appIdBusinessAndroidOnesignal,
 'contents': {"en": contents},
 'include_player_ids': [playerId],
 'headings': {"en": headings},
@@ -386,16 +387,11 @@ Map<dynamic, dynamic> body = {
 }; 
 final response = await http.post(url,
 body: json.encode(body),
-headers: {HttpHeaders.authorizationHeader: "Basic OTQ4NjQ5NzQtYWI0MS00NjVlLTgzNmEtNGZjMmRhOTJjOWNi",
+headers: {HttpHeaders.authorizationHeader: Configs.authorizationHeaderAndroidOnesignal,
 "accept": "application/json",
 "content-type": "application/json"
 }
 );
-print('$playerId');
-print(response.body);
-print(response.statusCode);
-print(response.toString());
-
 }
 
   makeServiceRequest() async {
