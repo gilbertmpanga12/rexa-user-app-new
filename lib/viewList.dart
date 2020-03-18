@@ -188,14 +188,14 @@ flushbar.dismiss();
        
   });
 
-OneSignal.shared.setNotificationReceivedHandler((OSNotification result) {
-  //  if(result.payload.rawPayload['title'].toString().contains('shared a new style')){
-  // }
-   if (result.payload.additionalData['type'] == 'new-videos'){
-     _activateVideoCount();
-  }
+// OneSignal.shared.setNotificationReceivedHandler((OSNotification result) {
+//   //  if(result.payload.rawPayload['title'].toString().contains('shared a new style')){
+//   // }
+//    if (result.payload.additionalData['type'] == 'new-videos'){
+//      _activateVideoCount();
+//   }
 
-});
+// });
 
 
 

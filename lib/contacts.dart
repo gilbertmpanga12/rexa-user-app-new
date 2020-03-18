@@ -370,23 +370,32 @@ print(err);
       });
     }
   }
-/*
-*  isRequested: order.isPending,
-        requestedSaloonService: order.requestedSaloonService,
-        timeStamp: order.timeStamp,
-        serviceProviderId: order.serviceProviderId,
-        userId: order.userId
-* */
 
 
-requestServiceNotifier(String playerId, String contents, String headings) async {
-await OneSignal.shared.postNotificationWithJson({
-  "include_player_ids" : [_fcmToken],
-  "contents" : {"en" : contents},
-  "headings": {"en": headings},
-  "small_icon": "@mipmap/ic_launcher",
-  "large_icon": "@mipmap/ic_launcher"
-});
+
+requestServiceNotifier(String playerId, String contents, String headings) async{
+String url = 'https://onesignal.com/api/v1/notifications';
+Map<dynamic, dynamic> body = {
+'app_id': '043cf2de-40cc-4010-b431-4e02a950f75f',
+'contents': {"en": contents},
+'include_player_ids': [playerId],
+'headings': {"en": headings},
+'data': {"type": "new-stories"},
+ "small_icon": "@mipmap/ic_launcher",
+ "large_icon": "@mipmap/ic_launcher"
+}; 
+final response = await http.post(url,
+body: json.encode(body),
+headers: {HttpHeaders.authorizationHeader: "Basic OTQ4NjQ5NzQtYWI0MS00NjVlLTgzNmEtNGZjMmRhOTJjOWNi",
+"accept": "application/json",
+"content-type": "application/json"
+}
+);
+print('$playerId');
+print(response.body);
+print(response.statusCode);
+print(response.toString());
+
 }
 
   makeServiceRequest() async {
