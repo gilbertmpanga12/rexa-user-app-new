@@ -25,7 +25,7 @@ class ServiceProvider {
   final String latitude;
   final String location;
   final String isRequested;
-
+  // final bool isIos;
   ServiceProvider(
       {this.profilePicture,
       this.longitude,
@@ -91,7 +91,7 @@ class ServicesContacts extends StatefulWidget {
   final String serviceProviderNamePhone;
   final String  serviceProviderPhoto;
   final String fcmToken;
-  
+  final bool isIos;
 
   ServicesContacts(
       {this.uid,
@@ -111,7 +111,8 @@ class ServicesContacts extends StatefulWidget {
       this.serviceProviderName,
       this.serviceProviderNamePhone,
       this.serviceProviderPhoto,
-      this.fcmToken
+      this.fcmToken,
+      this.isIos
       });
       
 
@@ -312,6 +313,7 @@ print(err);
   cancelBooked() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isBooked', false);
+    prefs.remove('isIos');
   }
   
 
@@ -361,7 +363,7 @@ print(err);
 
 requestServiceNotifier(String playerId, String contents, String headings) async {
 String url = 'https://onesignal.com/api/v1/notifications';
-Map<dynamic, dynamic> body = {
+  Map<dynamic, dynamic> body = {
 'app_id': Configs.appIdBusinessAndroidOnesignal,
 'contents': {"en": contents},
 'include_player_ids': [playerId],
@@ -377,6 +379,7 @@ headers: {HttpHeaders.authorizationHeader: Configs.authorizationHeaderAndroidOne
 "content-type": "application/json"
 }
 );
+
 }
 
   makeServiceRequest() async {
@@ -450,6 +453,7 @@ headers: {HttpHeaders.authorizationHeader: Configs.authorizationHeaderAndroidOne
       prefs.setString('servicePrice', _price);
       prefs.setString('serviceHours', serviceHours);
       prefs.setString('providerphoneNumber', _serviceProviderNamePhone);
+      prefs.setBool('isIos', widget.isIos);
       Navigator.pop(context);
      
   Navigator.pushReplacementNamed(context, '/success');

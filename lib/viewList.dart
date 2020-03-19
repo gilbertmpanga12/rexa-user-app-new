@@ -581,6 +581,7 @@ return ListView.builder(
                                                       website: '${snapshot.data.documents[index]['website']}',
                                                       shippingAddress: '${snapshot.data.documents[index]['shippingAddress']}',
                                                       fcmToken: '${snapshot.data.documents[index]['fcm_token']}' ,
+                                                      isIos: snapshot.data.documents[index]['isIos'],
                                                 )));
                                   },
                                 ),
@@ -644,6 +645,7 @@ return ListView.builder(
                                                                 website: '${snapshot.data.documents[index]['website']}',
                                                                 shippingAddress: '${snapshot.data.documents[index]['shippingAddress']}',
                                                                 fcmToken: '${snapshot.data.documents[index]['fcm_token']}',
+                                                                isIos: snapshot.data.documents[index]['isIos'],
                                                           )));
                                             } else {
                                               Navigator.push(
