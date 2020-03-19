@@ -52,7 +52,7 @@ Future<void>main() async {
    // for New Android  -> 306a55a3-92f5-4aac-9cb5-21fff19320e5
   WidgetsFlutterBinding.ensureInitialized();
    OneSignal.shared.init(
-  Configs.appIdUserAndroidOneSignal,
+  Configs.appleUserIosappId,
   iOSSettings: {
     OSiOSSettings.autoPrompt: true,
     OSiOSSettings.inAppLaunchUrl: true
