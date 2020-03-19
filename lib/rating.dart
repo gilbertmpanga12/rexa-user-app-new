@@ -96,10 +96,7 @@ class RatingState extends State<RatingWidget> {
       'comment_length': comment.length,
       'rating': rating
     });
-   Firestore.instance.collection('users').document(prefs.getString('uid')).setData({
-   'ratingCount': 0
- },merge: true).then((onValue){
-http.post(
+     http.post(
         'https://young-tor-95342.herokuapp.com/api/rate-salon-provider',
         body: _payload,
         headers: {
@@ -118,8 +115,6 @@ if (response.statusCode == 200 || response.statusCode == 201) {
       throw Exception('Oops something wrong');
     }
         });
-    
- });
 
     
   }
@@ -128,7 +123,7 @@ if (response.statusCode == 200 || response.statusCode == 201) {
  removeNots() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
  await Firestore.instance.collection('users').document(prefs.getString('uid')).setData({
-   'ratingCount': 0
+   'hasRated': false,
  },merge: true);
   }
   

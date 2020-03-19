@@ -230,7 +230,7 @@ _launchURL() async {
   }
 
   Widget build(BuildContext context) {
-    var deviceSize = MediaQuery.of(context).size;
+    // var deviceSize = MediaQuery.of(context).size;
     return SafeArea(
       child: WillPopScope(child: Scaffold(
         appBar: AppBar(

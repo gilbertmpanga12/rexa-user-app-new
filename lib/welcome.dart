@@ -217,7 +217,7 @@ keyboardType: TextInputType.datetime,
         'gender': _defaultGender,
         'location': _location,
         'profilePicture': 'https://firebasestorage.googleapis.com/v0/b/esalonbusiness-d3f3d.appspot.com/o/avatar.png?alt=media&token=53503121-c01f-4450-a5cc-cf25e76f0697',
-        'uid': '+256785442776',
+        'uid': prefs.get('uid'),
         'longitude': prefs.getDouble('long'),
         'latitude': prefs.getDouble('lat'),
         'nin': 'N/A',
@@ -232,7 +232,11 @@ keyboardType: TextInputType.datetime,
         'ratingCount': 0,
         'tvCount': 0,
         'birthday': _date,
-        'current_status': 'Online'
+        'current_status': 'Online',
+        'created_at': DateTime.now(),
+        'last_signin': 0,
+        'hasRated': false,
+        'hasNewVideo': false
       }).then((onValue){
         Navigator.of(context, rootNavigator: true).pop('dialog');
           prefs.setBool('isSignedIn', true); // set to true finally for new users

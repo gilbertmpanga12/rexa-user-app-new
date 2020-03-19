@@ -67,7 +67,7 @@ Navigator.push(context, MaterialPageRoute(builder: (context) {
         appBar: AppBar(
           leading:  AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? BackButton(color: Colors.black,onPressed: () async{
         Navigator.popAndPushNamed(context, '/home'); 
-      },): SizedBox.shrink(),backgroundColor: Colors.white,elevation: 0,),
+      },): SizedBox.shrink(), backgroundColor: Colors.white,elevation: 0,),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 1.0,

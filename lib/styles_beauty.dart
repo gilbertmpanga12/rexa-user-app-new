@@ -29,6 +29,7 @@ import 'package:dio/dio.dart';
 import 'package:file_utils/file_utils.dart';
 import 'dart:ui' as ui;
 import './swiper.dart' as swiper;
+import 'globals/config.dart';
 
 class StylesBeauty {
   final String fullName;
@@ -230,7 +231,7 @@ sendNotificationsToAll() async {
 
 String url = 'https://onesignal.com/api/v1/notifications';
 Map<dynamic, dynamic> body = {
-'app_id': '0a2fc101-4f5a-44c2-97b9-c8eb8f420e08',
+'app_id': Configs.appIdUserAndroidOneSignal,
 'contents': {"en": "Stories"},
 'included_segments': ["All"],
 'headings': {"en": "$_actualName shared a new style"},

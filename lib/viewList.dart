@@ -188,6 +188,17 @@ flushbar.dismiss();
        
   });
 
+// OneSignal.shared.setNotificationReceivedHandler((OSNotification result) {
+//   //  if(result.payload.rawPayload['title'].toString().contains('shared a new style')){
+//   // }
+//    if (result.payload.additionalData['type'] == 'new-videos'){
+//      _activateVideoCount();
+//   }
+
+// });
+
+
+
 OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult notification){
 try{
  if(notification.notification.payload.rawPayload['title'].toString().contains('Rate')){
@@ -222,6 +233,12 @@ print('Nothing to open');
   
   }
 
+_activateVideoCount() async {
+await Firestore.instance.collection('users')
+    .document('_firebaseUID').setData({
+      'hasNewVideo': true
+    }, merge: true);
+}
 
 
   @override
@@ -235,61 +252,6 @@ print('Nothing to open');
     super.dispose();
   }
 
- 
-  Future onDidReceiveLocalNotification(
-      int id, String title, String body, String payload) async {
-    // display a dialog with the notification details, tap ok to go to another page
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          /*
-         => new CupertinoAlertDialog(
-            title: new Text(title),
-            content: new Text(body),
-            actions: [
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                child: new Text('Ok'),
-                onPressed: () async {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  await Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                      builder: (context) => new SecondScreen(payload),
-                    ),
-                  );
-                },
-              )
-            ],
-          ),
-        */
-          return Text('Notification');
-        });
-  }
-
-  Future onSelectNotification(String payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
-    }
-    if(_type == 'notification'){
-await Navigator.push(
-      context,
-      new MaterialPageRoute(builder: (context) => RatingWidget()),
-    );
-    }else{
-await Navigator.push(
-      context,
-      new MaterialPageRoute(builder: (context) => 
-      ChatScreen(peerAvatar: _messageProfilePicture,peerId: _messagePhone,fullName: _messageFullName,phoneNumber: _messagePhone,)),
-    );
-    }
-    
-  }
-
-  // Future onSelectNotification(String payload) async {
-  //   Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => RatingWidget()));
-  // }
 
   logout() async {
     var lastSeen = DateTime.now().millisecondsSinceEpoch.toString();
@@ -385,7 +347,7 @@ StreamBuilder(stream: Firestore.instance.collection('users')
                   Navigator.pushNamed(context, '/rating');
                 });
         default:
-          return snapshots.data['ratingCount'] > 0 ? actionIcon('1', Icons.star_border, '/rating'): IconButton(icon: Icon(Icons.star_border,color: Colors.black87,size: 25.0), onPressed: () {
+          return snapshots.data['hasRated'] ? actionIcon('1', Icons.star_border, '/rating'): IconButton(icon: Icon(Icons.star_border,color: Colors.black87,size: 25.0), onPressed: () {
                   Navigator.pushNamed(context, '/rating');
                 });
       }
@@ -399,7 +361,7 @@ StreamBuilder(stream: Firestore.instance.collection('users')
           Navigator.pushNamed(context, '/tv');
         });
         default:
-          return snapshots.data['tvCount'] > 0 ? actionIcon('1', Icons.live_tv, '/tv'): IconButton(icon: Icon(Icons.live_tv,color: Colors.black87,size: 25.0), onPressed: () {
+          return snapshots.data['hasNewVideo']  ? actionIcon('1', Icons.live_tv, '/tv'): IconButton(icon: Icon(Icons.live_tv,color: Colors.black87,size: 25.0), onPressed: () {
                   Navigator.pushNamed(context, '/tv');
        });
       }
@@ -619,6 +581,7 @@ return ListView.builder(
                                                       website: '${snapshot.data.documents[index]['website']}',
                                                       shippingAddress: '${snapshot.data.documents[index]['shippingAddress']}',
                                                       fcmToken: '${snapshot.data.documents[index]['fcm_token']}' ,
+                                                      isIos: snapshot.data.documents[index]['isIos'],
                                                 )));
                                   },
                                 ),
@@ -682,6 +645,7 @@ return ListView.builder(
                                                                 website: '${snapshot.data.documents[index]['website']}',
                                                                 shippingAddress: '${snapshot.data.documents[index]['shippingAddress']}',
                                                                 fcmToken: '${snapshot.data.documents[index]['fcm_token']}',
+                                                                isIos: snapshot.data.documents[index]['isIos'],
                                                           )));
                                             } else {
                                               Navigator.push(

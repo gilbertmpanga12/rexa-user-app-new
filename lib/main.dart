@@ -29,6 +29,7 @@ import './swiper.dart';
 import './changeCountry.dart';
 import 'app_services/auth_service.dart';
 import 'default_shell.dart';
+import 'globals/config.dart';
 
 
 class ReceivedNotification {
@@ -46,19 +47,20 @@ class ReceivedNotification {
 
 
 Future<void>main() async {
-   // for IOS -> 01d9552f-a5c7-49a1-bf05-6886d9ccc944
-   // for Android -> 0a2fc101-4f5a-44c2-97b9-c8eb8f420e08
+   // for IOS -> 043cf2de-40cc-4010-b431-4e02a950f75f  - Business
+   // for Android -> 01d9552f-a5c7-49a1-bf05-6886d9ccc944 -> User
+   // for New Android  -> 306a55a3-92f5-4aac-9cb5-21fff19320e5
   WidgetsFlutterBinding.ensureInitialized();
    OneSignal.shared.init(
-  "01d9552f-a5c7-49a1-bf05-6886d9ccc944",
+  Configs.appIdUserAndroidOneSignal,
   iOSSettings: {
-    OSiOSSettings.autoPrompt: false,
+    OSiOSSettings.autoPrompt: true,
     OSiOSSettings.inAppLaunchUrl: true
   }
 );
 
 OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
-OneSignal.shared.promptUserForPushNotificationPermission(fallbackToSettings: true);
+// OneSignal.shared.promptUserForPushNotificationPermission(fallbackToSettings: true);
   runApp(MyApp());
 }
 

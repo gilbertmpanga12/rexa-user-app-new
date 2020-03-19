@@ -215,9 +215,8 @@ print('yes');
   showSpinner = true;
   });
   }
-                    
     try{
-GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -225,7 +224,6 @@ GoogleSignInAccount googleUser = await _googleSignIn.signIn();
      accessToken: googleAuth.accessToken,
      idToken: googleAuth.idToken,
    );
-
     _auth.signInWithCredential(userCreadentialize).then((AuthResult user){
     prefs.setString('token', '${googleAuth.idToken}');
     prefs.setString('customNumber', phoneNumber);
@@ -261,10 +259,12 @@ GoogleSignInAccount googleUser = await _googleSignIn.signIn();
   }
   setClocks();
       }else{
-        errorDialog('Oops something went wrong! Try again');
+       return errorDialog('Oops something went wrong! Try again');
       }
     });
       }
+    }).catchError((onError){
+      return errorDialog(onError.message);
     });
 
     }).catchError((onError){
@@ -273,20 +273,18 @@ GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       showSpinner = false;
       });
    }
-   // dialog to be used here
-   errorDialog(onError.message);
+   return errorDialog(onError.message);
     });
     }catch(e){
+
  if(mounted){
    setState(() {
   showSpinner = false;
   _verificationId = true;
   });
   }      
-errorDialog(e.message);
+return errorDialog(e.message);
     }
-    
-  
   }
 
 

@@ -15,6 +15,7 @@ import 'package:toast/toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:url_launcher/url_launcher.dart';
 import './webview.dart';
+import 'globals/config.dart';
 
 class ServiceProvider {
   final String fullName;
@@ -24,7 +25,7 @@ class ServiceProvider {
   final String latitude;
   final String location;
   final String isRequested;
-
+  // final bool isIos;
   ServiceProvider(
       {this.profilePicture,
       this.longitude,
@@ -90,7 +91,7 @@ class ServicesContacts extends StatefulWidget {
   final String serviceProviderNamePhone;
   final String  serviceProviderPhoto;
   final String fcmToken;
-  
+  final bool isIos;
 
   ServicesContacts(
       {this.uid,
@@ -110,7 +111,8 @@ class ServicesContacts extends StatefulWidget {
       this.serviceProviderName,
       this.serviceProviderNamePhone,
       this.serviceProviderPhoto,
-      this.fcmToken
+      this.fcmToken,
+      this.isIos
       });
       
 
@@ -119,8 +121,6 @@ class ServicesContacts extends StatefulWidget {
 }
 
 class ServicesContactsState extends State<ServicesContacts> {
-  StreamSubscription<ConnectivityResult> subscription;
-  bool isActive = true;
   String _uid;
   String _requestedSaloonService;
   String _requestedDescription;
@@ -152,8 +152,8 @@ class ServicesContactsState extends State<ServicesContacts> {
   String _serviceProviderPhoto;
   String _fcmToken;
   String defaultPicture = 'https://firebasestorage.googleapis.com/v0/b/esalonbusiness-d3f3d.appspot.com/o/avatar.png?alt=media&token=53503121-c01f-4450-a5cc-cf25e76f0697';
-
-
+  StreamSubscription<ConnectivityResult> subscription;
+  bool isNetworkAvailable = true;
 _launchURL(String website, bool shouldToggle,String bookingUrl, String shippingUrl) async {
   Navigator.push(context, 
   MaterialPageRoute(builder: 
@@ -169,24 +169,6 @@ shipUrl(String website, bool shouldToggle,String bookingUrl, String shippingUrl)
   bookingUrl: bookingUrl,
   shippingUrl: shippingUrl,shouldToggle: shouldToggle)));
 }
-
-// shipUrl(String website) async {
-// try{
-//    final url = website;
-//   if (await canLaunch(url)) {
-//     await launch(url);
-//      await Firestore.instance
-//       .collection('paymentplan').document(_uid).setData({
-//         'clicks': FieldValue.increment(1)
-//       },merge: true);
-//   } else {
-//     Toast.show('Oops!, website not listed by service provider.', context, duration: 7,backgroundColor: Colors.red); // Locator
-//   }
-
-//     }catch(err){
-// print(err);
-//  }
-// }
 
 showReviews(String uid){
   showModalBottomSheet(
@@ -331,6 +313,7 @@ print(err);
   cancelBooked() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isBooked', false);
+    prefs.remove('isIos');
   }
   
 
@@ -348,7 +331,9 @@ print(err);
   fetchCategories() async {
     try {
       final response = await http.get(
-          'https://young-tor-95342.herokuapp.com/api/get-service-provider/$_uid');
+          'https://viking-250012.appspot.com/api/get-service-provider/$_uid');
+          print('My body***** ${response.statusCode}' );
+          print(response.body);
           
       if (response.statusCode == 200 || response.statusCode == 201) {
         fetchResults = ServiceProvider.fromJson(json.decode(response.body));
@@ -373,23 +358,28 @@ print(err);
       });
     }
   }
-/*
-*  isRequested: order.isPending,
-        requestedSaloonService: order.requestedSaloonService,
-        timeStamp: order.timeStamp,
-        serviceProviderId: order.serviceProviderId,
-        userId: order.userId
-* */
+
 
 
 requestServiceNotifier(String playerId, String contents, String headings) async {
-await OneSignal.shared.postNotificationWithJson({
-  "include_player_ids" : [_fcmToken],
-  "contents" : {"en" : contents},
-  "headings": {"en": headings},
-  "small_icon": "@mipmap/ic_launcher",
-  "large_icon": "@mipmap/ic_launcher"
-});
+String url = 'https://onesignal.com/api/v1/notifications';
+  Map<dynamic, dynamic> body = {
+'app_id': Configs.appIdBusinessAndroidOnesignal,
+'contents': {"en": contents},
+'include_player_ids': [playerId],
+'headings': {"en": headings},
+'data': {"type": "new-stories"},
+ "small_icon": "@mipmap/ic_launcher",
+ "large_icon": "@mipmap/ic_launcher"
+}; 
+final response = await http.post(url,
+body: json.encode(body),
+headers: {HttpHeaders.authorizationHeader: Configs.authorizationHeaderAndroidOnesignal,
+"accept": "application/json",
+"content-type": "application/json"
+}
+);
+
 }
 
   makeServiceRequest() async {
@@ -443,7 +433,7 @@ await OneSignal.shared.postNotificationWithJson({
     
    
     final response = await http.post(
-        'https://young-tor-95342.herokuapp.com/api/make-request',
+        'https://viking-250012.appspot.com/api/make-request',
         body: _payload,
         headers: {
           "accept": "application/json",
@@ -463,6 +453,7 @@ await OneSignal.shared.postNotificationWithJson({
       prefs.setString('servicePrice', _price);
       prefs.setString('serviceHours', serviceHours);
       prefs.setString('providerphoneNumber', _serviceProviderNamePhone);
+      prefs.setBool('isIos', widget.isIos);
       Navigator.pop(context);
      
   Navigator.pushReplacementNamed(context, '/success');
@@ -483,23 +474,6 @@ requestServiceNotifier(_fcmToken,
 
 @override
   void initState() {
-    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-       if (result.toString() == 'ConnectivityResult.mobile') {
-setState(() {
-  isActive = true;
-});
-} else if (result.toString() == 'ConnectivityResult.wifi'){
-setState(() {
-  isActive = true;
-});
-} else if(result.toString() == 'ConnectivityResult.none'){
-  setState(() {
-      isActive = false;
-});
-   
-       }
-       
-  });
     serviceProviderToken = widget.serviceProviderToken;
     _uid = widget.uid;
     _requestedSaloonService = widget.serviceOffered;
@@ -517,40 +491,175 @@ setState(() {
    _serviceProviderNamePhone = widget.serviceProviderNamePhone;
    _serviceProviderPhoto = widget.serviceProviderPhoto;
    _fcmToken = widget.fcmToken;
-
+  
     localStorage();
     super.initState();
   }
 
-  
+  Widget bottomBarButton(){
+    return StreamBuilder(builder:(context, request_canceler){
+          if(!request_canceler.hasData){
+            return SizedBox.shrink();
+          }
+            if(request_canceler.data['request_made'] == false){
+              return StreamBuilder(stream: Firestore.instance
+          .collection('saloonServiceProvider')
+          .document('${_uid}').snapshots(),builder: (context, snapshot){
+            if(!snapshot.hasData){
+ return SizedBox.shrink();
+}else{
+    return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
 
-  @override
-dispose(){
-  super.dispose();
+StreamBuilder(builder: (context,snapshotInner){
+                              try{
+if(!snapshotInner.hasData){
+                                print('No changes');
+                                return Container(child: Text(''),);
+                              }
+                              if(snapshotInner.data['isPremium'] == false){
+                                print('**** GUI');
+                                // print(snapshotInner.data['isRequested']);
+                                return Container(child: Text(''),);
+                              } else{
+                          print(snapshotInner.data);
+                                print('**** POXi');
+                                return Container(margin: EdgeInsets.all(8.0),
+              width: 148.0,child: RaisedButton(
+                  child: Row(
+                    children: <Widget>[
+                      // Icon(Icons.image,color: Colors.black,),
+                      Text('More Booking',
+                          style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16.0))
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                  onPressed: (){
+                    
+                    if(_website == 'null'){
+Toast.show('Oops website url not available', context,backgroundColor: Colors.red,duration: 5);
+                    }else{
+                    // _launchURL('${_website}');
+                    // '$_website',true,_website, _shippingAddress
+                    shipUrl('$_website', true,_website, _shippingAddress);
+                    }
+                  
+                  },
+                  color: Colors.blueAccent,
+                  padding: EdgeInsets.all(15.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0)),
+                ),color: Colors.transparent,
+            );
+                              }
+                              }catch(err){
+                                return Container(child: Text(''),);
+                              }
+                            },stream: Firestore.instance
+          .collection('referalEngine')
+          .document('${_uid}').snapshots()),// be back
+
+            isSwitched ? Container(margin: EdgeInsets.all(8.0),
+              width: 135.0,child: RaisedButton(
+                  child: Row(
+                    children: <Widget>[
+                      // Icon(Icons.image,color: Colors.black,),
+                      Text('Shipping',
+                          style: TextStyle(color: Colors.black,
+                          fontWeight: FontWeight.bold,fontSize: 16.0))
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                  onPressed: (){
+
+                               if(_shippingAddress == 'null'){
+Toast.show('Oops shipping address  not available', context,backgroundColor: Colors.red,duration: 5);
+                    }else{
+                    shipUrl('$_shippingAddress',false,_website, _shippingAddress);
+                    }
+
+                  },
+                  color: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0)),
+                ),color: Colors.transparent,
+            ) : StreamBuilder(builder: (context,crack){
+              if(!crack.hasData){
+                return Container(margin: EdgeInsets.all(8.0),
+              width: 135.0,child: RaisedButton(
+                  child: SizedBox(child: 
+    CircularProgressIndicator(backgroundColor: Colors.black),
+    height: 18.5,width: 18.5,),
+                  onPressed: (){
+             makeServiceRequest();
+
+                  },
+                  color: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0)),
+                ),color: Colors.transparent,
+            );
+              }
+            // to be back here
+
+              return crack.data['isRequested'] == true ? SizedBox.shrink() : Container(margin: EdgeInsets.all(8.0),
+              width: 135.0,child: RaisedButton(
+                  child: Row(
+                    children: <Widget>[
+                      // Icon(Icons.image,color: Colors.black,),
+                      //comebacktome
+                      Text('Request',
+                          style: TextStyle(color: Colors.black,
+                          fontWeight: FontWeight.bold,fontSize: 16.0))
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                  onPressed: (){
+             makeServiceRequest();
+
+                  },
+                  color: Colors.white,
+                  padding: EdgeInsets.all(15.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0)),
+                ),color: Colors.transparent,
+            );
+            },stream: Firestore.instance
+          .collection('saloonServiceProvider')
+          .document('${_uid}').snapshots(),)
+            ],);// regular view;
 }
 
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Service Provider',
-            style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 17),
-          ),
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
-          centerTitle: true,
-          elevation: 1.0,
-//           actions: <Widget>[
-//             IconButton(icon: Icon(Icons.add_shopping_cart),onPressed: (){
-//               requestServiceNotifier("f19ba2ca-5317-494b-8f20-8be6389f6866",
-// "New Service Request",
-// "Asshoe has requested for fishing");
-//             },)
-//           ],
-         
-        ),
-        body: Center(
-                child: isActive ?  ListView(
+        },);
+            }else{
+              return FlatButton(
+                onPressed: () {
+             cancelRequest();
+                },
+                child: Padding(
+                  child: Text(
+                    'Cancel Request',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.w600,fontFamily: 'NunitoSans'),
+                    textAlign: TextAlign.center,
+                  ),
+                  padding: EdgeInsets.only(top: 11.0, bottom: 11.0),
+                ),
+                color: Colors.redAccent,
+              );
+            }
+        }, stream: Firestore.instance.collection('users').document('$_userId').snapshots());
+  }
+
+Widget mainWView(){
+return Center(
+                child: ListView(
                   children: <Widget>[
                     Center(
                       child: Padding(
@@ -782,167 +891,51 @@ Container(
                       ),
                     )
                   ],
-                )
-              : Center(child: Padding(child: Text('Check your internet connection'),padding: EdgeInsets.all(8.0),),)),
-                  // I will be back 
-        bottomNavigationBar:  StreamBuilder(builder:(context, request_canceler){
-          if(!request_canceler.hasData){
-            return SizedBox.shrink();
-          }
-            if(request_canceler.data['request_made'] == false){
-              return StreamBuilder(stream: Firestore.instance
-          .collection('saloonServiceProvider')
-          .document('${_uid}').snapshots(),builder: (context, snapshot){
-            if(!snapshot.hasData){
- return SizedBox.shrink();
-}else{
-    return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
+                ),
+              );
+}
+  
 
-StreamBuilder(builder: (context,snapshotInner){
-                              try{
-if(!snapshotInner.hasData){
-                                print('No changes');
-                                return Container(child: Text(''),);
-                              }
-                              if(snapshotInner.data['isPremium'] == false){
-                                print('**** GUI');
-                                // print(snapshotInner.data['isRequested']);
-                                return Container(child: Text(''),);
-                              } else{
-                          print(snapshotInner.data);
-                                print('**** POXi');
-                                return Container(margin: EdgeInsets.all(8.0),
-              width: 148.0,child: RaisedButton(
-                  child: Row(
-                    children: <Widget>[
-                      // Icon(Icons.image,color: Colors.black,),
-                      Text('More Booking',
-                          style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16.0))
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  ),
-                  onPressed: (){
-                    
-                    if(_website == 'null'){
-Toast.show('Oops website url not available', context,backgroundColor: Colors.red,duration: 5);
-                    }else{
-                    // _launchURL('${_website}');
-                    // '$_website',true,_website, _shippingAddress
-                    shipUrl('$_website', true,_website, _shippingAddress);
-                    }
-                  
-                  },
-                  color: Colors.blueAccent,
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                ),color: Colors.transparent,
-            );
-                              }
-                              }catch(err){
-                                return Container(child: Text(''),);
-                              }
-                            },stream: Firestore.instance
-          .collection('referalEngine')
-          .document('${_uid}').snapshots()),// be back
-
-            isSwitched ? Container(margin: EdgeInsets.all(8.0),
-              width: 135.0,child: RaisedButton(
-                  child: Row(
-                    children: <Widget>[
-                      // Icon(Icons.image,color: Colors.black,),
-                      Text('Shipping',
-                          style: TextStyle(color: Colors.black,
-                          fontWeight: FontWeight.bold,fontSize: 16.0))
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  ),
-                  onPressed: (){
-
-                               if(_shippingAddress == 'null'){
-Toast.show('Oops shipping address  not available', context,backgroundColor: Colors.red,duration: 5);
-                    }else{
-                    shipUrl('$_shippingAddress',false,_website, _shippingAddress);
-                    }
-
-                  },
-                  color: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                ),color: Colors.transparent,
-            ) : StreamBuilder(builder: (context,crack){
-              if(!crack.hasData){
-                return Container(margin: EdgeInsets.all(8.0),
-              width: 135.0,child: RaisedButton(
-                  child: SizedBox(child: 
-    CircularProgressIndicator(backgroundColor: Colors.black),
-    height: 18.5,width: 18.5,),
-                  onPressed: (){
-             makeServiceRequest();
-
-                  },
-                  color: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                ),color: Colors.transparent,
-            );
-              }
-            // to be back here
-
-              return crack.data['isRequested'] == true ? SizedBox.shrink() : Container(margin: EdgeInsets.all(8.0),
-              width: 135.0,child: RaisedButton(
-                  child: Row(
-                    children: <Widget>[
-                      // Icon(Icons.image,color: Colors.black,),
-                      //comebacktome
-                      Text('Request',
-                          style: TextStyle(color: Colors.black,
-                          fontWeight: FontWeight.bold,fontSize: 16.0))
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  ),
-                  onPressed: (){
-             makeServiceRequest();
-
-                  },
-                  color: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                ),color: Colors.transparent,
-            );
-            },stream: Firestore.instance
-          .collection('saloonServiceProvider')
-          .document('${_uid}').snapshots(),)
-            ],);// regular view;
+  @override
+dispose(){
+  super.dispose();
 }
 
-        },);
-            }else{
-              return FlatButton(
-                onPressed: () {
-             cancelRequest();
-                },
-                child: Padding(
-                  child: Text(
-                    'Cancel Request',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 27.0,
-                        fontWeight: FontWeight.w600,fontFamily: 'NunitoSans'),
-                    textAlign: TextAlign.center,
-                  ),
-                  padding: EdgeInsets.only(top: 11.0, bottom: 11.0),
-                ),
-                color: Colors.redAccent,
-              );
-            }
-        }, stream: Firestore.instance.collection('users').document('$_userId').snapshots()),
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Service Provider',
+            style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 17),
+          ),
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          centerTitle: true,
+          elevation: 1.0,
+        ),
+        body: StreamBuilder(builder: (BuildContext context, connect){
+          if(connect.hasError) return Text('Check your internet connection');
+          switch(connect.connectionState){
+            case ConnectionState.waiting:
+                return Center(child: CircularProgressIndicator(),);
+            break;
+            default:
+               return connect.data.toString() == 'ConnectivityResult.none' ? 
+               Center(child: Text('Check your internet connection'),): mainWView();
+          }
+        },stream: Connectivity().checkConnectivity().asStream(),),
+                  // I will be back 
+        bottomNavigationBar:  StreamBuilder(builder: (BuildContext context, connect){
+          if(connect.hasError) return Text('Check your internet connection');
+          switch(connect.connectionState){
+            case ConnectionState.waiting:
+                return Center(child: CircularProgressIndicator(),);
+            break;
+            default:
+               return connect.data.toString() == 'ConnectivityResult.none' ? 
+               Center(child: Text('Check your internet connection'),): bottomBarButton();
+          }
+        },stream: Connectivity().checkConnectivity().asStream(),),
         backgroundColor: Colors.white);
   }
 }
