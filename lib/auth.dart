@@ -385,7 +385,7 @@ Widget buildSmsTitle(){
                     style: TextStyle(
                         fontSize: 37.0,
                         color: Colors.black,
-                        fontWeight: FontWeight.w600,fontFamily: 'Merienda')),
+                        fontFamily: 'Monoton')),
               );
     }
   

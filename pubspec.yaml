@@ -141,5 +141,8 @@ flutter:
           weight: 400
         - asset: fonts/Comfortaa-Regular.ttf
           weight: 500
+    - family: Monoton
+      fonts:
+        - asset: fonts/Monoton-Regular.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
