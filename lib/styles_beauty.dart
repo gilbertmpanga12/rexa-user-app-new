@@ -664,12 +664,11 @@ Future<ui.Image> _getImage(String imageUrl) {
                   );
                   break;
                   default:
-                  return  PageView.builder(
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) {
-          final _isAlreadySaved = _saved.contains(index);
-          final _istoggled = _toggleText.contains(index);
-          return Card(
+                  return ListView.builder(itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  final _isAlreadySaved = _saved.contains(index);
+                  final _istoggled = _toggleText.contains(index);
+                  return Card(
                               margin: EdgeInsets.only(top: 3.0),
                               elevation: 0.3,
                               child: new Column(
@@ -691,22 +690,6 @@ Future<ui.Image> _getImage(String imageUrl) {
                                             width: 44.0,
                                             height: 44.0,
                                             margin: EdgeInsets.only(top:1.8),
-                                      //       decoration: new BoxDecoration(
-                                      //         gradient: new LinearGradient(
-                                      //             colors: [
-                                      //               Colors.purple,
-                                      //               Colors.yellow
-                                      // ]),
-                                      //         borderRadius: new BorderRadius
-                                      //                 .all(
-                                      //             new Radius.circular(50.0)),
-                                      //         border: new Border.all(
-                                      //           color: Colors.white,
-                                      //           width: 1.3,
-                                      //           style: BorderStyle.solid
-                                      //         ),
-
-                                      //       ),
                                             child: InkWell(child: Container(
                                               width: 44.0,
                                               height: 44.0,
@@ -769,49 +752,6 @@ Future<ui.Image> _getImage(String imageUrl) {
       Icon(FontAwesomeIcons.globeAfrica,
       color: Colors.grey[500],size: 13.0,)
                                         ]),),
-                                   // TO BE BACK
-//                                    _istoggled ? InkWell(
-//                                      onTap: (){
-//                                         setState(() {
-//                                           _toggleText.remove(index);
-//                                         });
-//                                      },
-//                                      child: Padding(child: Text(
-//                                           '${snapshot.data.documents[index]['storyTitle']}',
-//                                           style: TextStyle(
-//                                             color: Color(0xFF404040),
-//                                             letterSpacing: .2,
-//                                             fontWeight: FontWeight.w100,
-//                                               fontSize: 15.0,
-//                                               fontFamily: 'Rukie'),
-//                                         ),padding: EdgeInsets.only(top:1.0,left: 7.0),),): InkWell(
-//                                           onTap: (){
-//                                             setState(() {
-//                                               _toggleText.add(index);
-//                                             });
-//                                           },
-//                                           child: Padding(child: snapshot.data.documents[index]['storyTitle'].toString().length > 200 ?  RichText(
-//   text: TextSpan(
-//     text: '${snapshot.data.documents[index]['storyTitle'].toString().length > 200 ? snapshot.data.documents[index]['storyTitle'].toString().substring(0,200): snapshot.data.documents[index]['storyTitle']}',
-//     style: TextStyle(color: Color(0xFF484848),
-//                                             letterSpacing: .2,
-//                                             fontWeight: FontWeight.w100,
-//                                               fontSize: 14.0,
-//                                               fontFamily: 'Rukie',height: 1.2),
-//     children: <TextSpan>[
-//       TextSpan(text: ' Read more...', style: TextStyle(fontWeight: FontWeight.w100,color: Color(0xFF484848)))
-//     ],
-//   ),
-// ) : Text(
-//                                           '${snapshot.data.documents[index]['storyTitle']}',
-//                                           style: TextStyle(
-//                                            color: Color(0xFF484848),
-//                                             letterSpacing: .2,
-//                                             fontWeight: FontWeight.w100,
-//                                               fontSize: 15.0,
-//                                               fontFamily: 'Rukie'),
-//                                         ),padding: EdgeInsets.only(top:1.0,left: 7.0),),)
-
 DescriptionTextWidget(text: '${snapshot.data.documents[index]['storyTitle']}',index: index,)
 
 
@@ -1077,8 +1017,8 @@ Text('${snapshot.data.documents[index]['commenter_name']}',style: TextStyle(font
                                       ],
                                     )
                                   ]));
-        },
-        itemCount: snapshot.data.documents.length);
+                }
+                );
                 }
               }),
           floatingActionButton: FloatingActionButton(

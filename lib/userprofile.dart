@@ -300,7 +300,7 @@ controller.clear();
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           centerTitle: true,
-          elevation: 1.5,
+          elevation: 0.0
         ),
         body: ListView(children: <Widget>[
           StreamBuilder(
@@ -315,7 +315,8 @@ controller.clear();
             padding: EdgeInsets.only(top: 20.0, left: 0, right: 20.0),
             child: Column(
               children: <Widget>[
-                Container(
+                Stack(children: <Widget>[
+                  Container(
                   child: InkWell(
                     child: CachedNetworkImage(imageBuilder: (context,imageProvider){
                                   return CircleAvatar(
@@ -323,7 +324,7 @@ controller.clear();
                       backgroundColor: Colors.yellow[700],
                       backgroundImage: new NetworkImage(
                           '${snapshot.data['profilePicture']}'),
-                      radius: 75.0,
+                      radius: 66.0,
                     );
                                 },
         imageUrl: "${snapshot.data['profilePicture']}",
@@ -335,6 +336,8 @@ controller.clear();
                   ),
                   margin: EdgeInsets.only(left: 18.0, bottom: 25.0),
                 ),
+                Positioned(bottom: 19.6,child: Icon(Icons.add_circle,color: Colors.yellow[800],size: 30),right: 8,)
+                ],),
                 
                 ListTile(
                   onTap: (){
