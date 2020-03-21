@@ -664,11 +664,12 @@ Future<ui.Image> _getImage(String imageUrl) {
                   );
                   break;
                   default:
-                  return ListView.builder(itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index) {
-                  final _isAlreadySaved = _saved.contains(index);
-                  final _istoggled = _toggleText.contains(index);
-                  return Card(
+                  return  PageView.builder(
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          final _isAlreadySaved = _saved.contains(index);
+          final _istoggled = _toggleText.contains(index);
+          return Card(
                               margin: EdgeInsets.only(top: 3.0),
                               elevation: 0.3,
                               child: new Column(
@@ -1076,8 +1077,8 @@ Text('${snapshot.data.documents[index]['commenter_name']}',style: TextStyle(font
                                       ],
                                     )
                                   ]));
-                }
-                );
+        },
+        itemCount: snapshot.data.documents.length);
                 }
               }),
           floatingActionButton: FloatingActionButton(
