@@ -330,10 +330,9 @@ await Firestore.instance.collection('users')
           title: Text(
             'Rexa',
             style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Merienda',
+                fontFamily: 'Monoton',
                 color: Colors.black,
-                fontSize: 20.0,
+                fontSize: 26.0,
                 letterSpacing: 0.8),
           ),
           backgroundColor: Colors.white,
