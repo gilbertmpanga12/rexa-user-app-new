@@ -522,17 +522,20 @@ switch(available.connectionState){
               children: <Widget>[
 
 StreamBuilder(builder: (context,snapshotInner){
+   var lastActivatedTime = DateTime.parse(snapshot.data['timeStamp']); // )
+                  var date1 = DateTime.utc(lastActivatedTime.year,lastActivatedTime.month,lastActivatedTime.day);
+                  var now = Timestamp.now().toDate();
+                  var diff = now.difference(date1);
+                  var days = diff.inDays;
                               try{
 if(!snapshotInner.hasData){
-                            
                                 return Container(child: Text(''),);
                               }
-                              if(snapshotInner.data['isPremium'] == false){
+                              if(snapshotInner.data['isPremium'] == false && days > 31){ //  && days > 31
                               
-                                return Container(child: Text(''),);
+                                return SizedBox.shrink();
                               } else{
-                          print(snapshotInner.data);
-                                print('**** POXi');
+                        
                                 return Container(margin: EdgeInsets.all(8.0),
               width: 148.0,child: RaisedButton(
                   child: Row(
@@ -567,7 +570,7 @@ Toast.show('Oops website url not available', context,backgroundColor: Colors.red
                             },stream: Firestore.instance
           .collection('referalEngine')
           .document('${_uid}').snapshots()),// be back
-
+          
             isSwitched ? Container(margin: EdgeInsets.all(8.0),
               width: 135.0,child: RaisedButton(
                   child: Row(
