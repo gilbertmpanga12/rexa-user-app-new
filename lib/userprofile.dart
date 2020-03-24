@@ -72,22 +72,16 @@ GlobalKey<ScaffoldState> _key = GlobalKey();
 
 
   uploadPhoto() async {
-    print('I am >>>>>>>>');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    
     ImagePicker.pickImage(source: ImageSource.gallery).then((image){
       final url = randomAlpha(10);
       final StorageReference firebaseStorageRef =
       FirebaseStorage.instance.ref().child('${url}');
       final StorageUploadTask task =
       firebaseStorageRef.putFile(image);
-
-      // showDialog(context: context,builder: (BuildContext context){
-      //   return AlertDialog(content: Row(children: <Widget>[
-      //     Container(child: CircularProgressIndicator(),margin: EdgeInsets.only(right: 10.0),),
-      //     Container(child: Text('Processing...',style: TextStyle(fontSize: 17.0),),)
-      //   ],),);
-      // });
+if(image == null){
+return ;
+}
       flashbar = Flushbar(
                 showProgressIndicator: true,
                 progressIndicatorBackgroundColor: Colors.blueGrey,
@@ -246,7 +240,7 @@ void _submitAbout() async {
                  controller: controller,
                 decoration: InputDecoration(
                   errorText: _isTextValid ? 'Field Can\'t Be Blank' : null,
-                  hintText: '$fullName',hintStyle:  TextStyle(fontFamily: 'Rukie',fontSize: 20, fontWeight: FontWeight.w500),
+                  hintText: '$fullName',hintStyle:  TextStyle(fontFamily: 'NunitoSans',fontSize: 15, fontWeight: FontWeight.w500),
                   border: InputBorder.none,
                 ),
               ),
