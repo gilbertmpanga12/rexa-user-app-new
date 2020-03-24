@@ -401,7 +401,7 @@ refreshContacts() async {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
-        elevation: 1.5,
+        elevation: 0.0,
         actions: <Widget>[
           IconButton(onPressed: (){
             showSearch(context: context,delegate: CustomSearchDelegate(firebaseUid: firebaseUid,userName: userName,my_number: my_number));

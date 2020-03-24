@@ -24,7 +24,7 @@ class MainTabChatState extends State<MainTabChat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
-        elevation: 3.0,
+        elevation: 0.0,
         actions: <Widget>[
         IconButton(icon: Icon(Icons.person_add),onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context) => AllContacts()));

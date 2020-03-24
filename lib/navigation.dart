@@ -47,9 +47,9 @@ Future<LocationData> getLocation() async {
 
    return Scaffold(
      appBar: AppBar(
-       elevation: 1.3,
+       elevation: 0.0,
        title: Text(DemoLocalizations.of(context).Location,
-       style: TextStyle(color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w900),),
+       style: TextStyle(color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w900,fontSize: 17),),
        backgroundColor: Colors.white,iconTheme: IconThemeData(color: Colors.black),
        centerTitle: true,
      ),

@@ -188,13 +188,13 @@ return snapshot.data.documents.length > 0 ? Scrollbar(child: ListView.builder(
       itemBuilder: (context, index) {
         return new Column(
             children: <Widget>[
-                SizedBox(height: 10.0),
+                SizedBox(height: 5.0),
            ListTile(
              isThreeLine: true,
                 trailing: Text(''),
                
                 leading:  CircleAvatar(
-                  radius: 20.5,
+                  radius: 18.5,
                   backgroundImage: NetworkImage('${snapshot.data.documents[index]['photoUrl'] ?? defaultPicture}'),
                 )
                 ,
@@ -205,7 +205,7 @@ return snapshot.data.documents.length > 0 ? Scrollbar(child: ListView.builder(
                   
                    Padding(child:  new Text(
                       '${snapshot.data.documents[index]['commenter_name']}',
-                      style: new TextStyle(fontWeight: FontWeight.bold,fontSize: 17.6,
+                      style: new TextStyle(fontWeight: FontWeight.bold,fontSize: 14.0,
                       letterSpacing: .5,
                       color: Colors.white),
                     ),padding: EdgeInsets.all(2.0)),
@@ -216,7 +216,7 @@ return snapshot.data.documents.length > 0 ? Scrollbar(child: ListView.builder(
                   padding: const EdgeInsets.only(top: 2.0,left: 3.0),
                   child: Text(
                     '${snapshot.data.documents[index]['raterComment']}',
-                    style: new TextStyle(color: Colors.white, fontSize: 15.5,
+                    style: new TextStyle(color: Colors.white, fontSize: 13.5,
                     fontFamily: 'Comfortaa',fontWeight: FontWeight.w300
                     ),
                   ),
@@ -712,7 +712,7 @@ Container(
                                     text: TextSpan(text: '● Currently Booked,             ',children: [
                                       TextSpan(text: 'try another one')
                                     ],
-                                   style: TextStyle(color: Colors.red,fontSize: 15,fontFamily: 'Lexand'),
+                                   style: TextStyle(color: Colors.red,fontSize: 12,fontFamily: 'Lexand'),
                                   ),
                                   
                                   ),padding: EdgeInsets.all(3.0)),),padding: EdgeInsets.all(5.3),),
@@ -748,10 +748,10 @@ Container(
 //                                    color: Colors.green,
                                       decoration: new BoxDecoration(
                                           color: Colors.green,
-                                          borderRadius: BorderRadius.all(Radius.circular(40.0)))
+                                          borderRadius: BorderRadius.all(Radius.circular(20.0)))
 
                                   ),
-                                  Padding(child: Text('Available', style: TextStyle(color: Colors.green,fontSize: 16.0),),padding: EdgeInsets.all(5.3),),
+                                  Padding(child: Text('Available', style: TextStyle(color: Colors.green,fontSize: 12.0),),padding: EdgeInsets.all(5.3),),
                                 ],
                               )
                                 ],),);

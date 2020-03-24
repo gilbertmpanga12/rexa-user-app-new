@@ -104,9 +104,11 @@ if(_shouldToggle) {
       appBar: new AppBar(
         title: Text(
             '  Rexa',
-            style: TextStyle(
-            fontSize: 23.0,letterSpacing: .4,
-              color: Colors.black,fontFamily: 'Merienda',fontWeight: FontWeight.w600),
+            style:TextStyle(
+                fontFamily: 'Monoton',
+                color: Colors.black,
+                fontSize: 23.0,
+                letterSpacing: 0.8),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
