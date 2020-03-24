@@ -72,22 +72,16 @@ GlobalKey<ScaffoldState> _key = GlobalKey();
 
 
   uploadPhoto() async {
-    print('I am >>>>>>>>');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    
     ImagePicker.pickImage(source: ImageSource.gallery).then((image){
       final url = randomAlpha(10);
       final StorageReference firebaseStorageRef =
       FirebaseStorage.instance.ref().child('${url}');
       final StorageUploadTask task =
       firebaseStorageRef.putFile(image);
-
-      // showDialog(context: context,builder: (BuildContext context){
-      //   return AlertDialog(content: Row(children: <Widget>[
-      //     Container(child: CircularProgressIndicator(),margin: EdgeInsets.only(right: 10.0),),
-      //     Container(child: Text('Processing...',style: TextStyle(fontSize: 17.0),),)
-      //   ],),);
-      // });
+if(image == null){
+return ;
+}
       flashbar = Flushbar(
                 showProgressIndicator: true,
                 progressIndicatorBackgroundColor: Colors.blueGrey,
@@ -246,7 +240,7 @@ void _submitAbout() async {
                  controller: controller,
                 decoration: InputDecoration(
                   errorText: _isTextValid ? 'Field Can\'t Be Blank' : null,
-                  hintText: '$fullName',hintStyle:  TextStyle(fontFamily: 'Rukie',fontSize: 20, fontWeight: FontWeight.w500),
+                  hintText: '$fullName',hintStyle:  TextStyle(fontFamily: 'NunitoSans',fontSize: 15, fontWeight: FontWeight.w500),
                   border: InputBorder.none,
                 ),
               ),
@@ -294,7 +288,7 @@ controller.clear();
           title: Text(
             DemoLocalizations.of(context).profile,
             style: TextStyle(
-              fontSize: 20.0,letterSpacing: .4,
+              fontSize: 17.0,letterSpacing: .4,
               color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w900),
           ),
           backgroundColor: Colors.white,
@@ -348,8 +342,8 @@ controller.clear();
                       Icons.person,
                       color: Colors.yellow[800]
                   ),
-                  title: Text('Username',style: TextStyle(fontWeight: FontWeight.w500,)),
-                  subtitle: Text('${snapshot.data['fullName']}',style: TextStyle(fontSize: 17.0,)),
+                  title: Text('Username',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14)),
+                  subtitle: Text('${snapshot.data['fullName']}',style: TextStyle(fontSize: 14.0,)),
 
                 ),
                 Container(child: Divider(indent: 57.8,),padding: EdgeInsets.only(left:12.0),),
@@ -363,16 +357,16 @@ controller.clear();
                   leading: Icon(Icons.info, color: Colors.yellow[800]),
                   title: Text(
                     DemoLocalizations.of(context).about,
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
                   ),
-                  subtitle: Text('${snapshot.data['about'] == null ? 'Not Available': snapshot.data['about']}',style: TextStyle(fontSize: 17.0,)),
+                  subtitle: Text('${snapshot.data['about'] == null ? 'Not Available': snapshot.data['about']}',style: TextStyle(fontSize: 14.0,)),
                 ),
                 Container(child: Divider(indent: 57.8,),padding: EdgeInsets.only(left:12.0),),
                 ListTile(
                   leading: Icon(Icons.phone, color: Colors.yellow[800]),
                   title: Text(DemoLocalizations.of(context).telephone,
-                      style: TextStyle(fontWeight: FontWeight.w500)),
-                  subtitle: Text('$phoneNumber',style: TextStyle(fontSize: 17.0,)),
+                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14)),
+                  subtitle: Text('$phoneNumber',style: TextStyle(fontSize: 14.0,)),
                 ),
               ],
             ),

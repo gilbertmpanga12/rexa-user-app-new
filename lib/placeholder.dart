@@ -102,7 +102,7 @@ class PlaceholderWidState extends State<PlaceholderWid> {
         appBar: AppBar(
           title: Text(
             DemoLocalizations.of(context).history,
-     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 20),
+     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 17),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
@@ -126,7 +126,7 @@ Container(
   child: ListTile(
   title:  Text(
    '${resultsFetched[i].requestedSaloonService}',
-  style: TextStyle(fontFamily: 'Comfortaa',fontWeight: FontWeight.w600),
+  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'NunitoSans',fontSize: 14),
     ),
     subtitle: new Container(
                             padding: const EdgeInsets.only(top: 5.0),

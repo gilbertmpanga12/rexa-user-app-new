@@ -141,7 +141,7 @@ if (response.statusCode == 200 || response.statusCode == 201) {
           title: isBooked == false ? Text(
             'Rating',
             style: TextStyle(
-              fontSize: 20.0,letterSpacing: .4,
+              fontSize:17.0,letterSpacing: .4,
               color: Colors.white,fontFamily: 'NunitoSans',fontWeight: FontWeight.w600),
           ): Text(''),
         ),

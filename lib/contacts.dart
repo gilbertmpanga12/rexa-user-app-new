@@ -188,13 +188,13 @@ return snapshot.data.documents.length > 0 ? Scrollbar(child: ListView.builder(
       itemBuilder: (context, index) {
         return new Column(
             children: <Widget>[
-                SizedBox(height: 10.0),
+                SizedBox(height: 5.0),
            ListTile(
              isThreeLine: true,
                 trailing: Text(''),
                
                 leading:  CircleAvatar(
-                  radius: 20.5,
+                  radius: 18.5,
                   backgroundImage: NetworkImage('${snapshot.data.documents[index]['photoUrl'] ?? defaultPicture}'),
                 )
                 ,
@@ -205,7 +205,7 @@ return snapshot.data.documents.length > 0 ? Scrollbar(child: ListView.builder(
                   
                    Padding(child:  new Text(
                       '${snapshot.data.documents[index]['commenter_name']}',
-                      style: new TextStyle(fontWeight: FontWeight.bold,fontSize: 17.6,
+                      style: new TextStyle(fontWeight: FontWeight.bold,fontSize: 14.0,
                       letterSpacing: .5,
                       color: Colors.white),
                     ),padding: EdgeInsets.all(2.0)),
@@ -216,7 +216,7 @@ return snapshot.data.documents.length > 0 ? Scrollbar(child: ListView.builder(
                   padding: const EdgeInsets.only(top: 2.0,left: 3.0),
                   child: Text(
                     '${snapshot.data.documents[index]['raterComment']}',
-                    style: new TextStyle(color: Colors.white, fontSize: 15.5,
+                    style: new TextStyle(color: Colors.white, fontSize: 13.5,
                     fontFamily: 'Comfortaa',fontWeight: FontWeight.w300
                     ),
                   ),
@@ -497,7 +497,15 @@ requestServiceNotifier(_fcmToken,
   }
 
   Widget bottomBarButton(){
-    return StreamBuilder(builder:(context, request_canceler){
+    return StreamBuilder(builder: (BuildContext context, available){
+if(available.hasError){
+  return Center(child: Center(child: Text('Check your internet connection'),),);
+}
+
+switch(available.connectionState){
+  case ConnectionState.waiting: return new Center(child: CircularProgressIndicator(),);
+  default:
+    return available.data['isAccountVerified'] ? StreamBuilder(builder:(context, request_canceler){
           if(!request_canceler.hasData){
             return SizedBox.shrink();
           }
@@ -514,18 +522,20 @@ requestServiceNotifier(_fcmToken,
               children: <Widget>[
 
 StreamBuilder(builder: (context,snapshotInner){
+   var lastActivatedTime = DateTime.parse(snapshot.data['timeStamp']); // )
+                  var date1 = DateTime.utc(lastActivatedTime.year,lastActivatedTime.month,lastActivatedTime.day);
+                  var now = Timestamp.now().toDate();
+                  var diff = now.difference(date1);
+                  var days = diff.inDays;
                               try{
 if(!snapshotInner.hasData){
-                                print('No changes');
                                 return Container(child: Text(''),);
                               }
-                              if(snapshotInner.data['isPremium'] == false){
-                                print('**** GUI');
-                                // print(snapshotInner.data['isRequested']);
-                                return Container(child: Text(''),);
+                              if(snapshotInner.data['isPremium'] == false && days > 31){ //  && days > 31
+                              
+                                return SizedBox.shrink();
                               } else{
-                          print(snapshotInner.data);
-                                print('**** POXi');
+                        
                                 return Container(margin: EdgeInsets.all(8.0),
               width: 148.0,child: RaisedButton(
                   child: Row(
@@ -560,7 +570,7 @@ Toast.show('Oops website url not available', context,backgroundColor: Colors.red
                             },stream: Firestore.instance
           .collection('referalEngine')
           .document('${_uid}').snapshots()),// be back
-
+          
             isSwitched ? Container(margin: EdgeInsets.all(8.0),
               width: 135.0,child: RaisedButton(
                   child: Row(
@@ -654,11 +664,26 @@ Toast.show('Oops shipping address  not available', context,backgroundColor: Colo
                 color: Colors.redAccent,
               );
             }
-        }, stream: Firestore.instance.collection('users').document('$_userId').snapshots());
+        }, stream: Firestore.instance.collection('users').document('$_userId').snapshots()): Center(child: Text('This account is closed. Check another one', 
+        style: TextStyle(color: Colors.black),textAlign: TextAlign.center,));
+}
+
+
+    }
+    , stream: Firestore.instance.collection('saloonServiceProvider').document('$_uid').snapshots(),);
   }
 
 Widget mainWView(){
-return Center(
+return StreamBuilder(builder: (BuildContext context, snapshot){
+
+if(snapshot.hasError){
+  return Center(child: Center(child: Text('Check your internet connection'),),);
+}
+  
+  switch(snapshot.connectionState){
+    case ConnectionState.waiting: return new Center(child: CircularProgressIndicator(),);
+    default:
+      return snapshot.data['isAccountVerified'] ? Center(
                 child: ListView(
                   children: <Widget>[
                     Center(
@@ -670,14 +695,10 @@ return Center(
                           
                             StreamBuilder(builder: (context,snapshot){
                               if(!snapshot.hasData){
-                                print('No changes');
                                 return Container(child: Text(''),);
                               }
                               if(snapshot.data['isRequested']){
-                                print('**** GUI');
-                                print(snapshot.data['isRequested']);
-                              
-                                return Center(child: Center(child: Column(
+                               return Center(child: Center(child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -692,7 +713,7 @@ Container(
                               margin: EdgeInsets.only(left: 18.0, bottom: 10.0),
                             ),
                              Padding(child: Text('${snapshot.data['fullName']}', 
-  style: TextStyle(color: Colors.black87,fontSize: 18.0,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
+  style: TextStyle(color: Colors.black87,fontSize: 16.5,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
   padding: EdgeInsets.only(top:5.5,left: 5.5),),
 
                                   Row(mainAxisAlignment: MainAxisAlignment.center,
@@ -701,18 +722,13 @@ Container(
                                   Container(
                                     height: 14.0,
                                     width: 14.0,
-//                                    color: Colors.green,
-                                      // decoration: new BoxDecoration(
-                                      //     color: Colors.red,
-                                      //     borderRadius: BorderRadius.all(Radius.circular(40.0)))
-
-                                  ),
+                             ),
                                   Padding(child: Container(width: 200.0,child: Padding(child: RichText(
                                     textAlign: TextAlign.center,
                                     text: TextSpan(text: '● Currently Booked,             ',children: [
                                       TextSpan(text: 'try another one')
                                     ],
-                                   style: TextStyle(color: Colors.red,fontSize: 15,fontFamily: 'Lexand'),
+                                   style: TextStyle(color: Colors.red,fontSize: 12,fontFamily: 'Lexand'),
                                   ),
                                   
                                   ),padding: EdgeInsets.all(3.0)),),padding: EdgeInsets.all(5.3),),
@@ -736,7 +752,7 @@ Container(
                               margin: EdgeInsets.only(left: 18.0, bottom: 10.0),
                             ),
                              Padding(child: Text('${snapshot.data['fullName']}', 
-  style: TextStyle(color: Colors.black87,fontSize: 18.9,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
+  style: TextStyle(color: Colors.black87,fontSize: 16.5,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
   padding: EdgeInsets.only(top:5.5,left: 5.5),),
 
                                   Row(mainAxisAlignment: MainAxisAlignment.center,
@@ -748,10 +764,10 @@ Container(
 //                                    color: Colors.green,
                                       decoration: new BoxDecoration(
                                           color: Colors.green,
-                                          borderRadius: BorderRadius.all(Radius.circular(40.0)))
+                                          borderRadius: BorderRadius.all(Radius.circular(20.0)))
 
                                   ),
-                                  Padding(child: Text('Available', style: TextStyle(color: Colors.green,fontSize: 16.0),),padding: EdgeInsets.all(5.3),),
+                                  Padding(child: Text('Available', style: TextStyle(color: Colors.green,fontSize: 12.0),),padding: EdgeInsets.all(5.3),),
                                 ],
                               )
                                 ],),);
@@ -767,12 +783,12 @@ Container(
                                 title: Text(
                                   DemoLocalizations.of(context).Service,
                                   style: TextStyle(fontWeight: FontWeight.w600,  fontFamily: 'NunitoSans',
-                                      letterSpacing: .4,),
+                                      letterSpacing: .4,fontSize: 14.0),
                                 ),
                                 subtitle: Padding(child: Text('${_requestedSaloonService}',
                                     style: TextStyle(
                                      
-                                      fontSize: 17.0
+                                      fontSize: 14.0
                                     )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0),)),
                                      Container(
                               child: Divider(
@@ -787,11 +803,11 @@ Container(
                                   color: Colors.yellow[800]),
                               title: Text(
                                 DemoLocalizations.of(context).Price,
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14.0),
                               ),
                               subtitle: Padding(child: Text('${_price}',
                                   style: TextStyle(
-                                    fontSize: 17.0,
+                                    fontSize: 14.0,
                                   )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0)),
                             ),
                             Container(
@@ -805,11 +821,11 @@ Container(
                                     color: Colors.yellow[800]),
                                 title: Text(
                                   'Description',
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14.0),
                                 ),
                                 subtitle: Padding(child: Text('${_requestedDescription}',
                                     style: TextStyle(
-                                      fontSize: 17.0,
+                                      fontSize: 14.0,
                                     )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0))),
                                      
                             Container(
@@ -845,10 +861,10 @@ Container(
                               title: Text(
                                   DemoLocalizations.of(context).Location,
                                   style:
-                                      TextStyle(fontWeight: FontWeight.w600)),
+                                      TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                               subtitle: Padding(child:Text(_location,
                                   style: TextStyle(
-                                    fontSize: 17.0,
+                                    fontSize: 14.0,
                                   )), padding: EdgeInsets.only(top: 3.0,bottom: 4.0)),
                             ),
                             Container(
@@ -874,11 +890,11 @@ Container(
                                     color: Colors.yellow[800]),
                                 title: Text(
                                   'Reviews',
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: TextStyle(fontWeight: FontWeight.w600,fontSize:14),
                                 ),
                                 subtitle: Padding(child: Text('$_commentRate',
                                     style: TextStyle(
-                                      fontSize: 17.0,
+                                      fontSize: 14.0,
                                     )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0),)),
                                       Container(
                               child: Divider(
@@ -892,9 +908,13 @@ Container(
                     )
                   ],
                 ),
-              );
+              ): Center(child: Text('This account is closed. Check another one', style: TextStyle(color: Colors.black)),);
+  }
+
+}, stream: Firestore.instance.collection('saloonServiceProvider').document('$_uid').snapshots(),);
 }
-  
+
+
 
   @override
 dispose(){
@@ -911,7 +931,7 @@ dispose(){
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           centerTitle: true,
-          elevation: 1.0,
+          elevation: 0.0,
         ),
         body: StreamBuilder(builder: (BuildContext context, connect){
           if(connect.hasError) return Text('Check your internet connection');

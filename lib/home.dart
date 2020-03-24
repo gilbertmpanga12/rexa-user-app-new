@@ -44,7 +44,7 @@ void _newTaskModalBottomSheet(context, String searchTerm) {
                   child: ListView.separated(itemBuilder: (context,index){
                 return Padding(child: ListTile(
             // trailing: Icon(Icons.keyboard_arrow_right,color: Colors.white,),
-            title: new Text('${snapshot.data.documents[index]['subCatName']}', style: TextStyle(color: Colors.white,fontSize: 18.0),), // ${snapshot.data.documents[index]['categoryName']}
+            title: new Text('${snapshot.data.documents[index]['subCatName']}', style: TextStyle(color: Colors.white,fontSize: 17.0),), // ${snapshot.data.documents[index]['categoryName']}
             onTap: () {
 Navigator.push(context, MaterialPageRoute(builder: (context) {
   return Subcat(categoryName: snapshot.data.documents[index]['subCatName'],);
@@ -65,15 +65,15 @@ Navigator.push(context, MaterialPageRoute(builder: (context) {
   Widget build(BuildContext context){
     return Scaffold(
         appBar: AppBar(
-          leading:  AppBar(leading: Theme.of(context).platform == TargetPlatform.iOS ? BackButton(color: Colors.black,onPressed: () async{
+          leading:  AppBar(leading: BackButton(color: Colors.black,onPressed: () async{
         Navigator.popAndPushNamed(context, '/home'); 
-      },): SizedBox.shrink(), backgroundColor: Colors.white,elevation: 0,),
+      },), backgroundColor: Colors.white,elevation: 0,),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-          elevation: 1.0,
+          elevation: 0.0,
           title: Text('Categories',style: TextStyle(
-              fontSize: 20.0,letterSpacing: .4,
-              color: Colors.black,fontFamily: 'Rukie',fontWeight: FontWeight.w600),),centerTitle: true,
+              fontSize: 17.0,letterSpacing: .4,
+              color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w600),),centerTitle: true,
         ),
         body: StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('saloonCategory').snapshots(),
@@ -94,7 +94,7 @@ Navigator.push(context, MaterialPageRoute(builder: (context) {
           },
                   trailing: Icon(Icons.keyboard_arrow_right),
                   title: new Text('${snapshot.data.documents[index]['categoryName']}',style:TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 16.6,
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w500,fontFamily: 'NunitoSans'),textAlign: TextAlign.left,) 
                   // subtitle: new Text(document['author']),

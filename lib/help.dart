@@ -21,12 +21,12 @@ initState(){
       appBar: AppBar(
           title: Text(
             'Help',
-             style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 20),
+             style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 17),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           centerTitle: true,
-          elevation: 1.0
+          elevation: 0.0
       ),
       body: Center(
         child: Padding(

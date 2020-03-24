@@ -125,19 +125,19 @@ void _onCountryChange(CountryCode countryCode) async {
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           centerTitle: true,
-          elevation: 1.0
+          elevation: 0.0
       ),
       body:   WillPopScope(child: Column(children: <Widget>[
         Padding(child: InkWell(child: ListTile(
         dense: false,
-        subtitle: Text('Tap flag to change country',),
+        subtitle: Text('Tap flag to change country',style: TextStyle(fontSize: 14.0),),
         trailing:  showCountries(),
           //leading: SizedBox(child: showCountries(),width: 56.0,),
-          title: Text('Book from other countries',),
+          title: Text('Book from other countries',style: TextStyle(fontSize: 14),),
 
 
         )),padding: EdgeInsets.only(top: 13.0)),
-        // Divider()
+        Divider(endIndent: 10,indent: 10,)
        
       ],),onWillPop: (){
            Navigator.push(
