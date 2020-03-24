@@ -383,7 +383,7 @@ Widget buildSmsTitle(){
     return Container(
                 child: Text('Rexa',
                     style: TextStyle(
-                        fontSize: 37.0,
+                        fontSize: 30.0,
                         color: Colors.black,
                         fontFamily: 'Monoton')),
               );
@@ -396,7 +396,7 @@ Widget buildSmsTitle(){
                       child: Text('Get Started With Your Rexa Account',
                         style: TextStyle(
 
-                          fontSize: 17.0,
+                          fontSize: 14.0,
                           color: Color(0xFF404040),
                           fontWeight: FontWeight.w100,fontFamily: 'NunitoSans',),textAlign: TextAlign.center,))
               );
@@ -463,7 +463,7 @@ Widget buildSmsTitle(){
   Widget buildVerifyForm(){
     return Column(
             children: <Widget>[
-              ListTile(title: Text('Select Country Code',style: TextStyle(fontSize: 14.0,
+              ListTile(title: Text('Select Country Code',style: TextStyle(fontSize: 12.0,
                     fontWeight: FontWeight.w400,fontFamily: 'NunitoSans'),textAlign: TextAlign.center,),subtitle: showCountries(),),
 
              
@@ -490,6 +490,7 @@ InkWell(
       },
       child: Container(
         margin: EdgeInsets.only(top: 20),
+        height: 50,
         width: MediaQuery.of(context).size.width -51,
         padding: EdgeInsets.symmetric(vertical: 13),
         alignment: Alignment.center,
@@ -567,6 +568,7 @@ Container(child:InkWell(
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
+        
         padding: EdgeInsets.symmetric(vertical: 13),
         alignment: Alignment.center,
         decoration: BoxDecoration(

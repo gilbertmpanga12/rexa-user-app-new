@@ -332,7 +332,7 @@ await Firestore.instance.collection('users')
             style: TextStyle(
                 fontFamily: 'Monoton',
                 color: Colors.black,
-                fontSize: 26.0,
+                fontSize: 23.0,
                 letterSpacing: 0.8),
           ),
           backgroundColor: Colors.white,
@@ -370,7 +370,7 @@ StreamBuilder(stream: Firestore.instance.collection('users')
             
           ],
         ),
-        drawer: Container(width: 260.0,child: Theme(child:  Drawer(
+        drawer: Container(width: 210.0,child: Theme(child:  Drawer(
           
           child: ListView(
             // Important: Remove any padding from the ListView.
@@ -405,7 +405,7 @@ StreamBuilder(stream: Firestore.instance.collection('users')
                                   backgroundColor: Colors.grey,
                                   backgroundImage: imageProvider,
                                       
-                                  radius: 50.0,
+                                  radius: 40.0,
                                 );
                                 },
         imageUrl: "${snapshot.data['profilePicture']}",
@@ -416,7 +416,7 @@ StreamBuilder(stream: Firestore.instance.collection('users')
                                 Padding(padding: EdgeInsets.all(5.0),child:  Text(
                                   '${snapshot.data['fullName']}',
                                   style: TextStyle(letterSpacing: .5,
-                                      color: Colors.white, fontSize: 18.0, fontFamily: 'Rukie'),
+                                      color: Colors.white, fontSize: 15.0, fontFamily: 'Rukie'),
                                 ),),
                   
                               ],
@@ -434,16 +434,16 @@ StreamBuilder(stream: Firestore.instance.collection('users')
                   )),
                   // Divider(color: Colors.white,height: ,),
               ListTile(
-                leading: Icon(FontAwesomeIcons.globeEurope, color: Colors.white,),
-                title: Text('International',style: TextStyle(color: Colors.white),),
+                leading: Icon(FontAwesomeIcons.globeEurope, color: Colors.white,size: 21,),
+                title: Text('International',style: TextStyle(color: Colors.white, fontSize: 12.5),),
                 onTap: () {
                     Navigator.popAndPushNamed(context, '/change-country');
                 },
               ),
         
               ListTile(
-                leading: Icon(Icons.history, color: Colors.white,),
-                title: Text(DemoLocalizations.of(context).history, style: TextStyle(color: Colors.white)),
+                leading: Icon(Icons.history, color: Colors.white,size: 21),
+                title: Text(DemoLocalizations.of(context).history, style: TextStyle(color: Colors.white, fontSize: 12.5)),
                 onTap: () {
                   // Update the state of the app
                   // ...
@@ -453,8 +453,8 @@ StreamBuilder(stream: Firestore.instance.collection('users')
               ),
               
               ListTile(
-                leading: Icon(Icons.help,color: Colors.white),
-                title: Text(DemoLocalizations.of(context).help, style: TextStyle(color: Colors.white)),
+                leading: Icon(Icons.help,color: Colors.white,size: 21),
+                title: Text(DemoLocalizations.of(context).help, style: TextStyle(color: Colors.white, fontSize:12.5)),
                 onTap: () {
                   // Update the state of the app
                   // ...
@@ -463,8 +463,8 @@ StreamBuilder(stream: Firestore.instance.collection('users')
                 },
               ),
               ListTile(
-                leading: Icon(Icons.share,color: Colors.white,),
-                title: Text('Join Rexa Business',style: TextStyle(color: Colors.white)),
+                leading: Icon(Icons.share,color: Colors.white,size: 21),
+                title: Text('Join Rexa Business',style: TextStyle(color: Colors.white, fontSize: 12.5)),
                 onTap: () {
                   // url launcher goes here
                   Navigator.of(context).pop();
@@ -472,9 +472,9 @@ StreamBuilder(stream: Firestore.instance.collection('users')
                 },
               ),
               ListTile(
-                leading: Icon(Icons.power_settings_new, color: Colors.white,),
+                leading: Icon(Icons.power_settings_new, color: Colors.white,size: 21),
                 title: Text(DemoLocalizations.of(context).logOut, 
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 12.5),
                 ),
                 onTap: () {
                   logout();
@@ -603,7 +603,7 @@ return ListView.builder(
                                                   EdgeInsets.only(top: 4.8),
                                               child: Text(
                                                   '${stringChopper(snapshot.data.documents[index]['serviceOffered'])}',
-                                                  style: TextStyle(fontWeight: FontWeight.w600,fontSize:17.0),
+                                                  style: TextStyle(fontWeight: FontWeight.w600,fontSize:16.0),
                                                   ),
                                             ),
                                             // SizedBox(height: 5.0),

@@ -692,7 +692,7 @@ Container(
                               margin: EdgeInsets.only(left: 18.0, bottom: 10.0),
                             ),
                              Padding(child: Text('${snapshot.data['fullName']}', 
-  style: TextStyle(color: Colors.black87,fontSize: 18.0,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
+  style: TextStyle(color: Colors.black87,fontSize: 16.5,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
   padding: EdgeInsets.only(top:5.5,left: 5.5),),
 
                                   Row(mainAxisAlignment: MainAxisAlignment.center,
@@ -736,7 +736,7 @@ Container(
                               margin: EdgeInsets.only(left: 18.0, bottom: 10.0),
                             ),
                              Padding(child: Text('${snapshot.data['fullName']}', 
-  style: TextStyle(color: Colors.black87,fontSize: 18.9,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
+  style: TextStyle(color: Colors.black87,fontSize: 16.5,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
   padding: EdgeInsets.only(top:5.5,left: 5.5),),
 
                                   Row(mainAxisAlignment: MainAxisAlignment.center,
@@ -767,12 +767,12 @@ Container(
                                 title: Text(
                                   DemoLocalizations.of(context).Service,
                                   style: TextStyle(fontWeight: FontWeight.w600,  fontFamily: 'NunitoSans',
-                                      letterSpacing: .4,),
+                                      letterSpacing: .4,fontSize: 14.0),
                                 ),
                                 subtitle: Padding(child: Text('${_requestedSaloonService}',
                                     style: TextStyle(
                                      
-                                      fontSize: 17.0
+                                      fontSize: 14.0
                                     )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0),)),
                                      Container(
                               child: Divider(
@@ -787,11 +787,11 @@ Container(
                                   color: Colors.yellow[800]),
                               title: Text(
                                 DemoLocalizations.of(context).Price,
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14.0),
                               ),
                               subtitle: Padding(child: Text('${_price}',
                                   style: TextStyle(
-                                    fontSize: 17.0,
+                                    fontSize: 14.0,
                                   )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0)),
                             ),
                             Container(
@@ -805,11 +805,11 @@ Container(
                                     color: Colors.yellow[800]),
                                 title: Text(
                                   'Description',
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14.0),
                                 ),
                                 subtitle: Padding(child: Text('${_requestedDescription}',
                                     style: TextStyle(
-                                      fontSize: 17.0,
+                                      fontSize: 14.0,
                                     )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0))),
                                      
                             Container(
@@ -845,10 +845,10 @@ Container(
                               title: Text(
                                   DemoLocalizations.of(context).Location,
                                   style:
-                                      TextStyle(fontWeight: FontWeight.w600)),
+                                      TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                               subtitle: Padding(child:Text(_location,
                                   style: TextStyle(
-                                    fontSize: 17.0,
+                                    fontSize: 14.0,
                                   )), padding: EdgeInsets.only(top: 3.0,bottom: 4.0)),
                             ),
                             Container(
@@ -874,11 +874,11 @@ Container(
                                     color: Colors.yellow[800]),
                                 title: Text(
                                   'Reviews',
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: TextStyle(fontWeight: FontWeight.w600,fontSize:14),
                                 ),
                                 subtitle: Padding(child: Text('$_commentRate',
                                     style: TextStyle(
-                                      fontSize: 17.0,
+                                      fontSize: 14.0,
                                     )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0),)),
                                       Container(
                               child: Divider(
@@ -911,7 +911,7 @@ dispose(){
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           centerTitle: true,
-          elevation: 1.0,
+          elevation: 0.0,
         ),
         body: StreamBuilder(builder: (BuildContext context, connect){
           if(connect.hasError) return Text('Check your internet connection');

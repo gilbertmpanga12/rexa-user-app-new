@@ -294,7 +294,7 @@ controller.clear();
           title: Text(
             DemoLocalizations.of(context).profile,
             style: TextStyle(
-              fontSize: 20.0,letterSpacing: .4,
+              fontSize: 17.0,letterSpacing: .4,
               color: Colors.black,fontFamily: 'NunitoSans',fontWeight: FontWeight.w900),
           ),
           backgroundColor: Colors.white,
@@ -348,8 +348,8 @@ controller.clear();
                       Icons.person,
                       color: Colors.yellow[800]
                   ),
-                  title: Text('Username',style: TextStyle(fontWeight: FontWeight.w500,)),
-                  subtitle: Text('${snapshot.data['fullName']}',style: TextStyle(fontSize: 17.0,)),
+                  title: Text('Username',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14)),
+                  subtitle: Text('${snapshot.data['fullName']}',style: TextStyle(fontSize: 14.0,)),
 
                 ),
                 Container(child: Divider(indent: 57.8,),padding: EdgeInsets.only(left:12.0),),
@@ -363,16 +363,16 @@ controller.clear();
                   leading: Icon(Icons.info, color: Colors.yellow[800]),
                   title: Text(
                     DemoLocalizations.of(context).about,
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
                   ),
-                  subtitle: Text('${snapshot.data['about'] == null ? 'Not Available': snapshot.data['about']}',style: TextStyle(fontSize: 17.0,)),
+                  subtitle: Text('${snapshot.data['about'] == null ? 'Not Available': snapshot.data['about']}',style: TextStyle(fontSize: 14.0,)),
                 ),
                 Container(child: Divider(indent: 57.8,),padding: EdgeInsets.only(left:12.0),),
                 ListTile(
                   leading: Icon(Icons.phone, color: Colors.yellow[800]),
                   title: Text(DemoLocalizations.of(context).telephone,
-                      style: TextStyle(fontWeight: FontWeight.w500)),
-                  subtitle: Text('$phoneNumber',style: TextStyle(fontSize: 17.0,)),
+                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14)),
+                  subtitle: Text('$phoneNumber',style: TextStyle(fontSize: 14.0,)),
                 ),
               ],
             ),
