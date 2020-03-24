@@ -497,7 +497,15 @@ requestServiceNotifier(_fcmToken,
   }
 
   Widget bottomBarButton(){
-    return StreamBuilder(builder:(context, request_canceler){
+    return StreamBuilder(builder: (BuildContext context, available){
+if(available.hasError){
+  return Center(child: Center(child: Text('Check your internet connection'),),);
+}
+
+switch(available.connectionState){
+  case ConnectionState.waiting: return new Center(child: CircularProgressIndicator(),);
+  default:
+    return available.data['isAccountVerified'] ? StreamBuilder(builder:(context, request_canceler){
           if(!request_canceler.hasData){
             return SizedBox.shrink();
           }
@@ -516,12 +524,11 @@ requestServiceNotifier(_fcmToken,
 StreamBuilder(builder: (context,snapshotInner){
                               try{
 if(!snapshotInner.hasData){
-                                print('No changes');
+                            
                                 return Container(child: Text(''),);
                               }
                               if(snapshotInner.data['isPremium'] == false){
-                                print('**** GUI');
-                                // print(snapshotInner.data['isRequested']);
+                              
                                 return Container(child: Text(''),);
                               } else{
                           print(snapshotInner.data);
@@ -654,11 +661,26 @@ Toast.show('Oops shipping address  not available', context,backgroundColor: Colo
                 color: Colors.redAccent,
               );
             }
-        }, stream: Firestore.instance.collection('users').document('$_userId').snapshots());
+        }, stream: Firestore.instance.collection('users').document('$_userId').snapshots()): Center(child: Text('This account is closed. Check another one', 
+        style: TextStyle(color: Colors.black),textAlign: TextAlign.center,));
+}
+
+
+    }
+    , stream: Firestore.instance.collection('saloonServiceProvider').document('$_uid').snapshots(),);
   }
 
 Widget mainWView(){
-return Center(
+return StreamBuilder(builder: (BuildContext context, snapshot){
+
+if(snapshot.hasError){
+  return Center(child: Center(child: Text('Check your internet connection'),),);
+}
+  
+  switch(snapshot.connectionState){
+    case ConnectionState.waiting: return new Center(child: CircularProgressIndicator(),);
+    default:
+      return snapshot.data['isAccountVerified'] ? Center(
                 child: ListView(
                   children: <Widget>[
                     Center(
@@ -670,14 +692,10 @@ return Center(
                           
                             StreamBuilder(builder: (context,snapshot){
                               if(!snapshot.hasData){
-                                print('No changes');
                                 return Container(child: Text(''),);
                               }
                               if(snapshot.data['isRequested']){
-                                print('**** GUI');
-                                print(snapshot.data['isRequested']);
-                              
-                                return Center(child: Center(child: Column(
+                               return Center(child: Center(child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -701,12 +719,7 @@ Container(
                                   Container(
                                     height: 14.0,
                                     width: 14.0,
-//                                    color: Colors.green,
-                                      // decoration: new BoxDecoration(
-                                      //     color: Colors.red,
-                                      //     borderRadius: BorderRadius.all(Radius.circular(40.0)))
-
-                                  ),
+                             ),
                                   Padding(child: Container(width: 200.0,child: Padding(child: RichText(
                                     textAlign: TextAlign.center,
                                     text: TextSpan(text: '● Currently Booked,             ',children: [
@@ -892,9 +905,13 @@ Container(
                     )
                   ],
                 ),
-              );
+              ): Center(child: Text('This account is closed. Check another one', style: TextStyle(color: Colors.black)),);
+  }
+
+}, stream: Firestore.instance.collection('saloonServiceProvider').document('$_uid').snapshots(),);
 }
-  
+
+
 
   @override
 dispose(){

@@ -363,11 +363,11 @@ Widget buildSmsTitle(){
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-   Theme.of(context).platform == TargetPlatform.iOS ?  BackButton(onPressed: (){
+   BackButton(onPressed: (){
             setState(() {
-              _verificationId = null;
+              _verificationId = false;
             });
-            },): SizedBox.shrink(),
+      },),
     Container(
     alignment: Alignment.topLeft,
                     child: Text(
@@ -375,7 +375,7 @@ Widget buildSmsTitle(){
                       style: TextStyle(fontSize: 30.0, fontFamily: 'NunitoSans',fontWeight: FontWeight.w300),
                     ),
                     padding: EdgeInsets.only(left: 15.0,right: 39.0,top:76.0),
-                  )
+       )
   ],);
 }
 
@@ -520,7 +520,7 @@ SizedBox(height: 3,),
         Align(child: Padding(child: RichText(
                   textAlign: TextAlign.center,
   text: TextSpan(
-    text: '©2019 elyfez Technologies. All rights reserved',
+    text: '©2020 elyfez Technologies. All rights reserved',
     // style: DefaultTextStyle.of(context).style,
     style: TextStyle(
                 color: Colors.black,
@@ -533,7 +533,7 @@ SizedBox(height: 3,),
 
     ],
   ),
-),padding: EdgeInsets.only(top: 30.0,left: 3.0,right: 3.0),),alignment: Alignment.bottomCenter,)
+),padding: EdgeInsets.only(top: 20.0,left: 3.0,right: 3.0),),alignment: Alignment.bottomCenter,)
 
               
 
@@ -583,14 +583,14 @@ Container(child:InkWell(
             color: Colors.blueAccent),
         child: defaultButtonTextSms(),
       ),
-    ),width: MediaQuery.of(context).size.width - 50,margin: EdgeInsets.only(top: 60.9,bottom: 33)),
-        Align(child: Padding(child: Text('©2019 elyfez Technologies  All rights reserved "Katumba"',
-                      style: TextStyle(
-                        fontSize: 13.6,
-                        fontFamily: '',
-                        color:Colors.black87,
-                      fontWeight: FontWeight.w300),textAlign: TextAlign.center,
-                      ),padding: EdgeInsets.only(top: 27.0,left: 40.0,right: 40.0),),alignment: Alignment.bottomCenter,)
+    ),width: MediaQuery.of(context).size.width - 50,margin: EdgeInsets.only(top: 1.9,bottom: 33)),
+        // Align(child: Padding(child: Text('©2019 elyfez Technologies  All rights reserved "Katumba"',
+        //               style: TextStyle(
+        //                 fontSize: 13.6,
+        //                 fontFamily: '',
+        //                 color:Colors.black87,
+        //               fontWeight: FontWeight.w300),textAlign: TextAlign.center,
+        //               ),padding: EdgeInsets.only(top: 27.0,left: 40.0,right: 40.0),),alignment: Alignment.bottomCenter,)
 
               
 
@@ -638,7 +638,7 @@ Container(child:InkWell(
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
   // print('full width ${MediaQuery.of(context).size.width} and height is ${MediaQuery.of(context).size.height}');
-    return Scaffold(
+    return WillPopScope(child: Scaffold(
       body:SingleChildScrollView(
         child:Container(
             padding: EdgeInsets.symmetric(horizontal: 8),
@@ -662,9 +662,7 @@ Container(child:InkWell(
         children: <Widget>[
           
            _verificationId  ?   buildSmsTitle() : buildDefaultTitle() ,
-
           _verificationId  ? SizedBox.shrink() : buildDefaltSubTitle(),
-
           SizedBox(height:  120.0,),
        _verificationId  ?  buildConfirmForm() : buildVerifyForm()
 
@@ -672,7 +670,9 @@ Container(child:InkWell(
         ],
       )
             
-            )));
+            ))),onWillPop: (){
+              SystemNavigator.pop();
+            },);
     
   }
 
