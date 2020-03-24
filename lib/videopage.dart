@@ -391,33 +391,60 @@ return '';
                 },),
                  InkWell(child: 
                 videoControlAction(icon: Icons.shopping_cart, label: ''), onTap: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ServicesContacts(
-                                                  serviceProviderPhoto: widget.serviceProviderPhoto,
-                                                  latitude: 4.0,
-                                                  longitude: 4.0,
-                                                  serviceProviderName: widget.serviceProviderName,
-                                                  serviceProviderNamePhone: widget.serviceProviderName,
-                                                  docID: widget.docID,
-                                                  commentRate: widget.commentRate,
-                                                  uid:
+                  print({
+'serviceProviderPhoto': widget.serviceProviderPhoto,
+                                                  'latitude': 4.0,
+                                                  'longitude': 4.0,
+                                                  'serviceProviderName': widget.serviceProviderName,
+                                                  'serviceProviderNamePhone': widget.serviceProviderName,
+                                                 'docID': widget.docID,
+                                                  'commentRate': widget.commentRate,
+                                                  'uid':
                                                       widget.uid,
-                                                  serviceOffered:
+                                                  'serviceOffered':
                                                       widget.serviceOffered,
-                                                  userId: widget.userId,
-                                                  location:
+                                                  'userId': widget.userId,
+                                                  'location':
                                                       widget.location,
-                                                  price:
+                                                  'price':
                                                       widget.price,
-                                                  serviceProviderToken:
+                                                  'serviceProviderToken':
                                                       widget.serviceProviderToken,
-                                                  duration:
+                                                  'duration':
                                                       widget.serviceProviderToken,
-                                                  description:
+                                                 'description':
                                                       widget.description,
-                                                      website: widget.website,
-                                                      shippingAddress: widget.shippingAddress,
-                                                      fcmToken: widget.fcmToken ,
-                                                )));
+                                                      'website': widget.website,
+                                                      'shippingAddress': widget.shippingAddress,
+                                                      'fcmToken': widget.fcmToken
+                  });
+            //  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OrderPage(
+            //                                       serviceProviderPhoto: widget.serviceProviderPhoto,
+            //                                       latitude: 4.0,
+            //                                       longitude: 4.0,
+            //                                       serviceProviderName: widget.serviceProviderName,
+            //                                       serviceProviderNamePhone: widget.serviceProviderName,
+            //                                       docID: widget.docID,
+            //                                       commentRate: widget.commentRate,
+            //                                       uid:
+            //                                           widget.uid,
+            //                                       serviceOffered:
+            //                                           widget.serviceOffered,
+            //                                       userId: widget.userId,
+            //                                       location:
+            //                                           widget.location,
+            //                                       price:
+            //                                           widget.price,
+            //                                       serviceProviderToken:
+            //                                           widget.serviceProviderToken,
+            //                                       duration:
+            //                                           widget.serviceProviderToken,
+            //                                       description:
+            //                                           widget.description,
+            //                                           website: widget.website,
+            //                                           shippingAddress: widget.shippingAddress,
+            //                                           fcmToken: widget.fcmToken ,
+            //                                     )));
                 },),
                
 
