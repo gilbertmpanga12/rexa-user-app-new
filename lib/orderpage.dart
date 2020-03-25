@@ -520,7 +520,7 @@ dispose(){
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           centerTitle: true,
-          elevation: 1.0,
+          elevation: 0.0,
         ),
         body: Center(
                 child: ListView(
@@ -532,7 +532,14 @@ dispose(){
                         child: Column(
                           children: <Widget>[
                           
-                          Center(child: Column(
+                          StreamBuilder(builder: (BuildContext context,profilepic){
+                            if(!profilepic.hasData) return Container();
+                            switch(profilepic.connectionState){
+                              case ConnectionState.waiting:
+                                  return CircularProgressIndicator();
+                                  break;
+                              default:
+                                  return Center(child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -541,7 +548,7 @@ Container(
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Colors.yellow[800],
                                 backgroundImage: NetworkImage(
-                                    '${widget.serviceProviderPhoto}'),
+                                    '${profilepic.data['profilePicture']}'),
                                 radius: 65.0,
                               ),
                               margin: EdgeInsets.only(left: 18.0, bottom: 10.0),
@@ -565,7 +572,10 @@ Container(
                                   Padding(child: Text('Available', style: TextStyle(color: Colors.green,fontSize: 16.0),),padding: EdgeInsets.all(5.3),),
                                 ],
                               )
-                                ],),),
+                                ],),);
+                            }
+                          },stream: Firestore.instance.collection('saloonServiceProvider')
+    .document(widget.uid).snapshots(),),
                             
                             SizedBox(height:9.0,),
                             ListTile(
