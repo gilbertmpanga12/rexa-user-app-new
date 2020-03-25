@@ -633,9 +633,14 @@ Future<ui.Image> _getImage(String imageUrl) {
     return WillPopScope(child: Scaffold(
           appBar: AppBar(
             // automaticallyImplyLeading: true,
-            leading: AppBar(leading: BackButton(onPressed: (){
-               Navigator.popAndPushNamed(context, '/home'); 
-            },color: Colors.black,),backgroundColor: Colors.white,elevation: 0,),
+            leading: AppBar(leading: IconButton(
+                    icon: new Icon(
+                     Theme.of(context).platform == TargetPlatform.iOS ? 
+                     Icons.more_horiz:  Icons.more_horiz, // Icons.more_horiz
+                      size: 25.0,
+                    ),
+                    onPressed: () =>  Navigator.popAndPushNamed(context, '/home'),
+                  ),backgroundColor: Colors.white,elevation: 0,),
         
             title: Text(
               'Stories',

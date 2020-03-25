@@ -391,7 +391,8 @@ return '';
                 },),
                  InkWell(child: 
                 videoControlAction(icon: Icons.shopping_cart, label: ''), onTap: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ServicesContacts(
+     
+             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OrderPage(
                                                   serviceProviderPhoto: widget.serviceProviderPhoto,
                                                   latitude: 4.0,
                                                   longitude: 4.0,

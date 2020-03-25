@@ -521,14 +521,6 @@ dispose(){
           iconTheme: IconThemeData(color: Colors.black),
           centerTitle: true,
           elevation: 1.0,
-//           actions: <Widget>[
-//             IconButton(icon: Icon(Icons.add_shopping_cart),onPressed: (){
-//               requestServiceNotifier("f19ba2ca-5317-494b-8f20-8be6389f6866",
-// "New Service Request",
-// "Asshoe has requested for fishing");
-//             },)
-//           ],
-         
         ),
         body: Center(
                 child: ListView(
@@ -540,16 +532,7 @@ dispose(){
                         child: Column(
                           children: <Widget>[
                           
-                            StreamBuilder(builder: (context,snapshot){
-                              if(!snapshot.hasData){
-                                print('No changes');
-                                return Container(child: Text(''),);
-                              }
-                              if(snapshot.data['isRequested']){
-                                print('**** GUI');
-                                print(snapshot.data['isRequested']);
-                              
-                                return Center(child: Center(child: Column(
+                          Center(child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -558,56 +541,12 @@ Container(
                                 foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Colors.yellow[800],
                                 backgroundImage: NetworkImage(
-                                    '${snapshot.data['profilePicture']}'),
+                                    '${widget.serviceProviderPhoto}'),
                                 radius: 65.0,
                               ),
                               margin: EdgeInsets.only(left: 18.0, bottom: 10.0),
                             ),
-                             Padding(child: Text('${snapshot.data['fullName']}', 
-  style: TextStyle(color: Colors.black87,fontSize: 18.0,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
-  padding: EdgeInsets.only(top:5.5,left: 5.5),),
-
-                                  Row(mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                   
-                                  Container(
-                                    height: 14.0,
-                                    width: 14.0,
-//                                    color: Colors.green,
-                                      // decoration: new BoxDecoration(
-                                      //     color: Colors.red,
-                                      //     borderRadius: BorderRadius.all(Radius.circular(40.0)))
-
-                                  ),
-                                  Padding(child: Container(width: 200.0,child: Padding(child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(text: '● Currently Booked,             ',children: [
-                                      TextSpan(text: 'try another one')
-                                    ],
-                                   style: TextStyle(color: Colors.red,fontSize: 15,fontFamily: 'Lexand'),
-                                  ),
-                                  
-                                  ),padding: EdgeInsets.all(3.0)),),padding: EdgeInsets.all(5.3),),
-                                ],
-                              )
-                                ],),),);
-                              } else {
-
-                                return Center(child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-Container(
-                              child: CircleAvatar(
-                                foregroundColor: Theme.of(context).primaryColor,
-                                backgroundColor: Colors.yellow[800],
-                                backgroundImage: NetworkImage(
-                                    '${snapshot.data['profilePicture']}'),
-                                radius: 65.0,
-                              ),
-                              margin: EdgeInsets.only(left: 18.0, bottom: 10.0),
-                            ),
-                             Padding(child: Text('${snapshot.data['fullName']}', 
+                             Padding(child: Text('${widget.serviceProviderName}', 
   style: TextStyle(color: Colors.black87,fontSize: 18.9,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
   padding: EdgeInsets.only(top:5.5,left: 5.5),),
 
@@ -626,11 +565,7 @@ Container(
                                   Padding(child: Text('Available', style: TextStyle(color: Colors.green,fontSize: 16.0),),padding: EdgeInsets.all(5.3),),
                                 ],
                               )
-                                ],),);
-                              }
-                            },stream: Firestore.instance
-          .collection('saloonServiceProvider')
-          .document('${_uid}').snapshots()),
+                                ],),),
                             
                             SizedBox(height:9.0,),
                             ListTile(
@@ -766,37 +701,11 @@ Container(
                 ),
               ),
                   // I will be back 
-        bottomNavigationBar:  StreamBuilder(builder:(context, request_canceler){
-          if(!request_canceler.hasData){
-            return SizedBox.shrink();
-          }
-            if(request_canceler.data['request_made'] == false){
-              return StreamBuilder(stream: Firestore.instance
-          .collection('saloonServiceProvider')
-          .document('${_uid}').snapshots(),builder: (context, snapshot){
-            if(!snapshot.hasData){
- return SizedBox.shrink();
-}else{
-    return Row(
+        bottomNavigationBar:  Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-
-StreamBuilder(builder: (context,snapshotInner){
-                              try{
-if(!snapshotInner.hasData){
-                                print('No changes');
-                                return Container(child: Text(''),);
-                              }
-                              if(snapshotInner.data['isPremium'] == false){
-                                print('**** GUI');
-                                // print(snapshotInner.data['isRequested']);
-                                return Container(child: Text(''),);
-                              } else{
-                          print(snapshotInner.data);
-                                print('**** POXi');
-                                return Container(margin: EdgeInsets.all(8.0),
-              width: 148.0,child: RaisedButton(
+                RaisedButton(
                   child: Row(
                     children: <Widget>[
                       // Icon(Icons.image,color: Colors.black,),
@@ -820,17 +729,8 @@ Toast.show('Oops website url not available', context,backgroundColor: Colors.red
                   padding: EdgeInsets.all(15.0),
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(30.0)),
-                ),color: Colors.transparent,
-            );
-                              }
-                              }catch(err){
-                                return Container(child: Text(''),);
-                              }
-                            },stream: Firestore.instance
-          .collection('referalEngine')
-          .document('${_uid}').snapshots()),// be back
-
-            isSwitched ? Container(margin: EdgeInsets.all(8.0),
+                ),
+                Container(margin: EdgeInsets.all(8.0),
               width: 135.0,child: RaisedButton(
                   child: Row(
                     children: <Widget>[
@@ -855,76 +755,10 @@ Toast.show('Oops shipping address  not available', context,backgroundColor: Colo
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(30.0)),
                 ),color: Colors.transparent,
-            ) : StreamBuilder(builder: (context,crack){
-              if(!crack.hasData){
-                return Container(margin: EdgeInsets.all(8.0),
-              width: 135.0,child: RaisedButton(
-                  child: SizedBox(child: 
-    CircularProgressIndicator(backgroundColor: Colors.black),
-    height: 18.5,width: 18.5,),
-                  onPressed: (){
-             makeServiceRequest();
-
-                  },
-                  color: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                ),color: Colors.transparent,
-            );
-              }
-            // to be back here
-
-              return crack.data['isRequested'] == true ? SizedBox.shrink() : Container(margin: EdgeInsets.all(8.0),
-              width: 135.0,child: RaisedButton(
-                  child: Row(
-                    children: <Widget>[
-                      // Icon(Icons.image,color: Colors.black,),
-                      //comebacktome
-                      Text('Request',
-                          style: TextStyle(color: Colors.black,
-                          fontWeight: FontWeight.bold,fontSize: 16.0))
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  ),
-                  onPressed: (){
-             makeServiceRequest();
-
-                  },
-                  color: Colors.white,
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                ),color: Colors.transparent,
-            );
-            },stream: Firestore.instance
-          .collection('saloonServiceProvider')
-          .document('${_uid}').snapshots(),)
-            ],);// regular view;
-}
-
-        },);
-            }else{
-              return FlatButton(
-                onPressed: () {
-             cancelRequest();
-                },
-                child: Padding(
-                  child: Text(
-                    'Cancel Request',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.w600,fontFamily: 'NunitoSans'),
-                    textAlign: TextAlign.center,
-                  ),
-                  padding: EdgeInsets.only(top: 11.0, bottom: 11.0),
-                ),
-                color: Colors.redAccent,
-              );
-            }
-        }, stream: Firestore.instance.collection('users').document('$_userId').snapshots()),
-        backgroundColor: Colors.white),onWillPop: () async{
+            )
+              ],
+    )),
+        onWillPop: () async{
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => VideoPageWidget()));
 return Future.value(false);
         },);

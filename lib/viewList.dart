@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:rexa/orderpage.dart';
+
 import './help.dart';
 import './mainTabChat.dart';
 import './styles_beauty.dart';
@@ -120,6 +122,7 @@ class ViewListState extends State<ViewList> {
   String _messagePhone;
   StreamSubscription<ConnectivityResult> subscription;
   Flushbar flushbar;
+  bool isInternational;
   // int tvCount = 0;
   // int ratingCount = 0;
   chopDescription(String txt) {
@@ -170,6 +173,7 @@ try{
 
   initState() {
       super.initState();
+      checkIfInternational();
     localesLoader();
      subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
        if (result.toString() == 'ConnectivityResult.mobile' && flushbar != null) {
@@ -233,22 +237,14 @@ print('Nothing to open');
   
   }
 
-_activateVideoCount() async {
-await Firestore.instance.collection('users')
-    .document('_firebaseUID').setData({
-      'hasNewVideo': true
-    }, merge: true);
+checkIfInternational() async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+isInternational = prefs.getBool('international');
 }
 
 
   @override
   void dispose() {
-    // if(flushbar != null){
-    //   flushbar.dismiss();
-    // }
-    // if(subscription != null){
-    //   subscription.cancel();
-    // }
     super.dispose();
   }
 
@@ -531,26 +527,41 @@ return ListView.builder(
         errorWidget: (context, url, error) => Icon(Icons.image,color: Colors.grey),
      ),
                                   onTap: () {
-                                    print('chunker...');
-                                    print({
-                                      'uid':
+                                if(isInternational){
+ Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                OrderPage(
+                                                  serviceProviderPhoto: '${snapshot.data.documents[index]['profilePicture']}',
+                                                  latitude: snapshot.data.documents[index]['latitude'],
+                                                  longitude: snapshot.data.documents[index]['longitude'],
+                                                  serviceProviderName: '${snapshot.data.documents[index]['fullName']}',
+                                                  serviceProviderNamePhone: '${snapshot.data.documents[index]['phoneNumber']}',
+                                                  docID: '${snapshot.data.documents[index]['docID']}',
+                                                  commentRate: '${snapshot.data.documents[index]['raterComment'] ?? 'Tap to see more'}',
+                                                  uid:
                                                       '${snapshot.data.documents[index]['uid']}',
-                                                  'serviceOffered':
+                                                  serviceOffered:
                                                       '${snapshot.data.documents[index]['serviceOffered']}',
-                                                  'userId': '$_userId',
-                                                  'location':
+                                                  userId: '$_userId',
+                                                  location:
                                                       '${snapshot.data.documents[index]['location']}',
-                                                  'price':
+                                                  price:
                                                       '${snapshot.data.documents[index]['price']}',
-                                                  'serviceProviderToken':
+                                                  serviceProviderToken:
                                                       '${snapshot.data.documents[index]['serviceProviderToken']}',
-                                                  'duration':
+                                                  duration:
                                                       '${snapshot.data.documents[index]['time']}',
-                                                  'description':
-                                                      '${snapshot.data.documents[index]['description']}'
-                                    });
-
-                                    Navigator.push(
+                                                  description:
+                                                      '${snapshot.data.documents[index]['description']}',
+                                                      website: '${snapshot.data.documents[index]['website']}',
+                                                      shippingAddress: '${snapshot.data.documents[index]['shippingAddress']}',
+                                                      fcmToken: '${snapshot.data.documents[index]['fcm_token']}' ,
+                                                      // isIos: snapshot.data.documents[index]['isIos'],
+                                                )));
+                                }else{
+                                  Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -582,6 +593,9 @@ return ListView.builder(
                                                       fcmToken: '${snapshot.data.documents[index]['fcm_token']}' ,
                                                       isIos: snapshot.data.documents[index]['isIos'],
                                                 )));
+                                } 
+
+                                    
                                   },
                                 ),
 
