@@ -725,8 +725,8 @@ Container(
                              ),
                                   Padding(child: Container(width: 200.0,child: Padding(child: RichText(
                                     textAlign: TextAlign.center,
-                                    text: TextSpan(text: '● Currently Booked',children: [
-                                      TextSpan(text: 'try another one')
+                                    text: TextSpan(text: '● Currently  Booked',children: [
+                                      TextSpan(text: 'try  another  one')
                                     ],
                                    style: TextStyle(color: Colors.red,fontSize: 12,fontFamily: 'Lexand'),
                                   ),

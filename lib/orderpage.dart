@@ -520,7 +520,7 @@ dispose(){
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           centerTitle: true,
-          elevation: 1.0,
+          elevation: 0.0,
         ),
         body: Center(
                 child: ListView(
