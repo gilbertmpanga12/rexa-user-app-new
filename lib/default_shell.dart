@@ -20,10 +20,9 @@ class DefaultPlaceholder extends StatelessWidget {
           title: Text(
             'Rexa',
             style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Merienda',
+                fontFamily: 'Monoton',
                 color: Colors.black,
-                fontSize: 20.0,
+                fontSize: 23.0,
                 letterSpacing: 0.8),
           ),
           backgroundColor: Colors.white,

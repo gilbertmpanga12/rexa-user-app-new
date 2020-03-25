@@ -8,9 +8,14 @@ Widget homeHeader(BuildContext context) {
     margin: EdgeInsets.only(top: 55),
     height: Dimen.headerHeight,
     child: Stack(children: <Widget>[
-      Theme.of(context).platform == TargetPlatform.iOS ? Positioned(child: BackButton(color: Colors.white,onPressed: () async{
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  StylesBeautyWidget()));
-      },),left: 10.0,top: -14.0): SizedBox.shrink(),
+      Theme.of(context).platform == TargetPlatform.iOS ? Positioned(child: IconButton(
+                    icon: new Icon(
+                     Theme.of(context).platform == TargetPlatform.iOS ? 
+                     Icons.more_horiz:  Icons.more_horiz, // Icons.more_horiz
+                      size: 25.0,
+                    ),
+                    onPressed: () =>   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  StylesBeautyWidget())),
+                  ),left: 10.0,top: -14.0): SizedBox.shrink(),
       Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
