@@ -515,7 +515,7 @@ SizedBox(height: 3,),
   style: ButtonStyle.black,
   type: ButtonType.signIn,
   onPressed: () => _signInWithApple(context, '${_defaultCode + _phoneNumberController.text.substring(1,)}'),
-),width: 250.0,): SizedBox.shrink(),
+),width: MediaQuery.of(context).size.width -51,): SizedBox.shrink(),
                       // semiChecker()
         Align(child: Padding(child: RichText(
                   textAlign: TextAlign.center,
