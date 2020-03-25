@@ -138,7 +138,7 @@ class ViewListState extends State<ViewList> {
   }
 
 _launchURL() async {
-  final String url = 'You have been invited to Rexa https://play.google.com/store/apps/details?id=com.esalonbusiness.esalonbusiness';
+  final String url = 'You have been invited to Rexa https://rexa-web.firebaseapp.com';
  Share.share(url);
 }
 
