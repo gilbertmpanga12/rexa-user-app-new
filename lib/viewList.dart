@@ -30,6 +30,8 @@ import 'chat_view.dart';
 import './app_services/linker.dart';
 import 'package:intl/intl.dart';
 
+import 'globals/config.dart';
+
 class Photo {
   final String profilePicture;
   Photo({this.profilePicture});
@@ -138,7 +140,7 @@ class ViewListState extends State<ViewList> {
   }
 
 _launchURL() async {
-  final String url = 'You have been invited to Rexa https://rexa-web.firebaseapp.com';
+  final String url = 'You have been invited to Rexa ${Configs.androidUserStore}';
  Share.share(url);
 }
 
