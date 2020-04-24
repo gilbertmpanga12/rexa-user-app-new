@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "503467082492-asbvuou4gvm6e61eg8hqe3ijjijro40k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.business.esalonbusiness",
+            "certificate_hash": "bde9a49a04e52ddfae723a6a5f31d95f2c40013a"
+          }
+        },
+        {
           "client_id": "503467082492-hq1qukndt7peblbiibp3a5o4pshgqjb2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

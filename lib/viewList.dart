@@ -241,7 +241,7 @@ print('Nothing to open');
 
 checkIfInternational() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
-isInternational = prefs.getBool('international');
+isInternational = prefs.getBool('international') ?? false;
 }
 
 

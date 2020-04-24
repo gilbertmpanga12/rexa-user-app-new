@@ -33,7 +33,7 @@ class DemoLocalizations {
       "Service": "Service",
       "Request": "Request",
       "Request Sent": "Request sent",
-      "Success message": "You will be notified soon from your service provider",
+      "Success message": "You\'ll be notified soon",
       "Cancel Request": "Cancel Request",
       "Requests pending": "Requests pending",
       "Not Available": "Not Available",

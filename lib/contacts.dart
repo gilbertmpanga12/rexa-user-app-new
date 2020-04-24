@@ -243,16 +243,16 @@ return snapshot.data.documents.length > 0 ? Scrollbar(child: ListView.builder(
             return AlertDialog( shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(20.0))
 ),
-              title: Text('Warning',style: TextStyle(fontWeight: FontWeight.bold),),
+              title: Text('Warning',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17,)),
               content: Row(
                 children: <Widget>[
-                  Container(width: 200.0,
+                 Expanded(child: SizedBox(child:  Container(width: 200.0,
                     child: Text(
                       'Are you sure you want to cancel request?',
-                      style: TextStyle(fontSize: 17.0,fontFamily: 'NunitoSans'),
+                      style: TextStyle(fontSize: 14.0,fontFamily: 'NunitoSans'),
                       
                     ),
-                  )
+                  ),),)
                 ],
               ),
               actions: <Widget>[
@@ -396,7 +396,7 @@ headers: {HttpHeaders.authorizationHeader: Configs.authorizationHeaderAndroidOne
                   child: CircularProgressIndicator(),
                   margin: EdgeInsets.only(right: 10.0),
                 ),
-                Container(
+                Expanded(child: Container(
                   child: SizedBox(
                     width: 180.0,
                     child: SizedBox(
@@ -404,10 +404,10 @@ headers: {HttpHeaders.authorizationHeader: Configs.authorizationHeaderAndroidOne
                         child:
                     Text(
                       DemoLocalizations.of(context).processing,
-                      style: TextStyle(fontSize: 17.0),
+                      style: TextStyle(fontSize: 14.0),
                     ),),
                   ),
-                )
+                ),)
               ],
             ),
           );
@@ -428,7 +428,8 @@ headers: {HttpHeaders.authorizationHeader: Configs.authorizationHeaderAndroidOne
       'ProfilePicture': '${prefs.getString('profilePicture')}',
       'longitude': prefs.getDouble('long'),
       'latitude': prefs.getDouble('lat'),
-      'status_notifier': true
+      'status_notifier': true,
+      'isIos': widget.isIos ?? false
     });
     
    
@@ -522,16 +523,16 @@ switch(available.connectionState){
               children: <Widget>[
 
 StreamBuilder(builder: (context,snapshotInner){
-   var lastActivatedTime = DateTime.parse(snapshot.data['timeStamp']); // )
-                  var date1 = DateTime.utc(lastActivatedTime.year,lastActivatedTime.month,lastActivatedTime.day);
-                  var now = Timestamp.now().toDate();
-                  var diff = now.difference(date1);
-                  var days = diff.inDays;
+  //  var lastActivatedTime = DateTime.parse(snapshot.data['timeStamp']); // )
+  //                 var date1 = DateTime.utc(lastActivatedTime.year,lastActivatedTime.month,lastActivatedTime.day);
+  //                 var now = Timestamp.now().toDate();
+  //                 var diff = now.difference(date1);
+  //                 var days = diff.inDays;
                               try{
 if(!snapshotInner.hasData){
                                 return Container(child: Text(''),);
                               }
-                              if(snapshotInner.data['isPremium'] == false && days > 31){ //  && days > 31
+                              if(snapshotInner.data['isPremium'] == false){ //  && days > 31
                               
                                 return SizedBox.shrink();
                               } else{
