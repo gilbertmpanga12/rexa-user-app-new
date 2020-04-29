@@ -645,13 +645,17 @@ return '';
                
                   }
                 },),
-                InkWell(child: videoControlAction(icon: FontAwesomeIcons.comment, 
+                 InkWell(child: videoControlAction(icon: FontAwesomeIcons.comment, 
                 label: '${widget.commentNumbers == '0' ? '' : widget.commentNumbers}'),onTap: (){
                   // goes to comments CommentsWid
                   // _controller.pause();
                   // _controller.dispose();
               Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => CommentsWid(uid: '${widget.userId}',docId: '${widget.docID}',)));
-                },),// numberFormatter(widget.comment)
+                },),
+                InkWell(child: videoControlAction(icon: FontAwesomeIcons.download,
+                label: ''),onTap: (){
+                  // download file
+                   },),// numberFormatter(widget.comment)
                 // GestureDetector(child: videoControlAction(
                 //     icon: AppIcons.reply, label: "Share", size: 27),onTap: (){
                 //       Share.share('${widget.caption} ${widget.shareUrl}');
