@@ -1,5 +1,10 @@
-import 'dart:convert';
+
 import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:file_utils/file_utils.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rexa/strings.dart';
 import 'package:rexa/videostoriesbyuser.dart';
 
@@ -80,7 +85,7 @@ _getPhoneNumber() async{
               userPhotoUrl: '${snapshot.data.documents[position]['profilePicture']}',
               docID: '${snapshot.data.documents[position]['doc_id']}',
               uid: uid,shareUrl: '${snapshot.data.documents[position]['servicePhoto']}',
-              userId: '${snapshot.data.documents[position]['userId']}',)],
+              userId: '${snapshot.data.documents[position]['userId']}',postion: position,)],
             ),
           );
         },
@@ -266,6 +271,7 @@ postImage(File image) async {
 
 
     task.onComplete.then((image) {
+      
       firebaseStorageRef.getDownloadURL().then((result) {
         // final Map<String, dynamic> service = {
         //   'servicePhoto': result.toString(),
@@ -432,15 +438,18 @@ class onScreenControls extends StatefulWidget {
   final String uid;
   final String shareUrl;
   final String userId;
+  final int postion;
+  
   onScreenControls({this.username,this.caption,this.comment,this.likes,
   this.commentNumbers,this.userPhotoUrl,this.commenterPhotoUrl,this.docID,this.uid,
-  this.shareUrl,this.userId});
+  this.shareUrl,this.userId,this.postion});
   @override
   _onScreenControlsState createState() => new _onScreenControlsState();
 }
 
 class _onScreenControlsState extends State<onScreenControls> {
-
+Set shouldTogglePlay = Set();
+int progress;
   Widget videoControlAction({IconData icon, String label, double size = 26,int index=0}) {
   return Padding(
     padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -585,6 +594,99 @@ return '';
  }
  
 }
+
+void _saveNetworkVideo(String url) async {
+    PermissionStatus permissionStatus = await askPermisionStorage();
+    if (permissionStatus == PermissionStatus.granted) {
+//  GallerySaver.saveVideo(url).then((bool success) {
+//       print(success);
+//       setState(() {
+//         print('Video is saved');
+//       });
+//     });
+    }else{
+      _handleInvalidPermissions(permissionStatus);
+    }
+   
+  }
+
+ 
+ 
+downloadFile(String url,int index,String fullName, String docId) async {
+  Dio dio = Dio();
+  
+  PermissionStatus permissionStatus = await askPermisionStorage();
+   if (permissionStatus == PermissionStatus.granted) {
+       String dirloc = "";
+        if (Platform.isAndroid) {
+          dirloc = (await getExternalStorageDirectory()).path;
+        } else {
+          dirloc = (await getExternalStorageDirectory()).path;
+        }
+
+        var randid = '/' + randomAlpha(5);
+        try{
+        
+          FileUtils.mkdir([dirloc]);
+          await dio.download(url, dirloc + randid + ".mp4",
+              onReceiveProgress: (receivedBytes, totalBytes) {
+          //  final file = await _localFile(randid + ".mp4");
+          
+            setState(() {
+             shouldTogglePlay.add(index);
+              // downloading = true;
+             // if(progress == 100) shouldTogglePlay.remove(index);
+              progress =
+                  ((receivedBytes / totalBytes) * 100).toInt();
+            
+                // if(progress == 100)  _localFile(randid + ".mp4").writeAsString(dirloc + randid + ".mp4");
+              
+              
+            });
+            print('My progress $progress');
+          });
+        }catch(err){
+         print(err);
+        }
+        // set the path and navigate to watch video
+      // path = dirloc + randid + ".mp4";
+      
+//  // store path to db
+//    await Firestore.instance.collection('userService').document(docId)
+//    .setData({'path':path},merge: true);
+  //  shouldTogglePlay.remove(index);
+   } else {
+     _handleInvalidPermissions(permissionStatus);
+   }
+ }
+
+
+ askPermisionStorage() async {
+  PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    if (permission != PermissionStatus.granted && permission != PermissionStatus.disabled) {
+      Map<PermissionGroup, PermissionStatus> permissionStatus = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+      return permissionStatus[PermissionGroup.storage] ?? PermissionStatus.unknown;
+      
+    } else {
+      return permission;
+    }
+}
+
+void _handleInvalidPermissions(PermissionStatus permissionStatus) {
+    if (permissionStatus == PermissionStatus.denied) {
+      throw new PlatformException(
+          code: "PERMISSION_DENIED",
+          message: "Access to storage denied",
+          details: null);
+    } else if (permissionStatus == PermissionStatus.disabled) {
+      throw new PlatformException(
+          code: "PERMISSION_DISABLED",
+          message: "Storage is not available on device",
+          details: null);
+    }
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -653,8 +755,10 @@ return '';
               Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => CommentsWid(uid: '${widget.userId}',docId: '${widget.docID}',)));
                 },),
                 InkWell(child: videoControlAction(icon: FontAwesomeIcons.download,
-                label: ''),onTap: (){
-                  // download file
+                label: '',index: shouldTogglePlay.contains(widget.postion) ? 1 : 0),onTap: (){ // tashi
+                  downloadFile(widget.shareUrl,widget.postion,widget.username,widget.uid);
+                  print(widget.shareUrl);
+                  // _saveNetworkVideo(widget.shareUrl);
                    },),// numberFormatter(widget.comment)
                 // GestureDetector(child: videoControlAction(
                 //     icon: AppIcons.reply, label: "Share", size: 27),onTap: (){

@@ -60,6 +60,8 @@ dependencies:
   auto_size_text: ^2.1.0
   share: ^0.6.3+5
   apple_sign_in: ^0.1.0
+  gallery_saver: ^2.0.1
+
 
   # firebase_messaging: ^6.0.9
   flutter_localizations:
