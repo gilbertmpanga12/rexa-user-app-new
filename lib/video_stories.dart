@@ -32,6 +32,7 @@ import './home_header.dart';
 import 'notice_bar.dart';
 import './swiper.dart' as swipe;
 
+
 class VideoStories extends StatefulWidget {
   final String userId;
   final String username;
@@ -449,7 +450,7 @@ class onScreenControls extends StatefulWidget {
 
 class _onScreenControlsState extends State<onScreenControls> {
 Set shouldTogglePlay = Set();
-int progress;
+String  progress = '';
   Widget videoControlAction({IconData icon, String label, double size = 26,int index=0}) {
   return Padding(
     padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -595,20 +596,6 @@ return '';
  
 }
 
-void _saveNetworkVideo(String url) async {
-    PermissionStatus permissionStatus = await askPermisionStorage();
-    if (permissionStatus == PermissionStatus.granted) {
-//  GallerySaver.saveVideo(url).then((bool success) {
-//       print(success);
-//       setState(() {
-//         print('Video is saved');
-//       });
-//     });
-    }else{
-      _handleInvalidPermissions(permissionStatus);
-    }
-   
-  }
 
  
  
@@ -619,31 +606,25 @@ downloadFile(String url,int index,String fullName, String docId) async {
    if (permissionStatus == PermissionStatus.granted) {
        String dirloc = "";
         if (Platform.isAndroid) {
-          dirloc = (await getExternalStorageDirectory()).path;
+          dirloc = (await getApplicationDocumentsDirectory()).path;
         } else {
           dirloc = (await getExternalStorageDirectory()).path;
         }
-
         var randid = '/' + randomAlpha(5);
         try{
-        
           FileUtils.mkdir([dirloc]);
           await dio.download(url, dirloc + randid + ".mp4",
               onReceiveProgress: (receivedBytes, totalBytes) {
-          //  final file = await _localFile(randid + ".mp4");
-          
-            setState(() {
+           setState(() {
              shouldTogglePlay.add(index);
-              // downloading = true;
-             // if(progress == 100) shouldTogglePlay.remove(index);
               progress =
-                  ((receivedBytes / totalBytes) * 100).toInt();
-            
-                // if(progress == 100)  _localFile(randid + ".mp4").writeAsString(dirloc + randid + ".mp4");
-              
-              
+                  ((receivedBytes / totalBytes) * 100).toInt().toString();
             });
-            print('My progress $progress');
+           if(progress == '100'){ // dirloc + 
+                   GallerySaver.saveVideo(File(dirloc + randid + ".mp4").path).then((bool path) {
+         print('Saved $path');
+        });
+                }
           });
         }catch(err){
          print(err);
@@ -755,9 +736,9 @@ void _handleInvalidPermissions(PermissionStatus permissionStatus) {
               Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => CommentsWid(uid: '${widget.userId}',docId: '${widget.docID}',)));
                 },),
                 InkWell(child: videoControlAction(icon: FontAwesomeIcons.download,
-                label: '',index: shouldTogglePlay.contains(widget.postion) ? 1 : 0),onTap: (){ // tashi
+                label: '$progress',index: shouldTogglePlay.contains(widget.postion) ? 1 : 0),onTap: (){ // tashi
                   downloadFile(widget.shareUrl,widget.postion,widget.username,widget.uid);
-                  print(widget.shareUrl);
+                
                   // _saveNetworkVideo(widget.shareUrl);
                    },),// numberFormatter(widget.comment)
                 // GestureDetector(child: videoControlAction(
