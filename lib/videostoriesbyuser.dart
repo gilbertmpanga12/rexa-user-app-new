@@ -1,4 +1,11 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:file_utils/file_utils.dart';
+import 'package:flutter/services.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:random_string/random_string.dart';
 import 'package:rexa/video_stories.dart';
 
 import './spinner_animation.dart';
@@ -67,7 +74,7 @@ _getPhoneNumber() async{
               userPhotoUrl: '${snapshot.data.documents[position]['profilePicture']}',
               docID: '${snapshot.data.documents[position]['doc_id']}',
               uid: uid,shareUrl: '${snapshot.data.documents[position]['servicePhoto']}',
-              userId: '${snapshot.data.documents[position]['userId']}',)],
+              userId: '${snapshot.data.documents[position]['userId']}',position: position,)],
             ),
           );
         },
@@ -200,14 +207,17 @@ class onScreenControls extends StatefulWidget {
   final String uid;
   final String shareUrl;
   final String userId;
+  final int position;
   onScreenControls({this.username,this.caption,this.comment,this.likes,
   this.commentNumbers,this.userPhotoUrl,this.commenterPhotoUrl,this.docID,this.uid,
-  this.shareUrl,this.userId});
+  this.shareUrl,this.userId, this.position});
   @override
   _onScreenControlsState createState() => new _onScreenControlsState();
 }
 
 class _onScreenControlsState extends State<onScreenControls> {
+Set shouldTogglePlay = Set();
+String  progress = '';
 
   Widget videoControlAction({IconData icon, String label, double size = 26,int index = 0}) {
   return Padding(
@@ -231,6 +241,74 @@ class _onScreenControlsState extends State<onScreenControls> {
     ),
   );
 }
+
+downloadFile(String url,int index,String fullName, String docId) async {
+  Dio dio = Dio();
+  
+  PermissionStatus permissionStatus = await askPermisionStorage();
+   if (permissionStatus == PermissionStatus.granted) {
+       String dirloc = "";
+        if (Platform.isAndroid) {
+          dirloc = (await getExternalStorageDirectory()).path;
+        } else {
+          dirloc = (await getExternalStorageDirectory()).path;
+        }
+        var randid = '/' + randomAlpha(5);
+        try{
+          FileUtils.mkdir([dirloc]);
+          await dio.download(url, dirloc + randid + ".mp4",
+              onReceiveProgress: (receivedBytes, totalBytes) {
+           setState(() {
+             shouldTogglePlay.add(index);
+              progress =
+                  ((receivedBytes / totalBytes) * 100).toInt().toString();
+            });
+           if(progress == '100'){ // dirloc + 
+                   GallerySaver.saveVideo(File(dirloc + randid + ".mp4").path).then((bool path) {
+         print('Saved $path');
+        });
+                }
+          });
+        }catch(err){
+         print(err);
+        }
+        // set the path and navigate to watch video
+      // path = dirloc + randid + ".mp4";
+      
+//  // store path to db
+//    await Firestore.instance.collection('userService').document(docId)
+//    .setData({'path':path},merge: true);
+  //  shouldTogglePlay.remove(index);
+   } else {
+     _handleInvalidPermissions(permissionStatus);
+   }
+ }
+
+
+ askPermisionStorage() async {
+  PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    if (permission != PermissionStatus.granted && permission != PermissionStatus.disabled) {
+      Map<PermissionGroup, PermissionStatus> permissionStatus = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+      return permissionStatus[PermissionGroup.storage] ?? PermissionStatus.unknown;
+      
+    } else {
+      return permission;
+    }
+}
+
+void _handleInvalidPermissions(PermissionStatus permissionStatus) {
+    if (permissionStatus == PermissionStatus.denied) {
+      throw new PlatformException(
+          code: "PERMISSION_DENIED",
+          message: "Access to storage denied",
+          details: null);
+    } else if (permissionStatus == PermissionStatus.disabled) {
+      throw new PlatformException(
+          code: "PERMISSION_DISABLED",
+          message: "Storage is not available on device",
+          details: null);
+    }
+  }
 
 
 Widget controlStream({String uid, String docID}){
@@ -417,6 +495,12 @@ return '';
                   // _controller.dispose();
               Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => CommentsWid(uid: '${widget.userId}',docId: '${widget.docID}',)));
                 },),// numberFormatter(widget.comment)
+                InkWell(child: videoControlAction(icon: FontAwesomeIcons.download,
+                label: '$progress',index: shouldTogglePlay.contains(widget.position) ? 1 : 0),onTap: (){ // tashi
+                  downloadFile(widget.shareUrl,widget.position,widget.username,widget.uid);
+                
+                  // _saveNetworkVideo(widget.shareUrl);
+                   },),
                 // GestureDetector(child: videoControlAction(
                 //     icon: AppIcons.reply, label: "Share", size: 27),onTap: (){
                 //       Share.share('${widget.caption} ${widget.shareUrl}');
