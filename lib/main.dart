@@ -136,7 +136,7 @@ builder: (BuildContext context, Widget widget) {
       title: 'Rexa',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (BuildContext context) => VideoStories(),
+        '/': (BuildContext context) =>  ViewSwitcher(),
         '/home': (BuildContext context) => Swiper(),
         '/requests': (BuildContext context) => RequestsWid(),
         '/history': (BuildContext context) => PlaceholderWid(),
