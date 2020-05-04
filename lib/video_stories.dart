@@ -1,6 +1,6 @@
 
 import 'dart:io';
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:file_utils/file_utils.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
@@ -597,35 +597,31 @@ return '';
 }
 
 
- 
+//  String basename(String path) => context.basename(path);
  
 downloadFile(String url,int index,String fullName, String docId) async {
-  Dio dio = Dio();
-  
   PermissionStatus permissionStatus = await askPermisionStorage();
    if (permissionStatus == PermissionStatus.granted) {
-       String dirloc = "";
-        if (Platform.isAndroid) {
-          dirloc = (await getExternalStorageDirectory()).path;
-        } else {
-          dirloc = (await getExternalStorageDirectory()).path;
-        }
+      //  String dirloc = "";
+      //   if (Platform.isAndroid) {
+      //     dirloc = (await getExternalStorageDirectory()).path;
+      //   } else {
+      //     dirloc = (await getExternalStorageDirectory()).path;
+      //   }
         var randid = '/' + randomAlpha(5);
         try{
-          FileUtils.mkdir([dirloc]);
-          await dio.download(url, dirloc + randid + ".mp4",
-              onReceiveProgress: (receivedBytes, totalBytes) {
-           setState(() {
-             shouldTogglePlay.add(index);
-              progress =
-                  ((receivedBytes / totalBytes) * 100).toInt().toString();
-            });
-           if(progress == '100'){ // dirloc + 
-                   GallerySaver.saveVideo(File(dirloc + randid + ".mp4").path).then((bool path) {
-         print('Saved $path');
-        });
-                }
-          });
+          http.Client _client = new http.Client();
+          var req = await _client.get(Uri.parse(url));
+          var bytes = req.bodyBytes;
+          String dir = (await getExternalStorageDirectory()).path;
+          File file = new File('$dir/$randid');
+          await file.writeAsBytes(bytes);
+          print('File size:${await file.length()}');
+          print(file.path);
+        // GallerySaver.saveVideo(File(dirloc + randid + ".mp4").path).then((bool path) {
+        //  print('Saved $path');
+        // });
+          return file;
         }catch(err){
          print(err);
         }
