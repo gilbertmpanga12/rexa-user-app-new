@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:rexa/video_stories.dart';
+
 import './terms_and_conditions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
@@ -134,7 +136,7 @@ builder: (BuildContext context, Widget widget) {
       title: 'Rexa',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (BuildContext context) => ViewSwitcher(),
+        '/': (BuildContext context) => VideoStories(),
         '/home': (BuildContext context) => Swiper(),
         '/requests': (BuildContext context) => RequestsWid(),
         '/history': (BuildContext context) => PlaceholderWid(),

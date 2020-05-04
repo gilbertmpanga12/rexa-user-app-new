@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:file_utils/file_utils.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -34,9 +35,6 @@ import './swiper.dart' as swipe;
 
 
 class VideoStories extends StatefulWidget {
-  final String userId;
-  final String username;
-  VideoStories({this.userId,this.username});
   @override
   _VideoStoriesState createState() => new _VideoStoriesState();
 }
@@ -600,28 +598,55 @@ return '';
 //  String basename(String path) => context.basename(path);
  
 downloadFile(String url,int index,String fullName, String docId) async {
+  print('zzzzzzzzzzzzzzzzzzzzz');
   PermissionStatus permissionStatus = await askPermisionStorage();
    if (permissionStatus == PermissionStatus.granted) {
-      //  String dirloc = "";
-      //   if (Platform.isAndroid) {
-      //     dirloc = (await getExternalStorageDirectory()).path;
-      //   } else {
-      //     dirloc = (await getExternalStorageDirectory()).path;
-      //   }
-        var randid = '/' + randomAlpha(5);
+       String dirloc = "";
+        if (Platform.isAndroid) {
+          dirloc = (await getExternalStorageDirectory()).path;
+        } else {
+          dirloc = (await getExternalStorageDirectory()).path;
+        }
+      var randid = '/' + randomAlpha(5) + '.mp4';
         try{
-          http.Client _client = new http.Client();
-          var req = await _client.get(Uri.parse(url));
-          var bytes = req.bodyBytes;
-          String dir = (await getExternalStorageDirectory()).path;
-          File file = new File('$dir/$randid');
-          await file.writeAsBytes(bytes);
-          print('File size:${await file.length()}');
-          print(file.path);
-        // GallerySaver.saveVideo(File(dirloc + randid + ".mp4").path).then((bool path) {
-        //  print('Saved $path');
-        // });
-          return file;
+         List<List<int>> chunks = new List();
+         int downloaded = 0;
+          var _response = new http.Client().send(
+            http.Request('GET', Uri.parse(url))
+          );
+          _response.asStream().listen((datastream){
+            datastream.stream.listen((chunk){
+              chunks.add(chunk);
+             downloaded += chunks.length;
+             print((downloaded / datastream.contentLength * 100).toInt().toString());
+              // setState(() {
+              //   // ((receivedBytes / totalBytes) * 100).toInt().toString()
+              //   progress = ;
+              // });
+              
+            }, onDone: () async{
+              File file = new File('$dirloc/$randid');
+               final Uint8List bytes = Uint8List(datastream.contentLength);
+               int offset = 0;
+               for (List<int> chunk in chunks) {
+                bytes.setRange(offset, offset + chunk.length, chunk);
+                offset += chunk.length;
+                // print(offset);
+                 }
+               await file.writeAsBytes(bytes);
+               print(file.path);
+            },onError: (e){
+              Fluttertoast.showToast(
+        msg: "Video download failed",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+            });
+          });
+      
         }catch(err){
          print(err);
         }
