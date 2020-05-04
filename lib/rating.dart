@@ -348,8 +348,6 @@ if (response.statusCode == 200 || response.statusCode == 201) {
           controller: _rateCommentCtrl,
           decoration:
               InputDecoration(labelText: 'Leave a review',
-                hintText: 'Mobile Number',
-                // border: OutlineInputBorder()
                 )
         ),padding: EdgeInsets.only(left: 18.0,right:18.0),),
       Container(
