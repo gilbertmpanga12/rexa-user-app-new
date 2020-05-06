@@ -643,7 +643,7 @@ downloadFile(String url,int index,String fullName, String docId) async {
    if (permissionStatus == PermissionStatus.granted) {
        String dirloc = "";
         if (Platform.isAndroid) {
-          dirloc = (await getExternalStorageDirectory()).path;
+          dirloc = (await getApplicationDocumentsDirectory()).path;
         } else {
           dirloc = (await getExternalStorageDirectory()).path;
         }
