@@ -258,7 +258,7 @@ headers: {HttpHeaders.authorizationHeader: "Basic OThhY2RlNTEtZTE5YS00Y2E2LWE3NW
 }
 
   shouldPickImage() async {
-    FocusScope.of(context).unfocus(focusPrevious: true);
+    FocusScope.of(context).unfocus();
     ImagePicker.pickImage(source: ImageSource.camera).then((image) {
       if(image == null){
       return;
@@ -298,7 +298,7 @@ stringChopper(String word) {
 
 
 shouldPickImageFull(BuildContext context) async {
-FocusScope.of(context).unfocus(focusPrevious: true);
+FocusScope.of(context).unfocus();
 ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
       if(image == null){
       return;

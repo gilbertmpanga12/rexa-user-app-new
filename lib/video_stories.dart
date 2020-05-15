@@ -223,7 +223,7 @@ return  null;
     } 
 
    shouldPickVideo(BuildContext context) async {
-      FocusScope.of(context).unfocus(focusPrevious: true);
+      FocusScope.of(context).unfocus();
     ImagePicker.pickVideo(source: ImageSource.gallery).then((image) {
       if(image == null){
       return;
@@ -233,7 +233,7 @@ return  null;
   }
 
 shouldFromCamera(BuildContext context) async{
-   FocusScope.of(context).unfocus(focusPrevious: true);
+   FocusScope.of(context).unfocus(); // focusPrevious: true
   ImagePicker.pickVideo(source: ImageSource.camera).then((image) {
       if(image == null){
       return;

@@ -45,7 +45,7 @@ dependencies:
   video_player: 
   fluttertoast:
   permission_handler: ^3.1.0
-  flushbar: ^1.8.2
+  flushbar: ^1.10.2
   contacts_service: ^0.3.10
   dots_indicator: ^0.0.5+1
   country_code_picker: ^1.1.7

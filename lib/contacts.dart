@@ -128,8 +128,8 @@ class ServicesContactsState extends State<ServicesContacts> {
   String _userId;
   ServiceProvider fetchResults;
   String requesteeName;
-  bool errorPlaceholder;
-  bool successPlaceholder;
+  bool errorPlaceholder = false;
+  bool successPlaceholder = false;
   String _price;
   String _location;
   String serviceProviderName;
@@ -684,232 +684,8 @@ if(snapshot.hasError){
   switch(snapshot.connectionState){
     case ConnectionState.waiting: return new Center(child: CircularProgressIndicator(),);
     default:
-      return snapshot.data['isAccountVerified'] ? Center(
-                child: ListView(
-                  children: <Widget>[
-                    Center(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.only(top: 20.0, left: 0, right: 20.0),
-                        child: Column(
-                          children: <Widget>[
-                          
-                            StreamBuilder(builder: (context,snapshot){
-                              if(!snapshot.hasData){
-                                return Container(child: Text(''),);
-                              }
-                              if(snapshot.data['isRequested']){
-                               return Center(child: Center(child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-Container(
-                              child: CircleAvatar(
-                                foregroundColor: Theme.of(context).primaryColor,
-                                backgroundColor: Colors.yellow[800],
-                                backgroundImage: NetworkImage(
-                                    '${snapshot.data['profilePicture']}'),
-                                radius: 65.0,
-                              ),
-                              margin: EdgeInsets.only(left: 18.0, bottom: 10.0),
-                            ),
-                             Padding(child: Text('${snapshot.data['fullName']}', 
-  style: TextStyle(color: Colors.black87,fontSize: 16.5,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
-  padding: EdgeInsets.only(top:5.5,left: 5.5),),
-
-                                  Row(mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                   
-                                  Container(
-                                    height: 14.0,
-                                    width: 14.0,
-                             ),
-                                  Padding(child: Container(width: 200.0,child: Padding(child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(text: '● Currently  Booked',children: [
-                                      TextSpan(text: 'try  another  one')
-                                    ],
-                                   style: TextStyle(color: Colors.red,fontSize: 12,fontFamily: 'Lexand'),
-                                  ),
-                                  
-                                  ),padding: EdgeInsets.all(3.0)),),padding: EdgeInsets.all(5.3),),
-                                ],
-                              )
-                                ],),),);
-                              } else {
-
-                                return Center(child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-Container(
-                              child: CircleAvatar(
-                                foregroundColor: Theme.of(context).primaryColor,
-                                backgroundColor: Colors.yellow[800],
-                                backgroundImage: NetworkImage(
-                                    '${snapshot.data['profilePicture']}'),
-                                radius: 65.0,
-                              ),
-                              margin: EdgeInsets.only(left: 18.0, bottom: 10.0),
-                            ),
-                             Padding(child: Text('${snapshot.data['fullName']}', 
-  style: TextStyle(color: Colors.black87,fontSize: 16.5,fontWeight: FontWeight.w600,fontFamily: 'NunitoSans',)),
-  padding: EdgeInsets.only(top:5.5,left: 5.5),),
-
-                                  Row(mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                   
-                                  Container(
-                                    height: 14.0,
-                                    width: 14.0,
-//                                    color: Colors.green,
-                                      decoration: new BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius: BorderRadius.all(Radius.circular(20.0)))
-
-                                  ),
-                                  Padding(child: Text('Available', style: TextStyle(color: Colors.green,fontSize: 12.0),),padding: EdgeInsets.all(5.3),),
-                                ],
-                              )
-                                ],),);
-                              }
-                            },stream: Firestore.instance
-          .collection('saloonServiceProvider')
-          .document('${_uid}').snapshots()),
-                            
-                            SizedBox(height:9.0,),
-                            ListTile(
-                                leading: Icon(Icons.business_center,
-                                    color: Colors.yellow[800]),
-                                title: Text(
-                                  DemoLocalizations.of(context).Service,
-                                  style: TextStyle(fontWeight: FontWeight.w600,  fontFamily: 'NunitoSans',
-                                      letterSpacing: .4,fontSize: 14.0),
-                                ),
-                                subtitle: Padding(child: Text('${_requestedSaloonService}',
-                                    style: TextStyle(
-                                     
-                                      fontSize: 14.0
-                                    )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0),)),
-                                     Container(
-                              child: Divider(
-                                indent: 57.8,
-                              ),
-                              padding: EdgeInsets.only(left: 12.0),
-                            ),
-                             
-                            
-                            ListTile(
-                              leading: Icon(Icons.monetization_on,
-                                  color: Colors.yellow[800]),
-                              title: Text(
-                                DemoLocalizations.of(context).Price,
-                                style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14.0),
-                              ),
-                              subtitle: Padding(child: Text('${_price}',
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                  )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0)),
-                            ),
-                            Container(
-                              child: Divider(
-                                indent: 57.8,
-                              ),
-                              padding: EdgeInsets.only(left: 12.0),
-                            ),
-                                    ListTile(
-                                leading: Icon(Icons.description,
-                                    color: Colors.yellow[800]),
-                                title: Text(
-                                  'Description',
-                                  style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14.0),
-                                ),
-                                subtitle: Padding(child: Text('${_requestedDescription}',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                    )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0))),
-                                     
-                            Container(
-                              child: Divider(
-                                indent: 57.8,
-                              ),
-                              padding: EdgeInsets.only(left: 12.0),
-                            ),
-                            
-                            ListTile(onTap: (){
-                              Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => NavigationMaps(
-                                                latitude: _latitude,
-                                                longitude: _longitude,
-                                                serviceProviderName:
-                                                    _serviceProviderName,
-                                                phoneNumber:
-                                                    _serviceProviderNamePhone,
-                                              )));
-                            },
-                              trailing: Padding(
-                                child: Icon(
-                                  Icons.chevron_right,
-                                  color: Colors.yellow[900],
-                                  size: 25.0,
-                                ),
-                                padding: EdgeInsets.only(left: 56.0)
-                              ),
-                              leading: Icon(Icons.location_on,
-                                  color: Colors.yellow[800]),
-                              title: Text(
-                                  DemoLocalizations.of(context).Location,
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                              subtitle: Padding(child:Text(_location,
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                  )), padding: EdgeInsets.only(top: 3.0,bottom: 4.0)),
-                            ),
-                            Container(
-                              child: Divider(
-                                indent: 57.8,
-                              ),
-                              padding: EdgeInsets.only(left: 12.0),
-                            ),
-                            
-                            ListTile(
-                              onTap: (){
-                               showReviews(_uid);
-                              },
-                              trailing: Padding(
-                                child: Icon(
-                                  Icons.chevron_right,
-                                  color: Colors.yellow[900],
-                                  size: 25.0,
-                                ),
-                                padding: EdgeInsets.only(left: 56.0)
-                              ),
-                                leading: Icon(FontAwesomeIcons.starHalfAlt,
-                                    color: Colors.yellow[800]),
-                                title: Text(
-                                  'Reviews',
-                                  style: TextStyle(fontWeight: FontWeight.w600,fontSize:14),
-                                ),
-                                subtitle: Padding(child: Text('$_commentRate',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                    )),padding: EdgeInsets.only(top: 3.0,bottom: 4.0),)),
-                                      Container(
-                              child: Divider(
-                                indent: 57.8,
-                              ),
-                              padding: EdgeInsets.only(left: 12.0),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ): Center(child: Text('This account is closed. Check another one', style: TextStyle(color: Colors.black)),);
+      print(snapshot.data['isAccountVerified']);
+      return true ? Text('Co'): Center(child: Text('This account is closed. Check another one', style: TextStyle(color: Colors.black)),);
   }
 
 }, stream: Firestore.instance.collection('saloonServiceProvider').document('$_uid').snapshots(),);
@@ -946,17 +722,17 @@ dispose(){
           }
         },stream: Connectivity().checkConnectivity().asStream(),),
                   // I will be back 
-        bottomNavigationBar:  StreamBuilder(builder: (BuildContext context, connect){
-          if(connect.hasError) return Text('Check your internet connection');
-          switch(connect.connectionState){
-            case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator(),);
-            break;
-            default:
-               return connect.data.toString() == 'ConnectivityResult.none' ? 
-               Center(child: Text('Check your internet connection'),): bottomBarButton();
-          }
-        },stream: Connectivity().checkConnectivity().asStream(),),
+        // bottomNavigationBar:  StreamBuilder(builder: (BuildContext context, connect){
+        //   if(connect.hasError) return Text('Check your internet connection');
+        //   switch(connect.connectionState){
+        //     case ConnectionState.waiting:
+        //         return Center(child: CircularProgressIndicator(),);
+        //     break;
+        //     default:
+        //        return connect.data.toString() == 'ConnectivityResult.none' ? 
+        //        Center(child: Text('Check your internet connection'),): bottomBarButton();
+        //   }
+        // },stream: Connectivity().checkConnectivity().asStream(),),
         backgroundColor: Colors.white);
   }
 }
