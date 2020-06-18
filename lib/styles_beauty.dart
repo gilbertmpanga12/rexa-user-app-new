@@ -951,7 +951,7 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                                                                 MaterialPageRoute(
                                                                     builder:
                                                                         (context) =>
-                                                                            CommentsWid(
+                                                                            StoriesComments(
                                                                               uid: snapshot.data.documents[index]['doc_id'],
                                                                             )));
                   },): SizedBox.shrink(),
