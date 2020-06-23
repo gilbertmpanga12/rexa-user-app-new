@@ -873,7 +873,7 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                                                                   }
                                                                 })
                                                             : IconButton(
-                                                              color: Color(0xFF202020),
+                                                              color: Colors.blueAccent,
                                                                 icon: Icon(Icons
                                                                     .favorite_border),
                                                                 onPressed: () {
@@ -889,7 +889,7 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                                                                      IconButton(
                                                           icon: Icon(
                                                               FontAwesomeIcons
-                                                                  .comment,color: Color(0xFF202020)),
+                                                                  .comment,color: Colors.blueAccent),
                                                           onPressed: () {
                                                             Navigator.push(
                                                                 context,
@@ -903,7 +903,7 @@ downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
                                                         ),
                                                         
                                                       ]),
-                                                      IconButton(icon: Icon(Icons.visibility),onPressed: (){
+                                                      IconButton(icon: Icon(Icons.visibility,color: Colors.blueAccent,),onPressed: (){
                                                         /// navigation goes here 
                                                         Navigator.push(
                                                         context,
