@@ -1,7 +1,7 @@
 import 'dart:async';
 // added new changes +++
-import 'package:apple_sign_in/apple_sign_in_button.dart';
-import 'package:apple_sign_in/scope.dart';
+// import 'package:apple_sign_in/apple_sign_in_button.dart';
+// import 'package:apple_sign_in/scope.dart';
 
 import './swiper.dart';
 import './terms_and_conditions.dart';
@@ -251,20 +251,27 @@ class _SignInPageState extends State<SignIn> {
             .get()
             .then((newuser) {
           if (newuser.exists) {
+            double latitude = 0.347596;
+            double longitude = 32.582520;
+
             prefs.setBool('isNewUser', false);
             prefs.setBool('isSignedIn', true);
             prefs.setString('iso_code', newuser.data['iso_code']);
             prefs.setString('fullName', newuser.data['fullName']);
             prefs.setString('countryCode', newuser.data['country_code']);
             prefs.setString('profilePicture', newuser.data['profilePicture']);
-            prefs.setInt('long', newuser.data['longitude']);
-            prefs.setInt('lat', newuser.data['latitude']); // fcm_token
+            prefs.setDouble('long',
+                double.parse('${newuser.data['longitude']}') ?? longitude);
+            prefs.setDouble(
+                'lat',
+                double.parse('${newuser.data['latitude']}') ??
+                    latitude); // fcm_token
             prefs.setString('fcm_token', newuser.data['fcm_token']);
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => Swiper()));
           } else {
             //   http.get(
-            //   'https://young-tor-95342.herokuapp.com/verify-user/${_phoneNumberController.text}/$_defaultCode').then((res){
+            //   'https://yiiyaa-app.herokuapp.com/verify-user/${_phoneNumberController.text}/$_defaultCode').then((res){
 
             //     if(res.statusCode == 200 || res.statusCode == 201){
             //        if(mounted){
@@ -324,7 +331,7 @@ class _SignInPageState extends State<SignIn> {
     try {
       http
           .get(
-              'https://young-tor-95342.herokuapp.com/confirm-user/${_phoneNumberController.text}/$_defaultCode/${_smsController.text}/$fcm_token')
+              'https://yiiyaa-app.herokuapp.com/confirm-user/${_phoneNumberController.text}/$_defaultCode/${_smsController.text}/$fcm_token')
           .then((res) {
         if (res.statusCode == 200 || res.statusCode == 201) {
           if (mounted) {
@@ -465,7 +472,7 @@ class _SignInPageState extends State<SignIn> {
   //       } else {
   //         http
   //             .get(
-  //                 'https://young-tor-95342.herokuapp.com/verify-user/${_phoneNumberController.text}/$_defaultCode')
+  //                 'https://yiiyaa-app.herokuapp.com/verify-user/${_phoneNumberController.text}/$_defaultCode')
   //             .then((res) {
   //           if (res.statusCode == 200 || res.statusCode == 201) {
   //             if (mounted) {
@@ -555,16 +562,17 @@ class _SignInPageState extends State<SignIn> {
         ),
         Theme.of(context).platform == TargetPlatform.iOS
             ? Container(
-                child: AppleSignInButton(
-                  //style: ButtonStyle.black,
-                  /*_signInWithApple(
-                      context,
-                      '${_defaultCode + _phoneNumberController.text.substring(
-                            1,
-                          )}')*/
-                  type: ButtonType.signIn,
-                  onPressed: () => print('Not yet'),
-                ),
+                // AppleSignInButton(
+                //     //style: ButtonStyle.black,
+                //     /*_signInWithApple(
+                //         context,
+                //         '${_defaultCode + _phoneNumberController.text.substring(
+                //               1,
+                //             )}')*/
+                //     type: ButtonType.signIn,
+                //     onPressed: () => print('Not yet'),
+                //   )
+                child: SizedBox.shrink(),
                 width: MediaQuery.of(context).size.width - 51,
               )
             : SizedBox.shrink(),

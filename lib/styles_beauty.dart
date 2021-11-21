@@ -77,7 +77,7 @@ class StylesBeautyWidgetState extends State<StylesBeautyWidget> {
   final isAlreadyDownloading = new Set();
   String objectId;
   Flushbar flushbar;
-final TextEditingController controller = TextEditingController();
+  final TextEditingController controller = TextEditingController();
   List<StylesBeauty> resultsFetched = List();
   double paddingTitle = 67.0;
   File fileToBeUploaded;
@@ -86,87 +86,90 @@ final TextEditingController controller = TextEditingController();
   StreamSubscription<ConnectivityResult> subscription;
   String _actualName = 'Someone you know';
   bool downloading = false;
-    var progress = "";
-    var path = "No Data";
-    var platformVersion = "Unknown";
+  var progress = "";
+  var path = "No Data";
+  var platformVersion = "Unknown";
 
- downloadFile(String url,int index,String fullName, String docId) async {
-  setState(() {
-    shouldTogglePlay.add(index); // imediately show downloder con
-    downloading = true;
-    progress = '1';
-  });
-  Dio dio = Dio();
-  PermissionStatus permissionStatus = await askPermisionStorage();
-   if (permissionStatus == PermissionStatus.granted) {
-       String dirloc = "";
-        if (Platform.isAndroid) {
-          dirloc = (await getExternalStorageDirectory()).path;
+  downloadFile(String url, int index, String fullName, String docId) async {
+    setState(() {
+      shouldTogglePlay.add(index); // imediately show downloder con
+      downloading = true;
+      progress = '1';
+    });
+    Dio dio = Dio();
+    PermissionStatus permissionStatus = await askPermisionStorage();
+    if (permissionStatus == PermissionStatus.granted) {
+      String dirloc = "";
+      if (Platform.isAndroid) {
+        dirloc = (await getExternalStorageDirectory()).path;
+      } else {
+        dirloc = (await getExternalStorageDirectory()).path;
+      }
+
+      var randid = '/' + randomAlpha(5);
+      try {
+        FileUtils.mkdir([dirloc]);
+        if (isAlreadyDownloading.contains(index)) {
+          return null;
         } else {
-          dirloc = (await getExternalStorageDirectory()).path;
-        }
-
-        var randid = '/' + randomAlpha(5);
-        try{
-        
-          FileUtils.mkdir([dirloc]);
-          if(isAlreadyDownloading.contains(index)){
-            return null;
-          }else{
-            await dio.download(url, dirloc + randid + ".mp4",
+          await dio.download(url, dirloc + randid + ".mp4",
               onReceiveProgress: (receivedBytes, totalBytes) {
-                isAlreadyDownloading.add(index);
+            isAlreadyDownloading.add(index);
             setState(() {
               progress =
                   ((receivedBytes / totalBytes) * 100).toStringAsFixed(0);
             });
 
             if (progress == '100') {
-               isAlreadyDownloading.remove(index);
-           }
+              isAlreadyDownloading.remove(index);
+            }
           });
-          }
-        }catch(err){
-         print(err);
         }
-        // set the path and navigate to watch video
+      } catch (err) {
+        print(err);
+      }
+      // set the path and navigate to watch video
       path = dirloc + randid + ".mp4";
       // isAlreadyDownloading.remove(index);
-       Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    WatchVideo(
-                                                          serviceName: fullName,
-                                                          photoUrl: path,
-                                                          isVideo: true,
- )));
- // store path to db
-   await Firestore.instance.collection('userService').document(docId)
-   .setData({'path':path},merge: true);
-    if(mounted){
-      setState((){
-        downloading = false; // honcho
-      });
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => WatchVideo(
+                    serviceName: fullName,
+                    photoUrl: path,
+                    isVideo: true,
+                  )));
+      // store path to db
+      await Firestore.instance
+          .collection('userService')
+          .document(docId)
+          .setData({'path': path}, merge: true);
+      if (mounted) {
+        setState(() {
+          downloading = false; // honcho
+        });
+      }
+    } else {
+      _handleInvalidPermissions(permissionStatus);
     }
-   }else{
-     _handleInvalidPermissions(permissionStatus);
-   }
- }
+  }
 
-askPermisionStorage() async {
-  PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
-    if (permission != PermissionStatus.granted && permission != PermissionStatus.disabled) {
-      Map<PermissionGroup, PermissionStatus> permissionStatus = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-      return permissionStatus[PermissionGroup.storage] ?? PermissionStatus.unknown;
-      
+  askPermisionStorage() async {
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
+    if (permission != PermissionStatus.granted &&
+        permission != PermissionStatus.disabled) {
+      Map<PermissionGroup, PermissionStatus> permissionStatus =
+          await PermissionHandler()
+              .requestPermissions([PermissionGroup.storage]);
+      return permissionStatus[PermissionGroup.storage] ??
+          PermissionStatus.unknown;
     } else {
       return permission;
     }
-}
+  }
 
-void _handleInvalidPermissions(PermissionStatus permissionStatus) {
+  void _handleInvalidPermissions(PermissionStatus permissionStatus) {
     if (permissionStatus == PermissionStatus.denied) {
       throw new PlatformException(
           code: "PERMISSION_DENIED",
@@ -180,72 +183,73 @@ void _handleInvalidPermissions(PermissionStatus permissionStatus) {
     }
   }
 
-
   @override
   initState() {
     getName();
-    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-       if (result.toString() == 'ConnectivityResult.mobile' && flushbar != null) {
-flushbar.dismiss();
-} else if (result.toString() == 'ConnectivityResult.wifi'&& flushbar != null) {
-flushbar.dismiss();
-} else if(result.toString() == 'ConnectivityResult.none'){
-        flushbar =  Flushbar(
-                showProgressIndicator: true,
-                progressIndicatorBackgroundColor: Colors.blueGrey,
-                  title:  "Something is wrong",
-                  message:  "Check your internet connection..",
-                  duration:  Duration(minutes: 2),              
-                )..show(context);
-       }
-       
-  });
-  removeNots();
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      if (result.toString() == 'ConnectivityResult.mobile' &&
+          flushbar != null) {
+        flushbar.dismiss();
+      } else if (result.toString() == 'ConnectivityResult.wifi' &&
+          flushbar != null) {
+        flushbar.dismiss();
+      } else if (result.toString() == 'ConnectivityResult.none') {
+        flushbar = Flushbar(
+          showProgressIndicator: true,
+          progressIndicatorBackgroundColor: Colors.blueGrey,
+          title: "Something is wrong",
+          message: "Check your internet connection..",
+          duration: Duration(minutes: 2),
+        )..show(context);
+      }
+    });
+    removeNots();
     super.initState();
   }
 
-removeNots() async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
- await Firestore.instance.collection('users').document(prefs.getString('uid')).setData({
-   'tvCount': 0
- },merge: true);
+  removeNots() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await Firestore.instance
+        .collection('users')
+        .document(prefs.getString('uid'))
+        .setData({'tvCount': 0}, merge: true);
   }
 
- @override
+  @override
   void dispose() {
-    
-    if(flushbar != null){
+    if (flushbar != null) {
       flushbar.dismiss();
     }
-    if(subscription != null){
+    if (subscription != null) {
       subscription.cancel();
     }
     super.dispose();
   }
-getName() async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  _actualName = prefs.getString('fullName');
-}
 
-sendNotificationsToAll() async {
+  getName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _actualName = prefs.getString('fullName');
+  }
 
-String url = 'https://onesignal.com/api/v1/notifications';
-Map<dynamic, dynamic> body = {
-'app_id': Configs.appIdUserAndroidOneSignal,
-'contents': {"en": "Stories"},
-'included_segments': ["All"],
-'headings': {"en": "$_actualName shared a new style"},
-'data': {"type": "new-stories"},
- "small_icon": "@mipmap/ic_launcher",
- "large_icon": "@mipmap/ic_launcher"
-}; // 'small_icon': '' ... final response =
- await http.post(url,
-body: json.encode(body),
-headers: {HttpHeaders.authorizationHeader: "Basic OThhY2RlNTEtZTE5YS00Y2E2LWE3NWUtYTUwOWY0MTJmNzIz",
-"accept": "application/json",
-"content-type": "application/json"
-}
-);
+  sendNotificationsToAll() async {
+    String url = 'https://onesignal.com/api/v1/notifications';
+    Map<dynamic, dynamic> body = {
+      'app_id': Configs.appIdUserAndroidOneSignal,
+      'contents': {"en": "Stories"},
+      'included_segments': ["All"],
+      'headings': {"en": "$_actualName shared a new style"},
+      'data': {"type": "new-stories"},
+      "small_icon": "@mipmap/ic_launcher",
+      "large_icon": "@mipmap/ic_launcher"
+    }; // 'small_icon': '' ... final response =
+    await http.post(url, body: json.encode(body), headers: {
+      HttpHeaders.authorizationHeader:
+          "Basic OThhY2RlNTEtZTE5YS00Y2E2LWE3NWUtYTUwOWY0MTJmNzIz",
+      "accept": "application/json",
+      "content-type": "application/json"
+    });
 //  if(response.statusCode == 200 || response.statusCode == 201){
 //    print('Passed');
 //    print(response.body);
@@ -253,236 +257,264 @@ headers: {HttpHeaders.authorizationHeader: "Basic OThhY2RlNTEtZTE5YS00Y2E2LWE3NW
 //    print('Failed')
 //    print(response.body);
 //  }
-
-
-}
+  }
 
   shouldPickImage() async {
     FocusScope.of(context).unfocus();
     ImagePicker.pickImage(source: ImageSource.camera).then((image) {
-      if(image == null){
-      return;
-      } 
-         checkIfVideo = false;
-        _beautyPhoto = image;
-        fileToBeUploaded = image;
+      if (image == null) {
+        return;
+      }
+      checkIfVideo = false;
+      _beautyPhoto = image;
+      fileToBeUploaded = image;
       // setState(() {
-        
+
       // });
     }).catchError((err) {
       print(err);
     });
   }
 
-stringChopper(String word) {
-  if(word.length > 41){
-    return word.substring(0, 41) + '...';
-  }else{
-    return word;
+  stringChopper(String word) {
+    if (word.length > 41) {
+      return word.substring(0, 41) + '...';
+    } else {
+      return word;
+    }
   }
-}
 
   shouldPickVideo() async {
     ImagePicker.pickVideo(source: ImageSource.gallery).then((image) {
-      if(image == null){
-      return;
+      if (image == null) {
+        return;
       }
       setState(() {
-         checkIfVideo = true;
+        checkIfVideo = true;
         _beautyPhoto = image;
         fileToBeUploaded = image;
       });
     });
   }
 
-
-
-shouldPickImageFull(BuildContext context) async {
-FocusScope.of(context).unfocus();
-ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-      if(image == null){
-      return;
-      } 
+  shouldPickImageFull(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+      if (image == null) {
+        return;
+      }
       print('state of image ${controller.text}');
-         checkIfVideo = false;
-        _beautyPhoto = image;
-        fileToBeUploaded = image;
+      checkIfVideo = false;
+      _beautyPhoto = image;
+      fileToBeUploaded = image;
     }).catchError((err) {
       print(err);
     });
-  
   }
 
-
-
-    Widget inputBar(){
-return  Padding(child:Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Container(
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            // SizedBox(width: 8.0),
-            InkWell(child: Container(child: Icon(FontAwesomeIcons.camera,
-                size: 20.0, color: Color(0xff203152)),
-                margin: EdgeInsets.only(left: 8.0,right: 8.0) ,),onTap: (){
-         shouldPickImage();
-                },),
-            // SizedBox(width: 8.0),
-            Expanded(
-              child: TextField(
-                inputFormatters:[
-                  LengthLimitingTextInputFormatter(500)
-                ],
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.multiline,
-                 maxLines: null,
-                 controller: controller,
-                decoration: InputDecoration(
-                  errorText: isTextValid ? 'Storie Can\'t Be Blank' : null,
-                  hintText: 'Type a message',
-                  border: InputBorder.none,
+  Widget inputBar() {
+    return Padding(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: Container(
+                    color: Colors.white,
+                    child: Row(
+                      children: <Widget>[
+                        // SizedBox(width: 8.0),
+                        InkWell(
+                          child: Container(
+                            child: Icon(FontAwesomeIcons.camera,
+                                size: 20.0, color: Color(0xff203152)),
+                            margin: EdgeInsets.only(left: 8.0, right: 8.0),
+                          ),
+                          onTap: () {
+                            shouldPickImage();
+                          },
+                        ),
+                        // SizedBox(width: 8.0),
+                        Expanded(
+                          child: TextField(
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(500)
+                            ],
+                            textCapitalization: TextCapitalization.sentences,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            controller: controller,
+                            decoration: InputDecoration(
+                              errorText:
+                                  isTextValid ? 'Storie Can\'t Be Blank' : null,
+                              hintText: 'Type a message',
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          child: Container(
+                            child: Icon(
+                              FontAwesomeIcons.image,
+                              size: 20.0,
+                              color: Color(0xff203152),
+                            ),
+                            margin: EdgeInsets.only(right: 8.0, left: 8.0),
+                          ),
+                          onTap: () {
+                            shouldPickImageFull(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-            InkWell(child: Container(child: Icon(FontAwesomeIcons.image,
-                size: 20.0, color: Color(0xff203152),),
-                margin: EdgeInsets.only(right: 8.0,left: 8.0),),onTap: (){
-                  
-                  shouldPickImageFull(context);
-                },),
-          
-          ],
+              SizedBox(
+                width: 5.0,
+              ),
+              GestureDetector(
+                onTap: () {
+                  postImage(fileToBeUploaded, checkIfVideo);
+                },
+                child: CircleAvatar(
+                  child: Icon(FontAwesomeIcons.paperPlane),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    ),
-          ),
-          SizedBox(
-            width: 5.0,
-          ),
-          GestureDetector(
-            onTap: () {
-             postImage(fileToBeUploaded, checkIfVideo);
-            },
-            child: CircleAvatar(
-              child: Icon(FontAwesomeIcons.paperPlane),
-            ),
-          ),
-        ],
-      ),
-    ),          padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom));
-    } 
-
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom));
+  }
 
   void _settingModalBottomSheet(context) {
     showModalBottomSheet(
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0),topRight: Radius.circular(20.0))
-),
-      elevation: 3.0,backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0))),
+        elevation: 3.0,
+        backgroundColor: Colors.transparent,
         context: context,
         builder: (BuildContext context) {
           return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-            
-            SizedBox(height: 20.0,),
-            Padding(child:Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Container(
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            SizedBox(width: 8.0),
-            InkWell(child: Icon(FontAwesomeIcons.camera,
-                size: 20.0, color: Color(0xff203152)),onTap: (){
-                  ImagePicker.pickImage(source: ImageSource.camera).then((image) {
-      if(image == null){
-      return;
-      } 
-      setState(() {
-         checkIfVideo = false;
-        _beautyPhoto = image;
-        fileToBeUploaded = image;
-      });
-    }).catchError((err) {
-      print(err);
-    });
-                },),
-            SizedBox(width: 8.0),
-            Expanded(
-              child: TextField(
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(500)
-                ],
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.multiline,
-                 maxLines: null,
-                 controller: controller,
-                decoration: InputDecoration(
-                  errorText: isTextValid ? 'Storie Can\'t Be Blank' : null,
-                  hintText: 'Share a story',
-                  hintStyle: TextStyle(fontFamily: 'Rukie',fontSize: 20, fontWeight: FontWeight.w500),
-                  border: InputBorder.none,
-                ),
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(
+                height: 20.0,
               ),
-            ),
-            InkWell(child: Icon(FontAwesomeIcons.image,
-                size: 20.0, color: Color(0xff203152),),onTap: (){
-                  shouldPickImageFull(context);
-                },),
-            SizedBox(width: 8.0),
-            // InkWell(
-            //   onTap: (){
-            //      shouldPickVideo();
-            //   },
-            //   child: Icon(FontAwesomeIcons.video,
-            //     size: 20.0, color: Color(0xff203152)),),
-            SizedBox(width: 8.0),
-          ],
-        ),
-      ),
-    ),
-          ),
-          SizedBox(
-            width: 5.0,
-          ),
-         InkWell(
-            onTap: () {
-             postImage(fileToBeUploaded, checkIfVideo);
-            },
-            child: CircleAvatar(
-              child: Icon(FontAwesomeIcons.paperPlane),
-            ),
-          ),
-        ],
-      ),
-    ),          padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom))
-
-          ],);
-        }).whenComplete((){
-     controller.clear();
-        });
+              Padding(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Container(
+                              color: Colors.white,
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox(width: 8.0),
+                                  InkWell(
+                                    child: Icon(FontAwesomeIcons.camera,
+                                        size: 20.0, color: Color(0xff203152)),
+                                    onTap: () {
+                                      ImagePicker.pickImage(
+                                              source: ImageSource.camera)
+                                          .then((image) {
+                                        if (image == null) {
+                                          return;
+                                        }
+                                        setState(() {
+                                          checkIfVideo = false;
+                                          _beautyPhoto = image;
+                                          fileToBeUploaded = image;
+                                        });
+                                      }).catchError((err) {
+                                        print(err);
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(width: 8.0),
+                                  Expanded(
+                                    child: TextField(
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(500)
+                                      ],
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: null,
+                                      controller: controller,
+                                      decoration: InputDecoration(
+                                        errorText: isTextValid
+                                            ? 'Storie Can\'t Be Blank'
+                                            : null,
+                                        hintText: 'Share a story',
+                                        hintStyle: TextStyle(
+                                            fontFamily: 'Rukie',
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500),
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    child: Icon(
+                                      FontAwesomeIcons.image,
+                                      size: 20.0,
+                                      color: Color(0xff203152),
+                                    ),
+                                    onTap: () {
+                                      shouldPickImageFull(context);
+                                    },
+                                  ),
+                                  SizedBox(width: 8.0),
+                                  // InkWell(
+                                  //   onTap: (){
+                                  //      shouldPickVideo();
+                                  //   },
+                                  //   child: Icon(FontAwesomeIcons.video,
+                                  //     size: 20.0, color: Color(0xff203152)),),
+                                  SizedBox(width: 8.0),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            postImage(fileToBeUploaded, checkIfVideo);
+                          },
+                          child: CircleAvatar(
+                            child: Icon(FontAwesomeIcons.paperPlane),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom))
+            ],
+          );
+        }).whenComplete(() {
+      controller.clear();
+    });
   }
 
   likePhoto(uid) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // /rate-style/:uid/:rating
     final response = await http.get(
-        'https://young-tor-95342.herokuapp.com/api/rate-style/${uid}/${likes}/${prefs.getString('uid')}');
+        'https://yiiyaa-app.herokuapp.com/api/rate-style/${uid}/${likes}/${prefs.getString('uid')}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
 //      getStylesBeauty();
@@ -495,7 +527,7 @@ return  Padding(child:Padding(
   unlikePhoto(uid) async {
     // /rate-style/:uid/:rating
     final response = await http.get(
-        'https://young-tor-95342.herokuapp.com/api/unrate-style/${uid}/${likes}');
+        'https://yiiyaa-app.herokuapp.com/api/unrate-style/${uid}/${likes}');
     if (response.statusCode == 200 || response.statusCode == 201) {
 //      getStylesBeauty();
       return resultsFetched;
@@ -504,25 +536,20 @@ return  Padding(child:Padding(
     }
   }
 
-  
-
-
-
   postImage(File image, bool isVideo) async {
-     var storyTitle = controller.text; // store storyTitle
-     controller.text.isEmpty ? isTextValid = true : isTextValid = false;
-   
-    if(isTextValid){
+    var storyTitle = controller.text; // store storyTitle
+    controller.text.isEmpty ? isTextValid = true : isTextValid = false;
+
+    if (isTextValid) {
       return;
     }
     Navigator.of(context).pop();
- showDialog(
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.all(Radius.circular(20.0))
-),
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             content: Row(
               children: <Widget>[
                 Container(
@@ -533,26 +560,26 @@ return  Padding(child:Padding(
                   child: SizedBox(
                     width: 180.0,
                     child: SizedBox(
-                        width: 200.0,
-                        child:
-                    Text(
-                      '${DemoLocalizations.of(context).processing}',
-                      style: TextStyle(fontSize: 17.0),
-                    ),),
+                      width: 200.0,
+                      child: Text(
+                        '${DemoLocalizations.of(context).processing}',
+                        style: TextStyle(fontSize: 17.0),
+                      ),
+                    ),
                   ),
                 )
               ],
             ),
           );
         });
-    
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final url = randomAlpha(10);
-    final defaultVideo = 'https://firebasestorage.googleapis.com/v0/b/esalonbusiness-d3f3d.appspot.com/o/snowyscreen.gif?alt=media&token=35458d60-5e73-4e7e-ae13-aad26ff095ec';
+    final defaultVideo =
+        'https://firebasestorage.googleapis.com/v0/b/esalonbusiness-d3f3d.appspot.com/o/snowyscreen.gif?alt=media&token=35458d60-5e73-4e7e-ae13-aad26ff095ec';
     final StorageReference firebaseStorageRef =
         FirebaseStorage.instance.ref().child('${url}');
-    final StorageUploadTask task =  firebaseStorageRef.putFile(image);
-
+    final StorageUploadTask task = firebaseStorageRef.putFile(image);
 
     task.onComplete.then((image) {
       firebaseStorageRef.getDownloadURL().then((result) {
@@ -569,7 +596,7 @@ return  Padding(child:Padding(
           'path': 'N/A',
           'isChat': false
         };
-       
+
         final Map<String, dynamic> transcoderPayload = {
           'uid': url,
           'imageUrl': result.toString(),
@@ -579,38 +606,35 @@ return  Padding(child:Padding(
           'messageId': 'N/A'
         };
 
-        http.post('https://young-tor-95342.herokuapp.com/api/upload-feed',
+        http.post('https://yiiyaa-app.herokuapp.com/api/upload-feed',
             body: json.encode(service),
             headers: {
               "accept": "application/json",
               "content-type": "application/json"
-        }).then((response) {
+            }).then((response) {
           if (response.statusCode == 200 || response.statusCode == 201) {
+            Navigator.of(context, rootNavigator: true).pop();
+            Fluttertoast.showToast(
+                msg: "Uploaded Successfully!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.greenAccent,
+                textColor: Colors.white,
+                fontSize: 15.0);
+            sendNotificationsToAll();
 
-            Navigator.of(context,rootNavigator: true).pop();
-              Fluttertoast.showToast(
-        msg: "Uploaded Successfully!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.greenAccent,
-        textColor: Colors.white,
-        fontSize: 15.0
-    );
-    sendNotificationsToAll();
-        
-                controller.clear();
+            controller.clear();
           } else {
-             Navigator.of(context,rootNavigator: true).pop();
-             Fluttertoast.showToast(
-        msg: "Oops something went wrong!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.redAccent,
-        textColor: Colors.white,
-        fontSize: 15.0
-    );
+            Navigator.of(context, rootNavigator: true).pop();
+            Fluttertoast.showToast(
+                msg: "Oops something went wrong!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.redAccent,
+                textColor: Colors.white,
+                fontSize: 15.0);
             print('succ*********');
             throw Exception('Oops something wrong');
           }
@@ -619,394 +643,532 @@ return  Padding(child:Padding(
     });
   }
 
-Future<ui.Image> _getImage(String imageUrl) {
-     Completer<ui.Image> completer = new Completer<ui.Image>();
-    new NetworkImage('$imageUrl')
-      .resolve(new ImageConfiguration())
-      .addListener(ImageStreamListener((ImageInfo image, bool synchronousCall) {
-        completer.complete(image.image);
-      }));
+  Future<ui.Image> _getImage(String imageUrl) {
+    Completer<ui.Image> completer = new Completer<ui.Image>();
+    new NetworkImage('$imageUrl').resolve(new ImageConfiguration()).addListener(
+        ImageStreamListener((ImageInfo image, bool synchronousCall) {
+      completer.complete(image.image);
+    }));
     return completer.future;
   }
+
   Widget build(BuildContext context) {
     // double deviceHeight = MediaQuery.of(context).size.height;
-    return WillPopScope(child: Scaffold(
-          appBar: AppBar(
-            // automaticallyImplyLeading: true,
-            leading: AppBar(leading: IconButton(
-                    icon: new Icon(
-                     Theme.of(context).platform == TargetPlatform.iOS ? 
-                     Icons.more_horiz:  Icons.more_horiz, // Icons.more_horiz
-                      size: 25.0,
-                    ),
-                    onPressed: () =>  Navigator.popAndPushNamed(context, '/home'),
-                  ),backgroundColor: Colors.white,elevation: 0,),
-        
-            title: Text(
-              'Stories',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Merienda', fontSize: 20.0),
-              textAlign: TextAlign.center,
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          // automaticallyImplyLeading: true,
+          leading: AppBar(
+            leading: IconButton(
+              icon: new Icon(
+                Theme.of(context).platform == TargetPlatform.iOS
+                    ? Icons.more_horiz
+                    : Icons.more_horiz, // Icons.more_horiz
+                size: 25.0,
+              ),
+              onPressed: () => Navigator.popAndPushNamed(context, '/home'),
             ),
             backgroundColor: Colors.white,
-            iconTheme: IconThemeData(color: Colors.black87),
-            centerTitle: true,
-            elevation: 0.4,
-            
+            elevation: 0,
           ),
-          body: StreamBuilder(
-              stream: Firestore.instance.collection('userService')
-              .orderBy('created_time', descending: true).snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError)
-          return new Center(child: Text('Check your internet connection'),);
-                switch(snapshot.connectionState){
-                  case ConnectionState.waiting:
+
+          title: Text(
+            'Stories',
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Merienda',
+                fontSize: 20.0),
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black87),
+          centerTitle: true,
+          elevation: 0.4,
+        ),
+        body: StreamBuilder(
+            stream: Firestore.instance
+                .collection('userService')
+                .orderBy('created_time', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError)
+                return new Center(
+                  child: Text('Check your internet connection'),
+                );
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
                   return Center(
                     child: CircularProgressIndicator(strokeWidth: 5.0),
                   );
                   break;
-                  default:
-                  return ListView.builder(itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index) {
-                  final _isAlreadySaved = _saved.contains(index);
-                  final _istoggled = _toggleText.contains(index);
-                  return Card(
-                              margin: EdgeInsets.only(top: 3.0),
-                              elevation: 0.3,
-                              child: new Column(
-                                 mainAxisAlignment: MainAxisAlignment.start,
-                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  // crossAxisAlignment:
-                                  //     CrossAxisAlignment.stretch,
-                                  children: [
-                                    Wrap(
-                                      spacing: -1.0,
-                                      children: <Widget>[
-                                        SizedBox(height: 20.0),
-                                        ListTile(
-
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 3.0),
-                                          leading: Padding(
+                default:
+                  return ListView.builder(
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) {
+                        final _isAlreadySaved = _saved.contains(index);
+                        final _istoggled = _toggleText.contains(index);
+                        return Card(
+                            margin: EdgeInsets.only(top: 3.0),
+                            elevation: 0.3,
+                            child: new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                // mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                // crossAxisAlignment:
+                                //     CrossAxisAlignment.stretch,
+                                children: [
+                                  Wrap(
+                                    spacing: -1.0,
+                                    children: <Widget>[
+                                      SizedBox(height: 20.0),
+                                      ListTile(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 3.0),
+                                        leading: Padding(
                                           child: Container(
                                             width: 44.0,
                                             height: 44.0,
-                                            margin: EdgeInsets.only(top:1.8),
-                                            child: InkWell(child: Container(
-                                              width: 44.0,
-                                              height: 44.0,
-                                              decoration: new BoxDecoration(
-
-                                                color: Colors.white,
-                                                image: new DecorationImage(
-                                                  image: new CachedNetworkImageProvider(
-                                                      '${snapshot.data.documents[index]['profilePicture']}'),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(50.0)),
-                                                border: new Border.all(
+                                            margin: EdgeInsets.only(top: 1.8),
+                                            child: InkWell(
+                                              child: Container(
+                                                width: 44.0,
+                                                height: 44.0,
+                                                decoration: new BoxDecoration(
                                                   color: Colors.white,
-                                                  width: 0.0,
+                                                  image: new DecorationImage(
+                                                    image: new CachedNetworkImageProvider(
+                                                        '${snapshot.data.documents[index]['profilePicture']}'),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                  borderRadius:
+                                                      new BorderRadius.all(
+                                                          new Radius.circular(
+                                                              50.0)),
+                                                  border: new Border.all(
+                                                    color: Colors.white,
+                                                    width: 0.0,
+                                                  ),
                                                 ),
                                               ),
-                                            ),onTap: (){
-                                              Navigator.
-                                              push(context, MaterialPageRoute(
-                                                builder: (BuildContext context) => 
-                                                StylesByUser(targetUid: '${snapshot.data.documents[index]['userId']}',fullName: '${snapshot.data.documents[index]['fullName']}',)));
-                                            },),
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            StylesByUser(
+                                                              targetUid:
+                                                                  '${snapshot.data.documents[index]['userId']}',
+                                                              fullName:
+                                                                  '${snapshot.data.documents[index]['fullName']}',
+                                                            )));
+                                              },
+                                            ),
                                           ),
                                           padding: EdgeInsets.only(
                                               top: 5.0,
                                               left: 5.0,
                                               right: 0,
                                               bottom: 8.0),
-                                        )
-,
-                                          title: RichText(
-  text: TextSpan(
-    text: '@',
-    style: TextStyle(
-             wordSpacing: 0.1,
-             color: Colors.blue[300],
-             fontSize: 14,
-             fontWeight: FontWeight.bold,
-             fontFamily: 'NunitoSans',letterSpacing: .4),
-    children: <TextSpan>[
-      TextSpan(text: '${snapshot.data.documents[index]['fullName']}', 
-      style: TextStyle(color: Colors.black87)
-    ),
+                                        ),
+                                        title: RichText(
+                                          text: TextSpan(
+                                            text: '@',
+                                            style: TextStyle(
+                                                wordSpacing: 0.1,
+                                                color: Colors.blue[300],
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'NunitoSans',
+                                                letterSpacing: .4),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text:
+                                                      '${snapshot.data.documents[index]['fullName']}',
+                                                  style: TextStyle(
+                                                      color: Colors.black87)),
+                                            ],
+                                          ),
+                                        ),
+                                        subtitle: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                  '${snapshot.data.documents[index]['full_date']} • ',
+                                                  style: TextStyle(
+                                                      color: Colors.grey[500],
+                                                      wordSpacing: -0.900,
+                                                      fontSize: 13.7,
+                                                      fontFamily: 'Rukie',
+                                                      fontWeight:
+                                                          FontWeight.w400)),
+                                              Icon(
+                                                FontAwesomeIcons.globeAfrica,
+                                                color: Colors.grey[500],
+                                                size: 13.0,
+                                              )
+                                            ]),
+                                      ),
+                                      DescriptionTextWidget(
+                                        text:
+                                            '${snapshot.data.documents[index]['storyTitle']}',
+                                        index: index,
+                                      )
+                                    ],
+                                  ),
+                                  Flexible(
+                                    fit: FlexFit.loose,
+                                    flex: 500,
+                                    child:
+                                        snapshot.data.documents[index]
+                                                    ['isVideo'] ==
+                                                true
+                                            ? InkWell(
+                                                // to be back
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      "${snapshot.data.documents[index]['videoDefault']}",
+                                                  placeholder: (context, url) =>
+                                                      Image.memory(
+                                                          kTransparentImage),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Icon(Icons.image,
+                                                          color: Colors.grey),
+                                                ),
 
-    ],
-  ),
-), subtitle: Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-       Text('${snapshot.data.documents[index]['full_date']} • ',style: TextStyle(
-      color: Colors.grey[500],
-      wordSpacing: -0.900,
-      fontSize: 13.7,
-      fontFamily: 'Rukie',
-      fontWeight: FontWeight.w400)),
-      Icon(FontAwesomeIcons.globeAfrica,
-      color: Colors.grey[500],size: 13.0,)
-                                        ]),),
-DescriptionTextWidget(text: '${snapshot.data.documents[index]['storyTitle']}',index: index,)
-
-
-                                      ],
-                                    ),
-
-                                    Flexible(
-                                      fit: FlexFit.loose,
-                                      flex: 500,
-                                      child:
-                                          snapshot.data.documents[index]
-                                                  ['isVideo'] == true 
-                                              ? InkWell( // to be back
-                                                  child: CachedNetworkImage(
-        imageUrl: "${snapshot.data.documents[index]['videoDefault']}",
-        placeholder: (context, url) => Image.memory(kTransparentImage),
-        errorWidget: (context, url, error) => Icon(Icons.image,color: Colors.grey),
-     ),
-      
-                                                  onTap: () {
-                                                    if('${snapshot.data.documents[index]['path']}' == 'N/A'){
-downloadFile('${snapshot.data.documents[index]['servicePhoto']}',index,
-                                                              '${snapshot.data.documents[index]['fullName']}',
-                                                              '${snapshot.data.documents[index]['doc_id']}'
-     );
-                                                    }else{
-                              Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    WatchVideo(
-                                                          serviceName: snapshot
-                                                                      .data
-                                                                      .documents[
-                                                                  index][
-                                                              'fullName'],
-                                                          photoUrl: snapshot
-                                                                      .data
-                                                                      .documents[
-                                                                  index][
-                                                              'path'],
-                                                          isVideo: snapshot
-                                                              .data
-                                                              .documents[
-                                                          index][
-                                                          'isVideo'],
- )));   
-                                                    }
-
-                                                  },
-                                                ) : InkWell(
-                                                  child: CachedNetworkImage(
-        imageUrl: "${snapshot.data.documents[index]['servicePhoto']}",
-        placeholder: (context, url) => Image.memory(kTransparentImage),
-        errorWidget: (context, url, error) => Icon(Icons.image,color: Colors.grey),
-     ),
-                                                  onTap: () {
+                                                onTap: () {
+                                                  if ('${snapshot.data.documents[index]['path']}' ==
+                                                      'N/A') {
+                                                    downloadFile(
+                                                        '${snapshot.data.documents[index]['servicePhoto']}',
+                                                        index,
+                                                        '${snapshot.data.documents[index]['fullName']}',
+                                                        '${snapshot.data.documents[index]['doc_id']}');
+                                                  } else {
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
                                                             builder:
                                                                 (context) =>
-                                                                    ViewImage(
-                                                                      photoUrl: snapshot
-                                                                          .data
-                                                                          .documents[index]['servicePhoto'],
+                                                                    WatchVideo(
                                                                       serviceName: snapshot
                                                                           .data
                                                                           .documents[index]['fullName'],
-                                                                          isVideo: snapshot
+                                                                      photoUrl: snapshot
+                                                                          .data
+                                                                          .documents[index]['path'],
+                                                                      isVideo: snapshot
                                                                           .data
                                                                           .documents[index]['isVideo'],
                                                                     )));
-                                                  },
+                                                  }
+                                                },
+                                              )
+                                            : InkWell(
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      "${snapshot.data.documents[index]['servicePhoto']}",
+                                                  placeholder: (context, url) =>
+                                                      Image.memory(
+                                                          kTransparentImage),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Icon(Icons.image,
+                                                          color: Colors.grey),
                                                 ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                         children: <Widget>[
-                                       Container(height:31.0,child: Row(
-                                              
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: <Widget>[
-                                                       // Terminator
-                                                        _isAlreadySaved
-                                                            ? IconButton(
-                                                                icon: Icon(
-                                                                  Icons
-                                                                      .favorite,
-                                                                  color: Colors
-                                                                      .red,
-                                                                ),
-                                                                onPressed: () {
-                                                                  if (_isAlreadySaved) {
-                                                                    setState(
-                                                                        () {
-                                                                      likes = 0;
-                                                                      _saved.remove(
-                                                                          index);
-                                                                    });
-                                                                    unlikePhoto(snapshot
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder:
+                                                              (context) =>
+                                                                  ViewImage(
+                                                                    photoUrl: snapshot
                                                                             .data
                                                                             .documents[index]
                                                                         [
-                                                                        'doc_id']);
-                                                                  }
-                                                                })
-                                                            : IconButton(
-                                                              color: Colors.blueAccent,
-                                                                icon: Icon(Icons
-                                                                    .favorite_border),
-                                                                onPressed: () {
-                                                                 likes = 1;
-                                                                    _saved.add(
-                                                                        index);
-                                                                  likePhoto(snapshot
-                                                                          .data
-                                                                          .documents[
-                                                                      index]['doc_id']);
-                                                                }),
-                                                                      
-                                                                     IconButton(
-                                                          icon: Icon(
-                                                              FontAwesomeIcons
-                                                                  .comment,color: Colors.blueAccent),
+                                                                        'servicePhoto'],
+                                                                    serviceName:
+                                                                        snapshot
+                                                                            .data
+                                                                            .documents[index]['fullName'],
+                                                                    isVideo: snapshot
+                                                                            .data
+                                                                            .documents[index]
+                                                                        [
+                                                                        'isVideo'],
+                                                                  )));
+                                                },
+                                              ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        height: 31.0,
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    // Terminator
+                                                    _isAlreadySaved
+                                                        ? IconButton(
+                                                            icon: Icon(
+                                                              Icons.favorite,
+                                                              color: Colors.red,
+                                                            ),
+                                                            onPressed: () {
+                                                              if (_isAlreadySaved) {
+                                                                setState(() {
+                                                                  likes = 0;
+                                                                  _saved.remove(
+                                                                      index);
+                                                                });
+                                                                unlikePhoto(snapshot
+                                                                            .data
+                                                                            .documents[
+                                                                        index]
+                                                                    ['doc_id']);
+                                                              }
+                                                            })
+                                                        : IconButton(
+                                                            color: Colors
+                                                                .blueAccent,
+                                                            icon: Icon(Icons
+                                                                .favorite_border),
+                                                            onPressed: () {
+                                                              likes = 1;
+                                                              _saved.add(index);
+                                                              likePhoto(snapshot
+                                                                      .data
+                                                                      .documents[
+                                                                  index]['doc_id']);
+                                                            }),
+
+                                                    IconButton(
+                                                      icon: Icon(
+                                                          FontAwesomeIcons
+                                                              .comment,
+                                                          color: Colors
+                                                              .blueAccent),
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        StoriesComments(
+                                                                          uid: snapshot
+                                                                              .data
+                                                                              .documents[index]['doc_id'],
+                                                                        )));
+                                                      },
+                                                    ),
+                                                  ]),
+                                              IconButton(
+                                                icon: Icon(
+                                                  Icons.visibility,
+                                                  color: Colors.blueAccent,
+                                                ),
+                                                onPressed: () {
+                                                  /// navigation goes here
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder:
+                                                              (context) =>
+                                                                  ViewImage(
+                                                                    photoUrl: snapshot
+                                                                            .data
+                                                                            .documents[index]
+                                                                        [
+                                                                        'servicePhoto'],
+                                                                    serviceName:
+                                                                        snapshot
+                                                                            .data
+                                                                            .documents[index]['fullName'],
+                                                                    isVideo: snapshot
+                                                                            .data
+                                                                            .documents[index]
+                                                                        [
+                                                                        'isVideo'],
+                                                                  )));
+                                                },
+                                              ),
+                                            ]),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 14.0, vertical: 3.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            snapshot.data.documents[index]
+                                                        ['rating'] >=
+                                                    1
+                                                ? Text(
+                                                    "Likes  ${snapshot.data.documents[index]['rating'] == '0' ? '' : snapshot.data.documents[index]['rating']}",
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w200,
+                                                        fontSize: 12.0,
+                                                        fontFamily: 'Rukie',
+                                                        letterSpacing: 0.4,
+                                                        color:
+                                                            Color(0xFF484848)),
+                                                  )
+                                                : SizedBox.shrink(),
+                                            snapshot.data.documents[index]
+                                                        ['rating'] >=
+                                                    1
+                                                ? SizedBox(
+                                                    height: 5.0,
+                                                  )
+                                                : SizedBox.shrink(),
+                                            snapshot.data.documents[index]
+                                                        ['count'] >=
+                                                    1
+                                                ? InkWell(
+                                                    child: Text(
+                                                      "View all ${snapshot.data.documents[index]['count']} comments",
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w200,
+                                                          fontSize: 13.0,
+                                                          fontFamily: 'Rukie',
+                                                          letterSpacing: 0.4,
+                                                          color: Color(
+                                                              0xFF404040)),
+                                                    ),
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  StoriesComments(
+                                                                    uid: snapshot
+                                                                            .data
+                                                                            .documents[index]
+                                                                        [
+                                                                        'doc_id'],
+                                                                  )));
+                                                    },
+                                                  )
+                                                : SizedBox.shrink(),
+                                            snapshot.data.documents[index]
+                                                        ['count'] >=
+                                                    1
+                                                ? Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      SizedBox(
+                                                        height: 4.4,
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          InkWell(
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      right:
+                                                                          5.0),
+                                                              width: 21,
+                                                              height: 21,
+                                                              decoration:
+                                                                  new BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                image:
+                                                                    new DecorationImage(
+                                                                  image: CachedNetworkImageProvider(
+                                                                      '${snapshot.data.documents[index]['photoUrl']}'),
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                                borderRadius:
+                                                                    new BorderRadius
+                                                                        .all(new Radius
+                                                                            .circular(
+                                                                        50.0)),
+                                                                border:
+                                                                    new Border
+                                                                        .all(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  width: 0.0,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            onTap: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          StoriesComments(
+                                                                            uid:
+                                                                                snapshot.data.documents[index]['doc_id'],
+                                                                          )));
+                                                            },
+                                                          ),
+                                                          Text(
+                                                            '${snapshot.data.documents[index]['commenter_name']}',
+                                                            style: TextStyle(
+                                                                fontSize: 12.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: 3.0,
+                                                            bottom: 3.0),
+                                                        height: 23.0,
+                                                        child: FlatButton(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  new BorderRadius
+                                                                          .circular(
+                                                                      30.0)),
+                                                          color:
+                                                              Colors.grey[100],
+                                                          child: Text(
+                                                            "${stringChopper(snapshot.data.documents[index]['comment_sample'])}",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300,
+                                                                fontSize: 14.2,
+                                                                fontFamily:
+                                                                    'Rukie',
+                                                                letterSpacing:
+                                                                    0.4,
+                                                                color: Colors
+                                                                    .black54),
+                                                          ),
                                                           onPressed: () {
                                                             Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            StoriesComments(
-                                                                              uid: snapshot.data.documents[index]['doc_id'],
-                                                                            )));
-                                                          },
-                                                        ),
-                                                        
-                                                      ]),
-                                                      IconButton(icon: Icon(Icons.visibility,color: Colors.blueAccent,),onPressed: (){
-                                                        /// navigation goes here 
-                                                        Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    ViewImage(
-                                                                      photoUrl: snapshot
-                                                                          .data
-                                                                          .documents[index]['servicePhoto'],
-                                                                      serviceName: snapshot
-                                                                          .data
-                                                                          .documents[index]['fullName'],
-                                                                          isVideo: snapshot
-                                                                          .data
-                                                                          .documents[index]['isVideo'],
-                                                                    )));
-                                                      },),
-                                                      
-                                                ]),),
-                                         Padding(
-                                           padding: EdgeInsets.symmetric(horizontal: 14.0,vertical: 3.0),
-                                           child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      snapshot.data.documents[index]['rating'] >= 1 ?
-                      Text(
-                    "Likes  ${snapshot.data.documents[index]['rating'] == '0' ? '' : snapshot.data.documents[index]['rating']}",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.w200,fontSize: 12.0,
-                     fontFamily: 'Rukie',letterSpacing:0.4,color: Color(0xFF484848)
-                    ),
-                  ): SizedBox.shrink(),
-                   snapshot.data.documents[index]['rating'] >= 1 ? SizedBox(height: 5.0,): SizedBox.shrink(),
-                  snapshot.data.documents[index]['count'] >= 1 ?
-                   InkWell(child: Text(
-                    "View all ${snapshot.data.documents[index]['count']} comments",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.w200,fontSize: 13.0,
-                     fontFamily: 'Rukie',letterSpacing: 0.4,color: Color(0xFF404040)
-                    ),
-                  ),onTap: (){
-                    Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            StoriesComments(
-                                                                              uid: snapshot.data.documents[index]['doc_id'],
-                                                                            )));
-                  },): SizedBox.shrink(),
-                 snapshot.data.documents[index]['count'] >= 1 ? Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   mainAxisAlignment: MainAxisAlignment.start,
-                   children: <Widget>[
-                     SizedBox(height: 4.4,),
-Row(children: <Widget>[
-  
-InkWell(child: Container(
-                                        
-                                        margin: EdgeInsets.only(right: 5.0),      width: 21,
-                                              height: 21,
-                                              decoration: new BoxDecoration(
-                                                color: Colors.white,
-                                                image: new DecorationImage(
-                                                  image: CachedNetworkImageProvider(
-                                                      '${snapshot.data.documents[index]['photoUrl']}'),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(50.0)),
-                                                border: new Border.all(
-                                                  color: Colors.white,
-                                                  width: 0.0,
-                                                ),
-                                              ),
-                                            ) ,onTap: (){
-Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            StoriesComments(
-                                                                              uid: snapshot.data.documents[index]['doc_id'],
-                                                                            )));
-},),
-Text('${snapshot.data.documents[index]['commenter_name']}',style: TextStyle(fontSize: 12.0,fontWeight: FontWeight.bold),)
-],),
-                   Container(
-                   margin: EdgeInsets.only(top: 3.0,bottom: 3.0),
-                   height: 23.0,child: FlatButton(
-                   
-                   shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                   color: Colors.grey[100],child: Text(
-                    "${stringChopper(snapshot.data.documents[index]['comment_sample'])}",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.w300,fontSize: 14.2,
-                     fontFamily: 'Rukie',letterSpacing:0.4, color: Colors.black54
-                    ),
-                  ),onPressed: (){
-                      Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder:
@@ -1014,34 +1176,46 @@ Text('${snapshot.data.documents[index]['commenter_name']}',style: TextStyle(font
                                                                             CommentsWid(
                                                                               uid: snapshot.data.documents[index]['doc_id'],
                                                                             )));
-                  },),padding: EdgeInsets.only(left: 0),)
-                 ],): SizedBox.shrink()
-                  ],),
-                                         ),
-              snapshot.data.documents[index]['count'] >= 1 ?  SizedBox(height: 6.5,): SizedBox.shrink(),
-                                      ],
-                                    )
-                                  ]));
-                }
-                );
-                }
-              }),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-               _settingModalBottomSheet(context);
-            },
-            child: Icon(
-              Icons.cloud_upload,
-              color: Colors.blue[600]
-            ),
-            backgroundColor: Colors.white,focusElevation: 4.0,
-          ),),onWillPop: (){
-            Navigator.popAndPushNamed(context, '/home'); // riskingi
-            return Future.value(false);
-          },);
+                                                          },
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 0),
+                                                      )
+                                                    ],
+                                                  )
+                                                : SizedBox.shrink()
+                                          ],
+                                        ),
+                                      ),
+                                      snapshot.data.documents[index]['count'] >=
+                                              1
+                                          ? SizedBox(
+                                              height: 6.5,
+                                            )
+                                          : SizedBox.shrink(),
+                                    ],
+                                  )
+                                ]));
+                      });
+              }
+            }),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _settingModalBottomSheet(context);
+          },
+          child: Icon(Icons.cloud_upload, color: Colors.blue[600]),
+          backgroundColor: Colors.white,
+          focusElevation: 4.0,
+        ),
+      ),
+      onWillPop: () {
+        Navigator.popAndPushNamed(context, '/home'); // riskingi
+        return Future.value(false);
+      },
+    );
   }
 }
-
 
 class ExpandableText extends StatefulWidget {
   ExpandableText(this.text);
@@ -1055,12 +1229,12 @@ class ExpandableText extends StatefulWidget {
 
 class _ExpandableTextState extends State<ExpandableText>
     with TickerProviderStateMixin<ExpandableText> {
-
-      @override
-      void dispose() {
+  @override
+  void dispose() {
     // TODO: implement dispose
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return new Column(children: <Widget>[
@@ -1079,12 +1253,11 @@ class _ExpandableTextState extends State<ExpandableText>
       widget.isExpanded
           ? new ConstrainedBox(constraints: new BoxConstraints())
           : new FlatButton(
-          child: const Text('...'),
-          onPressed: () => setState(() => widget.isExpanded = true))
+              child: const Text('...'),
+              onPressed: () => setState(() => widget.isExpanded = true))
     ]);
   }
 }
-
 
 class DescriptionTextWidget extends StatefulWidget {
   final String text;
@@ -1092,7 +1265,8 @@ class DescriptionTextWidget extends StatefulWidget {
   DescriptionTextWidget({@required this.text, @required this.index});
 
   @override
-  _DescriptionTextWidgetState createState() => new _DescriptionTextWidgetState();
+  _DescriptionTextWidgetState createState() =>
+      new _DescriptionTextWidgetState();
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
@@ -1106,10 +1280,9 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
 
   @override
   void initState() {
-    
     super.initState();
-  // _isAlreadySaved = _saved.contains(widget.index);
-  // _istoggled =  _toggleText.contains(widget.index);
+    // _isAlreadySaved = _saved.contains(widget.index);
+    // _istoggled =  _toggleText.contains(widget.index);
 
     if (widget.text.length > 50) {
       firstHalf = widget.text.substring(0, 50);
@@ -1122,47 +1295,65 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
 
   @override
   Widget build(BuildContext context) {
-                         return       _toggleText.contains(widget.index) ? InkWell(
-                                     onTap: (){
-                                        setState(() {
-                                          _toggleText.remove(widget.index);
-                                        });
-                                     },
-                                     child: Padding(child: Text(
-                                          '${widget.text}',
-                                          style: TextStyle(
-                                            color: Color(0xFF404040),
-                                            letterSpacing: .2,
-                                            fontWeight: FontWeight.w100,
-                                              fontSize: 15.0,
-                                              fontFamily: 'Rukie'),
-                                        ),padding: EdgeInsets.only(top:1.0,left: 7.0),),): InkWell(
-                                          onTap: (){
-                                             
-                                            setState(() {
-                                              _toggleText.add(widget.index);
-                                            });
-                                          },
-                                          child: Padding(child: widget.text.toString().length > 200 ?  RichText(
-  text: TextSpan(
-    text: '${widget.text.toString().toString().length > 200 ? widget.text.toString().toString().substring(0,200): widget.text}',
-    style: TextStyle(color: Color(0xFF484848),
-                                            letterSpacing: .2,
-                                            fontWeight: FontWeight.w100,
-                                              fontSize: 14.0,
-                                              fontFamily: 'Rukie',height: 1.2),
-    children: <TextSpan>[
-      TextSpan(text: ' Read more...', style: TextStyle(fontWeight: FontWeight.w100,color: Color(0xFF484848)))
-    ],
-  ),
-) : Text(
-                                          '${widget.text}',
-                                          style: TextStyle(
-                                           color: Color(0xFF484848),
-                                            letterSpacing: .2,
-                                            fontWeight: FontWeight.w100,
-                                              fontSize: 15.0,
-                                              fontFamily: 'Rukie'),
-                                        ),padding: EdgeInsets.only(top:1.0,left: 7.0),),);
+    return _toggleText.contains(widget.index)
+        ? InkWell(
+            onTap: () {
+              setState(() {
+                _toggleText.remove(widget.index);
+              });
+            },
+            child: Padding(
+              child: Text(
+                '${widget.text}',
+                style: TextStyle(
+                    color: Color(0xFF404040),
+                    letterSpacing: .2,
+                    fontWeight: FontWeight.w100,
+                    fontSize: 15.0,
+                    fontFamily: 'Rukie'),
+              ),
+              padding: EdgeInsets.only(top: 1.0, left: 7.0),
+            ),
+          )
+        : InkWell(
+            onTap: () {
+              setState(() {
+                _toggleText.add(widget.index);
+              });
+            },
+            child: Padding(
+              child: widget.text.toString().length > 200
+                  ? RichText(
+                      text: TextSpan(
+                        text:
+                            '${widget.text.toString().toString().length > 200 ? widget.text.toString().toString().substring(0, 200) : widget.text}',
+                        style: TextStyle(
+                            color: Color(0xFF484848),
+                            letterSpacing: .2,
+                            fontWeight: FontWeight.w100,
+                            fontSize: 14.0,
+                            fontFamily: 'Rukie',
+                            height: 1.2),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: ' Read more...',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  color: Color(0xFF484848)))
+                        ],
+                      ),
+                    )
+                  : Text(
+                      '${widget.text}',
+                      style: TextStyle(
+                          color: Color(0xFF484848),
+                          letterSpacing: .2,
+                          fontWeight: FontWeight.w100,
+                          fontSize: 15.0,
+                          fontFamily: 'Rukie'),
+                    ),
+              padding: EdgeInsets.only(top: 1.0, left: 7.0),
+            ),
+          );
   }
 }

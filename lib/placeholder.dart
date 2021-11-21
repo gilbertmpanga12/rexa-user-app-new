@@ -33,11 +33,10 @@ class PlaceholderWidState extends State<PlaceholderWid> {
 
   fetchHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    try{
+    try {
       final response = await http.get(
-          'https://young-tor-95342.herokuapp.com/api/get-user-history/${prefs.getString('uid')}');
+          'https://yiiyaa-app.herokuapp.com/api/get-user-history/${prefs.getString('uid')}');
       if (response.statusCode == 200 || response.statusCode == 201) {
-       
         setState(() {
           resultsFetched = (json.decode(response.body) as List)
               .map((data) => new History.fromJson(data))
@@ -52,7 +51,7 @@ class PlaceholderWidState extends State<PlaceholderWid> {
         errorMessage = response.body;
         throw Exception('Oops something wrong');
       }
-    }catch(err){
+    } catch (err) {
       requestFailed = true;
     }
   }
@@ -81,13 +80,15 @@ class PlaceholderWidState extends State<PlaceholderWid> {
       'November',
       'December'
     ];
-    try{
+    try {
       print(date);
       final today = DateTime.parse(date.toString());
-    String dateSlug =
-        "${daysOfWeek[today.weekday]} ${months[today.month][0].toUpperCase() + months[today.month].substring(1,)} ${today.year.toString()} ${today.hour.toString().padLeft(2, '0')}:${today.minute.toString().padLeft(2, '0')}";
-    return dateSlug;
-    }catch(err){
+      String dateSlug =
+          "${daysOfWeek[today.weekday]} ${months[today.month][0].toUpperCase() + months[today.month].substring(
+                1,
+              )} ${today.year.toString()} ${today.hour.toString().padLeft(2, '0')}:${today.minute.toString().padLeft(2, '0')}";
+      return dateSlug;
+    } catch (err) {
       return '';
     }
   }
@@ -102,7 +103,10 @@ class PlaceholderWidState extends State<PlaceholderWid> {
         appBar: AppBar(
           title: Text(
             DemoLocalizations.of(context).history,
-     style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w900,fontSize: 17),
+            style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w900,
+                fontSize: 17),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
@@ -111,49 +115,51 @@ class PlaceholderWidState extends State<PlaceholderWid> {
         ),
         body: resultsFetched.length > 0
             ? ListView.separated(
-              separatorBuilder: (context, index) =>  Divider(),
+                separatorBuilder: (context, index) => Divider(),
                 itemCount: resultsFetched.length,
                 itemBuilder: (context, i) {
                   return new Column(
-                      children: <Widget> [
+                    children: <Widget>[
                       //  SizedBox(height: 13.0,),
-                        
 
-
-Container(
-  padding: EdgeInsets.only(top: 5.0,bottom: 13.0),
-  height: 60.0,
-  child: ListTile(
-  title:  Text(
-   '${resultsFetched[i].requestedSaloonService}',
-  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'NunitoSans',fontSize: 14),
-    ),
-    subtitle: new Container(
-                            padding: const EdgeInsets.only(top: 5.0),
-                            child: new Text(
-                              '${resultsFetched[i].timeStamp}',
-                              style: new TextStyle(letterSpacing: -1,
-                                  color: Colors.grey, fontSize: 14.0),
-                              softWrap: true,
+                      Container(
+                        padding: EdgeInsets.only(top: 5.0, bottom: 13.0),
+                        height: 60.0,
+                        child: ListTile(
+                            title: Text(
+                              '${resultsFetched[i].requestedSaloonService}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'NunitoSans',
+                                  fontSize: 14),
                             ),
-                          ),
-  trailing: Text(
-                            '${resultsFetched[i].priceRequested == 'null' ? 'N/A': resultsFetched[i].priceRequested}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 17.0),
-                          )
-),)
-                        
-                      ],
-                    );
-                }
-              ): requestFailed
-? Center(
+                            subtitle: new Container(
+                              padding: const EdgeInsets.only(top: 5.0),
+                              child: new Text(
+                                '${resultsFetched[i].timeStamp}',
+                                style: new TextStyle(
+                                    letterSpacing: -1,
+                                    color: Colors.grey,
+                                    fontSize: 14.0),
+                                softWrap: true,
+                              ),
+                            ),
+                            trailing: Text(
+                              '${resultsFetched[i].priceRequested == 'null' ? 'N/A' : resultsFetched[i].priceRequested}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 17.0),
+                            )),
+                      )
+                    ],
+                  );
+                })
+            : requestFailed
+                ? Center(
                     child: Text('You have no history'),
-                  ): Center(
+                  )
+                : Center(
                     child: CircularProgressIndicator(strokeWidth: 5.0),
                   ),
         backgroundColor: Colors.white);
   }
-
 }
